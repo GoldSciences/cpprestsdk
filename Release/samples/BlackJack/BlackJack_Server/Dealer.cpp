@@ -123,7 +123,7 @@ void									Dealer::handle_put								(web::http::http_request message)				{
     auto												table									= std::static_pointer_cast<DealerTable>(found->second);
 
 		 if ( request == BET		)	table->Bet			(message);
-    else if ( request == DOUBLE		)	table->DoubleDown	(message);
+    else if ( request == DOUBLEDOWN	)	table->DoubleDown	(message);
     else if ( request == INSURE		)	table->Insure		(message);
     else if ( request == HIT		)	table->Hit			(message);
     else if ( request == STAY		)	table->Stay			(message);

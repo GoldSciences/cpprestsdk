@@ -2,7 +2,6 @@
 //
 // Copyright (C) Microsoft. All rights reserved.
 // Licensed under the MIT license. See LICENSE.txt file in the project root for full license information.
-#include "stdafx.h"
 #include "Dealer.h"
 
 std::unique_ptr<Dealer>							g_httpDealer;

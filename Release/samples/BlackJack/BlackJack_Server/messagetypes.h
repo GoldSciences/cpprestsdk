@@ -1,8 +1,12 @@
 // Copyright (C) Microsoft. All rights reserved.
 // Licensed under the MIT license. See LICENSE.txt file in the project root for full license information.
+#include "cpprest/json.h"
+#include "cpprest/details/basic_types.h"
 
-#pragma once
-#include "stdafx.h"
+#include <map>
+
+#ifndef __MESSAGETYPES_H__9283492874__
+#define __MESSAGETYPES_H__9283492874__
 
 enum BJHandResult		{ HR_None, HR_PlayerBlackJack, HR_PlayerWin, HR_ComputerWin, HR_Push };
 enum BJHandState		{ HR_Empty, HR_BlackJack, HR_Active, HR_Held, HR_Busted };
@@ -13,7 +17,7 @@ enum BJStatus			{ ST_PlaceBet, ST_Refresh, ST_YourTurn, ST_None };
 
 #define STATE			U("state"		)
 #define BET				U("bet"			)
-#define DOUBLE			U("double"		)
+#define DOUBLEDOWN		U("double"		)
 #define INSURE			U("insure"		)
 #define HIT				U("hit"			)
 #define STAY			U("stay"		)
@@ -42,8 +46,8 @@ struct Card {
 
     static	Card								FromJSON				(const web::json::object & object)							{
         Card											result;
-        result.suit																= (CardSuit)object.at(SUIT).as_integer();
-        result.value															= (CardValue)object.at(VALUE).as_integer();
+        result.suit																= (CardSuit)object	.at(SUIT).as_integer();
+        result.value															= (CardValue)object	.at(VALUE).as_integer();
         return result;
     }
 
@@ -106,15 +110,11 @@ struct BJHand {
             }
         }
         
-        auto											iState					= object.find(STATE);
-        if (iState == object.end())
-            throw web::json::json_exception(U("STATE key not found"));
-
-		res.state		= (BJHandState)iState	->second.as_integer	();	auto iBet		= object.find(BET		); if (object.end() == iBet )		throw web::json::json_exception(U("BET key not found"		));
-        res.bet			= iBet					->second.as_double	();	auto iInsurance	= object.find(INSURANCE	); if (object.end() == iInsurance )	throw web::json::json_exception(U("INSURANCE key not found"	));
-		res.insurance	= iInsurance			->second.as_double	();	auto iResult	= object.find(RESULT	); if (object.end() == iResult )	throw web::json::json_exception(U("RESULT key not found"	));
-
-		res.result									= (BJHandResult)object.find(RESULT)->second.as_integer();
+		web::json::object::const_iterator
+		objectIterator	= object.find(STATE		); if (objectIterator == object.end()) throw web::json::json_exception(U("STATE key not found"		));	res.state		= (BJHandState)	objectIterator->second.as_integer	();	
+		objectIterator	= object.find(BET		); if (objectIterator == object.end()) throw web::json::json_exception(U("BET key not found"		)); res.bet			=				objectIterator->second.as_double	();	
+		objectIterator	= object.find(INSURANCE	); if (objectIterator == object.end()) throw web::json::json_exception(U("INSURANCE key not found"	)); res.insurance	=				objectIterator->second.as_double	();	
+		objectIterator	= object.find(RESULT	); if (objectIterator == object.end()) throw web::json::json_exception(U("RESULT key not found"		)); res.result		= (BJHandResult)objectIterator->second.as_integer	();
         return res;
     }
 
@@ -151,9 +151,9 @@ struct Player {
     static	Player								FromJSON				(const web::json::object &object)							{
         Player											result					(U(""));
         web::json::object::const_iterator 
-		objectIterator	= object.find(NAME		);	if(objectIterator == object.end()) throw web::json::json_exception(U("NAME key not found"		));	result.Name		= objectIterator->second.as_string();
-        objectIterator	= object.find(BALANCE	);	if(objectIterator == object.end()) throw web::json::json_exception(U("BALANCE key not found"	));	result.Balance	= objectIterator->second.as_double();
-        objectIterator	= object.find(HAND		);	if(objectIterator == object.end()) throw web::json::json_exception(U("HAND key not found"		));	result.Hand		= BJHand::FromJSON(objectIterator->second.as_object());
+		objectIterator	= object.find(NAME		);	if(objectIterator == object.end()) throw web::json::json_exception(U("NAME key not found"		));	result.Name		=					objectIterator->second.as_string();
+        objectIterator	= object.find(BALANCE	);	if(objectIterator == object.end()) throw web::json::json_exception(U("BALANCE key not found"	));	result.Balance	=					objectIterator->second.as_double();
+        objectIterator	= object.find(HAND		);	if(objectIterator == object.end()) throw web::json::json_exception(U("HAND key not found"		));	result.Hand		= BJHand::FromJSON (objectIterator->second.as_object());
 
 		return result;
     }
@@ -227,3 +227,5 @@ inline	web::json::value					TablesAsJSON						(const utility::string_t &name, co
     return result;
 }
 
+
+#endif // __MESSAGETYPES_H__9283492874__

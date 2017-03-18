@@ -1,14 +1,6 @@
 // Copyright (C) Microsoft. All rights reserved.
 // Licensed under the MIT license. See LICENSE.txt file in the project root for full license information.
-#pragma once
-#include "stdafx.h"
-
-#ifdef _WIN32
-#include <concrt.h>
-#endif
-#include <string>
-#include <vector>
-#include <queue>
+#include "cpprest/http_listener.h"
 
 #ifndef __TABLE_H__92873492834__
 #define __TABLE_H__92873492834__
