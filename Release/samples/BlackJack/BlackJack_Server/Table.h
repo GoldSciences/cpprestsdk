@@ -10,6 +10,9 @@
 #include <vector>
 #include <queue>
 
+#ifndef __TABLE_H__92873492834__
+#define __TABLE_H__92873492834__
+
 class DealerTable : public BJTable {
     int													m_stopAt;
     std::queue<Card>									m_shoe;
@@ -52,3 +55,5 @@ public:
     bool												AddPlayer			(const Player &player);
     bool												RemovePlayer		(const utility::string_t &name);
 };
+#endif // __DEALER_H__92873492834__
+

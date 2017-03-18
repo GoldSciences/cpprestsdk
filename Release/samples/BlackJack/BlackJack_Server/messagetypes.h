@@ -223,7 +223,7 @@ inline	web::json::value					TablesAsJSON						(const utility::string_t &name, co
     web::json::value								result								= web::json::value::array();
     size_t											idx									= 0;
     for (auto tbl = tables.begin(); tbl != tables.end(); tbl++)
-        result[idx++] = tbl->second->AsJSON();
+        result[idx++]								= tbl->second->AsJSON();
     return result;
 }
 

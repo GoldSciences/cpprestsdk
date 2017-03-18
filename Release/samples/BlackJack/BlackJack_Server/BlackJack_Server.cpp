@@ -9,7 +9,6 @@ std::unique_ptr<Dealer>							g_httpDealer;
 
 void											on_initialize							(const utility::string_t& address)			{
     // Build our listener's URI from the configured address and the hard-coded path "blackjack/dealer"
-
     web::uri_builder									uri										(address);
     uri.append_path(U("blackjack/dealer"));
 

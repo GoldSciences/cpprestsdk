@@ -32,9 +32,6 @@
     <ClCompile Include="..\BlackJack_Server.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\stdafx.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="..\Table.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>

@@ -1,5 +1,8 @@
 #include "Dealer.h"
 
+std::map<utility::string_t, std::shared_ptr<BJTable>>	Dealer::s_tables				= {};
+int														Dealer::nextId					= 1;
+
 // A GET of the dealer resource produces a list of existing tables.
 void									Dealer::handle_get								(web::http::http_request message)				{
     ucout <<  message.to_string() << std::endl;
