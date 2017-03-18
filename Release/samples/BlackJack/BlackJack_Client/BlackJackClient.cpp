@@ -1,15 +1,36 @@
-/***
-* Copyright (C) Microsoft. All rights reserved.
-* Licensed under the MIT license. See LICENSE.txt file in the project root for full license information.
-*
-* =+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+
-*
-* BlackJackClient.cpp : Defines the entry point for the console application
-*
-* =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
-****/
+//  Defines the entry point for the console application
+//
+// Copyright (C) Microsoft. All rights reserved.
+#include <stdio.h>
 
-#include "stdafx.h"
+#ifdef _WIN32
+#include <SDKDDKVer.h>	// Including SDKDDKVer.h defines the highest available Windows platform.
+						// If you wish to build your application for a previous Windows platform, include WinSDKVer.h and set the _WIN32_WINNT macro to the platform you wish to support before including SDKDDKVer.h.
+#include <tchar.h>
+#ifndef WIN32_LEAN_AND_MEAN
+#define WIN32_LEAN_AND_MEAN
+#endif
+#define NOMINMAX
+#include <windows.h>
+#include <objbase.h>
+#include <winsock2.h>
+
+// ws2tcpip.h - isn't warning clean.
+#pragma warning(push)
+#pragma warning(disable : 6386)
+#include <ws2tcpip.h>
+#pragma warning(pop)
+
+#include <iphlpapi.h>
+#endif
+
+#include <map>
+#include <vector>
+#include <string>
+#include <exception>
+
+#include "cpprest/http_client.h"
+
 #include <iostream>
 #include <streambuf>
 #include <sstream>
@@ -28,90 +49,73 @@ using namespace utility;
 using namespace http;
 using namespace http::client;
 
-http_response CheckResponse(const std::string &url, const http_response &response)
-{
+http_response							CheckResponse						(const std::string &url, const http_response &response)						{
     ucout << response.to_string() << endl;
     return response;
 }
 
-http_response CheckResponse(const std::string &url, const http_response &response, bool &refresh)
-{
+http_response							CheckResponse						(const std::string &url, const http_response &response, bool &refresh)		{
     ucout << response.to_string() << endl;
-    BJPutResponse answer = BJPutResponse::FromJSON(response.extract_json().get());
-    refresh = answer.Status == ST_Refresh;
+    BJPutResponse								answer = BJPutResponse::FromJSON(response.extract_json().get());
+    refresh									= answer.Status == ST_Refresh;
     return response;
 }
 
-void PrintResult(BJHandResult result)
-{
-    switch (result)
-    {
-    case HR_PlayerBlackJack: ucout << "Black Jack"; break;
-    case HR_PlayerWin: ucout << "Player wins"; break;
-    case HR_ComputerWin: ucout << "Computer Wins"; break;
-    case HR_Push:ucout << "Push"; break;
+void									PrintResult							(BJHandResult result)														{
+    switch (result) {
+    case HR_PlayerBlackJack	: ucout << "Black Jack"		; break;
+    case HR_PlayerWin		: ucout << "Player wins"	; break;
+    case HR_ComputerWin		: ucout << "Computer Wins"	; break;
+    case HR_Push			: ucout << "Push"			; break;
     }
 }
 
-void PrintCard(const Card &card)
-{
-    switch (card.value)
-    {
-    case CV_King: ucout << "K"; break;
-    case CV_Queen: ucout << "Q"; break;
-    case CV_Jack: ucout << "J"; break;
-    case CV_Ace: ucout << "A"; break;
-    default: ucout << (int)card.value; break;
+void									PrintCard							(const Card &card)															{
+    switch (card.value) {
+    case CV_King			: ucout << "K"				; break;
+    case CV_Queen			: ucout << "Q"				; break;
+    case CV_Jack			: ucout << "J"				; break;
+    case CV_Ace				: ucout << "A"				; break;
+    default					: ucout << (int)card.value	; break;
     }
-    switch (card.suit)
-    {
-    case CS_Club: ucout << "C"; break;
-    case CS_Spade: ucout << "S"; break;
-    case CS_Heart: ucout << "H"; break;
-    case CS_Diamond: ucout << "D"; break;
+    switch (card.suit) {
+    case CS_Club			: ucout << "C"; break;
+    case CS_Spade			: ucout << "S"; break;
+    case CS_Heart			: ucout << "H"; break;
+    case CS_Diamond			: ucout << "D"; break;
     }
 }
 
-void PrintHand(bool suppress_bet, const BJHand &hand)
-{
-    if (!suppress_bet)
-    {
+void									PrintHand							(bool suppress_bet, const BJHand &hand)										{
+    if (!suppress_bet) {
         if ( hand.insurance > 0 )
-            ucout << "Bet: " << hand.bet << "Insurance: " << hand.insurance << " Hand: ";
+            ucout << "Bet: " << hand.bet << " Insurance: " << hand.insurance << " Hand: ";
         else
             ucout << "Bet: " << hand.bet << " Hand: ";
     }
     for (auto iter = hand.cards.begin(); iter != hand.cards.end(); iter++)
-    {
         PrintCard(*iter); ucout << " ";
-    }
-    PrintResult(hand.result);
+
+	PrintResult(hand.result);
 }
 
-void PrintTable(const http_response &response, bool &refresh)
-{
-    BJHand hand;
+void									PrintTable							(const http_response &response, bool &refresh)								{
+    BJHand										hand;
+    refresh									= false;
 
-    refresh = false;
+    if ( response.status_code() == status_codes::OK ) {
+        if ( response.headers().content_type() == U("application/json") ) {
+            BJPutResponse								answer								= BJPutResponse::FromJSON(response.extract_json().get());
+            json::value									players								= answer.Data[PLAYERS];
 
-    if ( response.status_code() == status_codes::OK )
-    {
-        if ( response.headers().content_type() == U("application/json") )
-        {
-            BJPutResponse answer = BJPutResponse::FromJSON(response.extract_json().get());
-            json::value players = answer.Data[PLAYERS];
+            refresh									= answer.Status == ST_Refresh;
 
-            refresh = answer.Status == ST_Refresh;
+            for (auto iter = players.as_array().begin(); iter != players.as_array().end(); ++iter) {
+                auto										& player							= *iter;
 
-            for (auto iter = players.as_array().begin(); iter != players.as_array().end(); ++iter)
-            {
-                auto& player = *iter;
-
-                json::value name = player[NAME];
-                json::value bet  = player[BALANCE];
-
-                bool suppressMoney = iter == players.as_array().begin();
-
+                json::value									name								= player[NAME];
+                json::value									bet									= player[BALANCE];
+				bool										suppressMoney						= iter == players.as_array().begin();
                 if ( suppressMoney )
                     ucout << "'" << name.as_string() << "'" ;
                 else
@@ -121,14 +125,9 @@ void PrintTable(const http_response &response, bool &refresh)
                 ucout << std::endl;
             }
 
-            switch ( answer.Status )
-            {
-            case ST_PlaceBet:
-                ucout << "Place your bet!\n";
-                break;
-            case ST_YourTurn:
-                ucout << "Your turn!\n";
-                break;
+            switch ( answer.Status ) {
+            case ST_PlaceBet: ucout << "Place your bet!\n"	; break;
+            case ST_YourTurn: ucout << "Your turn!\n"		; break;
             }
         }
     }
@@ -147,9 +146,7 @@ int main(int argc, char *argv[])
 {
     utility::string_t port = U("34568");
     if(argc == 2)
-    {
         port = argv[1];
-    }
 
     utility::string_t address = U("http://localhost:");
     address.append(port);
@@ -165,10 +162,8 @@ int main(int argc, char *argv[])
 
     bool was_refresh = false;
 
-    while (true)
-    {
-        while ( was_refresh )
-        {
+    while (true) {
+        while ( was_refresh ) {
             was_refresh = false;
             utility::ostringstream_t buf;
             buf << table << U("?request=refresh&name=") << userName;
@@ -179,10 +174,8 @@ int main(int argc, char *argv[])
         ucout << "Enter method:";
         cin >> method;
 
-        if ( iequals(method.c_str(), "quit") )
-        {
-            if ( !userName.empty() && !table.empty() )
-            {
+        if ( iequals(method.c_str(), "quit") ) {
+            if ( !userName.empty() && !table.empty() ) {
                 utility::ostringstream_t buf;
                 buf << table << U("?name=") << userName;
                 CheckResponse("blackjack/dealer", bjDealer.request(methods::DEL, buf.str()).get());
@@ -190,13 +183,11 @@ int main(int argc, char *argv[])
             break;
         }
 
-        if ( iequals(method.c_str(), "name") )
-        {
+        if ( iequals(method.c_str(), "name") ) {
             ucout << "Enter user name:";
             ucin >> userName;
         }
-        else if ( iequals(method.c_str(), "join") )
-        {
+        else if ( iequals(method.c_str(), "join") ) {
             ucout << "Enter table name:";
             ucin >> table;
 
@@ -206,20 +197,22 @@ int main(int argc, char *argv[])
             buf << table << U("?name=") << userName;
             CheckResponse("blackjack/dealer", bjDealer.request(methods::POST, buf.str()).get(), was_refresh);
         }
-        else if ( iequals(method.c_str(), "hit")
-            || iequals(method.c_str(), "stay")
-            || iequals(method.c_str(), "double") )
+        else if(iequals(method.c_str(), "hit"	)
+			||	iequals(method.c_str(), "stay"	)
+			||	iequals(method.c_str(), "double") 
+			)
         {
             utility::ostringstream_t buf;
             buf << table << U("?request=") << utility::conversions::to_string_t(method) << U("&name=") << userName;
             PrintTable(CheckResponse("blackjack/dealer", bjDealer.request(methods::PUT, buf.str()).get()), was_refresh);
         }
-        else if ( iequals(method.c_str(), "bet") 
-            || iequals(method.c_str(), "insure") )
+        else if(iequals(method.c_str(), "bet") 
+			||	iequals(method.c_str(), "insure") 
+			)
         {
             utility::string_t bet;
-            ucout << "Enter bet:";
-            ucin >> bet;
+            ucout	<< "Enter bet:";
+            ucin	>> bet;
 
             if ( userName.empty() ) { ucout << "Must have a name first!\n"; continue; }
 
@@ -228,11 +221,8 @@ int main(int argc, char *argv[])
             PrintTable(CheckResponse("blackjack/dealer", bjDealer.request(methods::PUT, buf.str()).get()), was_refresh);
         }
         else if ( iequals(method.c_str(), "newtbl") )
-        {
             CheckResponse("blackjack/dealer", bjDealer.request(methods::POST).get(), was_refresh);
-        }
-        else if ( iequals(method.c_str(), "leave") )
-        {
+        else if ( iequals(method.c_str(), "leave") ) {
             ucout << "Enter table:";
             ucin >> table;
 
@@ -242,16 +232,13 @@ int main(int argc, char *argv[])
             buf << table << U("?name=") << userName;
             CheckResponse("blackjack/dealer", bjDealer.request(methods::DEL, buf.str()).get(), was_refresh);
         }
-        else if ( iequals(method.c_str(), "list") )
-        {
+        else if ( iequals(method.c_str(), "list") ) {
             was_refresh = false;
             http_response response = CheckResponse("blackjack/dealer", bjDealer.request(methods::GET).get());
 
-            if ( response.status_code() == status_codes::OK )
-            {
+            if ( response.status_code() == status_codes::OK ) {
                 availableTables = response.extract_json().get();
-                for (auto iter = availableTables.as_array().begin(); iter != availableTables.as_array().end(); ++iter)
-                {
+                for (auto iter = availableTables.as_array().begin(); iter != availableTables.as_array().end(); ++iter) {
                     BJTable bj_table = BJTable::FromJSON(iter->as_object());
                     json::value id = json::value::number(bj_table.Id);
 
@@ -260,8 +247,7 @@ int main(int argc, char *argv[])
                 ucout << std::endl;
             }
         }
-        else
-        {
+        else {
             ucout << utility::conversions::to_string_t(method) << ": not understood\n";
         }
     }
