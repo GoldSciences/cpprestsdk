@@ -6,11 +6,6 @@
 
 #include "cpprest/filestream.h"
 
-using namespace web;
-using namespace http;
-using namespace utility;
-using namespace http::experimental::listener;
-
 const utility::string_t casalens_creds::events_url		= U("http://api.eventful.com/json/events/search?...&location="			);
 const utility::string_t casalens_creds::movies_url		= U("http://data.tmsapi.com/v1/movies/showings?"						);
 const utility::string_t casalens_creds::images_url		= U("https://api.datamarket.azure.com/Bing/Search/Image?$format=json"	);
@@ -35,8 +30,8 @@ const utility::string_t CasaLens::images_json_key		= U("images"	);
 const utility::string_t CasaLens::error_json_key		= U("error"		);
 
 CasaLens::CasaLens(utility::string_t url) : m_listener(url) {
-    m_listener.support(methods::GET , std::bind(&CasaLens::handle_get , this, std::placeholders::_1));
-    m_listener.support(methods::POST, std::bind(&CasaLens::handle_post, this, std::placeholders::_1));
+    m_listener.support(web::http::methods::GET , std::bind(&CasaLens::handle_get , this, std::placeholders::_1));
+    m_listener.support(web::http::methods::POST, std::bind(&CasaLens::handle_post, this, std::placeholders::_1));
 
     m_htmlcontentmap[U("/"						)] = std::make_tuple(U("AppCode.html"		), U("text/html"				));
     m_htmlcontentmap[U("/js/default.js"			)] = std::make_tuple(U("js/default.js"		), U("application/javascript"	));
@@ -49,11 +44,11 @@ CasaLens::CasaLens(utility::string_t url) : m_listener(url) {
 
 // Handler to process HTTP::GET requests.
 // Replies to the request with data.
-void CasaLens::handle_get(http_request message) {    
+void CasaLens::handle_get(web::http::http_request message) {    
     auto						path						= message.relative_uri().path();
     auto						content_data				= m_htmlcontentmap.find(path);
     if (content_data == m_htmlcontentmap.end()) {
-        message.reply(status_codes::NotFound, U("Path not found")).then([](pplx::task<void> t) { handle_error(t); });
+        message.reply(web::http::status_codes::NotFound, U("Path not found")).then([](pplx::task<void> t) { handle_error(t); });
         return;
     }
 
@@ -61,14 +56,14 @@ void CasaLens::handle_get(http_request message) {
     auto						content_type				= std::get<1>(content_data->second);
     concurrency::streams::fstream::open_istream(file_name, std::ios::in).then([=](concurrency::streams::istream is)
     {
-        message.reply(status_codes::OK, is, content_type).then([](pplx::task<void> t) { handle_error(t); });
+        message.reply(web::http::status_codes::OK, is, content_type).then([](pplx::task<void> t) { handle_error(t); });
     }).then([=](pplx::task<void>& t)
     {
         try {
             t.get();
         }
         catch(...) {																						// opening the file (open_istream) failed.
-            message.reply(status_codes::InternalError).then([](pplx::task<void> t) { handle_error(t); });	// Reply with an error.
+            message.reply(web::http::status_codes::InternalError).then([](pplx::task<void> t) { handle_error(t); });	// Reply with an error.
         }																									
     });
 }
@@ -76,7 +71,7 @@ void CasaLens::handle_get(http_request message) {
 // Respond to HTTP::POST messages
 // Post data will contain the postal code or location string.
 // Aggregate location data from different services and reply to the POST request.
-void CasaLens::handle_post(http_request message) { 
+void CasaLens::handle_post(web::http::http_request message) { 
     auto path = message.relative_uri().path();
     if (0 == path.compare(U("/"))) {
         message.extract_string().then([=](const utility::string_t& location)
@@ -85,7 +80,7 @@ void CasaLens::handle_post(http_request message) {
         }).then([](pplx::task<void> t) { handle_error(t); });
     }
     else
-        message.reply(status_codes::NotFound, U("Path not found")).then([](pplx::task<void> t) { handle_error(t); });
+        message.reply(web::http::status_codes::NotFound, U("Path not found")).then([](pplx::task<void> t) { handle_error(t); });
 }
 
 #ifdef _WIN32
