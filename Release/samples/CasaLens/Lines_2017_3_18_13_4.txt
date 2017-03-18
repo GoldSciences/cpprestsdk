@@ -1,0 +1,72 @@
+File name: casalens.cpp
+File folder: D:\Jeez\cpprestsdk\Release\samples\CasaLens\
+File creation date: Sat Mar 18 07:50:54 2017
+File modification date: Sat Mar 18 13:04:25 2017
+File code lines: 82
+File directive lines: 5
+File comment lines: 10
+File blank lines: 61
+File bytes: 5504
+
+File name: casalens.h
+File folder: D:\Jeez\cpprestsdk\Release\samples\CasaLens\
+File creation date: Sat Mar 18 07:50:54 2017
+File modification date: Sat Mar 18 13:04:25 2017
+File code lines: 54
+File directive lines: 15
+File comment lines: 18
+File blank lines: 29
+File bytes: 4035
+
+File name: datafetcher.cpp
+File folder: D:\Jeez\cpprestsdk\Release\samples\CasaLens\
+File creation date: Sat Mar 18 07:50:54 2017
+File modification date: Sat Mar 18 13:04:25 2017
+File code lines: 260
+File directive lines: 2
+File comment lines: 31
+File blank lines: 174
+File bytes: 14748
+
+File name: stdafx.cpp
+File folder: D:\Jeez\cpprestsdk\Release\samples\CasaLens\
+File creation date: Sat Mar 18 13:04:25 2017
+File modification date: Sat Mar 18 13:04:25 2017
+File code lines: 6
+File directive lines: 1
+File comment lines: 0
+File blank lines: 5
+File bytes: 422
+
+File name: stdafx.h
+File folder: D:\Jeez\cpprestsdk\Release\samples\CasaLens\
+File creation date: Sat Mar 18 13:04:25 2017
+File modification date: Sat Mar 18 13:04:25 2017
+File code lines: 8
+File directive lines: 8
+File comment lines: 0
+File blank lines: 6
+File bytes: 690
+
+
+----------------------------- Total Files: 5
+----------------------------- Total Lines: 775
+
+Comments: 59
+Code: 410
+Compiler directives: 31
+Blanks: 275
+Total bytes: 25399
+
+----------------------------- Stats: 
+
+Average lines per file: 155.0
+Average lines of comments per file: 11.8
+Average lines of code per file: 82.0
+Average lines of compiler directives per file: 6.2
+Average blank lines per file: 55.0
+
+Comments: 7.612903225806451%
+Code: 52.90322580645161%
+Compiler directives: 4.0%
+Blanks: 35.483870967741936%

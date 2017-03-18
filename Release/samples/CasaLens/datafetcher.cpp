@@ -90,7 +90,6 @@ pplx::task<web::json::value> CasaLens::get_weather(const utility::string_t& post
     }).then([](utility::string_t weather_str)
     {
         web::json::value weather_json = web::json::value::parse(weather_str);
-
         auto& j = weather_json[U("list")][0][U("main")];
 
         web::json::value weather_result_node = web::json::value::object();
@@ -190,41 +189,23 @@ pplx::task<web::json::value> CasaLens::get_movies(const utility::string_t& posta
             auto temp = web::json::value::array();
             int i = 0;
             for(auto iter = movie_json.as_array().cbegin(); iter != movie_json.as_array().cend() && i < num_movies; iter++, i++) {
-                auto iShowTimes = iter->as_object().find(U("showtimes"));
-                if (iShowTimes == iter->as_object().end()) {
-                    throw web::json::json_exception(U("showtimes key not found"));
-                }
-                auto& showtimes = iShowTimes->second;
+                web::json::object::const_iterator 
+				objectIterator	= iter->as_object().find(U("showtimes"	));	if (objectIterator == iter->as_object().end()) { throw web::json::json_exception(U("showtimes key not found")); } const web::json::value & showtimes	= objectIterator->second;
+                objectIterator	= iter->as_object().find(U("title"		));	if (objectIterator == iter->as_object().end()) { throw web::json::json_exception(U("title key not found"	)); } temp[i][U("title")]					= objectIterator->second;
 
-                int j = 0;
-                int showtime_index = 0;
-                int theater_index = -1;
-                utility::string_t current_theater;
-                auto iTitle = iter->as_object().find(U("title"));
-                if (iTitle == iter->as_object().end()) {
-                    throw web::json::json_exception(U("title key not found"));
-                }
-                temp[i][U("title")] =  iTitle->second;
+				utility::string_t	current_theater;
+				int					j					= 0;
+                int					showtime_index		= 0;
+                int					theater_index		= -1;
                 for (auto iter2 = showtimes.as_array().cbegin(); iter2 != showtimes.as_array().cend() &&  j < num_movies; iter2++,j++) {
-                    auto iTheatre = iter2->as_object().find(U("theatre"));
-                    if (iTheatre == iter2->as_object().end()) {
-                        throw web::json::json_exception(U("theatre key not found"));
-                    }
-                    auto iName = iTheatre->second.as_object().find(U("name"));
-                    if (iName == iTheatre->second.as_object().end()) {
-                        throw web::json::json_exception(U("name key not found"));
-                    }
-                    auto theater = iName->second.as_string();
+                    objectIterator	= iter2->as_object().find(U("theatre"	));	if (objectIterator == iter2->as_object().end()) { throw web::json::json_exception(U("theatre key not found"));	} const web::json::object & theatre		= objectIterator->second.as_object();
+                    objectIterator	= theatre			.find(U("name"		));	if (objectIterator == theatre.end())			{ throw web::json::json_exception(U("name key not found"));		} const utility::string_t theater		= objectIterator->second.as_string();
                     if (0 != theater.compare(current_theater)) {	// new theater
                         temp[i][U("theatre")][++theater_index][U("name")] = web::json::value::string(theater); // Add theater entry
-                        showtime_index = 0;
-                        current_theater = theater;
+                        showtime_index		= 0;
+                        current_theater		= theater;
                     }
-                    auto iDateTime = iter2->as_object().find(U("dateTime"));
-                    if (iDateTime == iter2->as_object().end()) {
-                        throw web::json::json_exception(U("dateTime key not found"));
-                    }
-                    temp[i][U("theatre")][theater_index][U("datetime")][showtime_index++] = iDateTime->second; // Update the showtime for same theater
+                    objectIterator	= iter2->as_object().find(U("dateTime"	));	if (objectIterator == iter2->as_object().end()) { throw web::json::json_exception(U("dateTime key not found")); } temp[i][U("theatre")][theater_index][U("datetime")][showtime_index++] = objectIterator->second; // Update the showtime for same theater
                 }
             }
             movie_result_node[movies_json_key] = std::move(temp);
@@ -245,18 +226,18 @@ pplx::task<web::json::value> CasaLens::get_movies(const utility::string_t& posta
             std::wstring year = date.substr(0, date.find(U("-"))); 
 
             for(auto& iter : movie_result[movies_json_key].as_object()) {
-                auto title = iter.second[U("title")].as_string();
-                auto searchStr = title + U(" ") + year + U(" new movie poster");
+                auto title			= iter.second[U("title")].as_string();
+                auto searchStr		= title + U(" ") + year + U(" new movie poster");
                 poster_tasks.push_back(get_pictures(searchStr, U("1")));
-                movie_list.push_back(title);
+                movie_list	.push_back(title);
             }
 
             pplx::when_all(poster_tasks.begin(), poster_tasks.end()).wait();
-            web::json::value resp_data = web::json::value::object();
+            web::json::value		resp_data			= web::json::value::object();
 
             for(unsigned int i = 0; i < poster_tasks.size(); i++) {
-                auto jval = poster_tasks[i].get();
-                auto poster_url = jval.as_array().begin()[0];
+                auto					jval				= poster_tasks[i].get();
+                auto					poster_url			= jval.as_array().begin()[0];
                 movie_result[movies_json_key][i][U("poster")] = poster_url;
             }
         }
@@ -264,8 +245,7 @@ pplx::task<web::json::value> CasaLens::get_movies(const utility::string_t& posta
         }				// the movie data to the client.
 
         return pplx::task_from_result(movie_result);
-    }).then([=](pplx::task<web::json::value> t)
-    {
+    }).then([=](pplx::task<web::json::value> t) {
         return handle_exception(t, movies_json_key);
     });
 }
@@ -325,11 +305,9 @@ void CasaLens::get_data(web::http::http_request message, const std::wstring& inp
         maps_builder.append_query(casalens_creds::bmaps_keyname, casalens_creds::bmaps_key);
         auto s = maps_builder.to_string();
         web::http::client::http_client bing_client(bing_maps_url);
-        bing_client.request(web::http::methods::GET, s).then([=](web::http::http_response resp) 
-        {
+        bing_client.request(web::http::methods::GET, s).then([=](web::http::http_response resp) {
             return resp.extract_json();
-        }).then([=](web::json::value& maps_result) mutable
-        {
+        }).then([=](web::json::value& maps_result) mutable {
             auto coordinates = maps_result[U("resourceSets")][0][U("resources")][0][U("point")];
             auto lattitude = coordinates[U("coordinates")][0].serialize();
             auto longitude = coordinates[U("coordinates")][1].serialize();
@@ -337,15 +315,12 @@ void CasaLens::get_data(web::http::http_request message, const std::wstring& inp
             ub.append_path(lattitude + U(",") + longitude).append_query(casalens_creds::bmaps_keyname, casalens_creds::bmaps_key);
             auto s2 = ub.to_string();
             return bing_client.request(web::http::methods::GET, s2);
-        }).then([](web::http::http_response resp)
-        {
+        }).then([](web::http::http_response resp) {
             return resp.extract_json();
-        }).then([=](web::json::value& maps_result)
-        {
+        }).then([=](web::json::value& maps_result) {
             auto postal_code = maps_result[U("resourceSets")][0][U("resources")][0][U("address")][U("postalCode")].as_string();
             fetch_data(message, postal_code, input_text);            
-        }).then([=](pplx::task<void> t)
-        {
+        }).then([=](pplx::task<void> t) {
             try {
                 t.get();
             }
@@ -361,15 +336,12 @@ void CasaLens::get_data(web::http::http_request message, const std::wstring& inp
         ub.append_query(U("address"), input_text);
         ub.append_query(U("sensor"), U("false"));
 
-        client.request(web::http::methods::GET, ub.to_string()).then([](web::http::http_response resp)
-        {
+        client.request(web::http::methods::GET, ub.to_string()).then([](web::http::http_response resp) {
             return resp.extract_json();
-        }).then([=](web::json::value jval)
-        {
+        }).then([=](web::json::value jval) {
             auto locationstr =  jval[U("results")][0][U("address_components")][1][U("long_name")].as_string();
             fetch_data(message, input_text, locationstr);
-        }).then([=](pplx::task<void> t)
-        {
+        }).then([=](pplx::task<void> t) {
             try {
                 t.get();
             }
