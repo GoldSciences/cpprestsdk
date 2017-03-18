@@ -32,13 +32,16 @@
     <ClCompile Include="..\BlackJack_Server.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\Dealer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="..\stdafx.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\Table.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Dealer.h">
+      <Filter>Header Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Dealer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

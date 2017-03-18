@@ -60,13 +60,13 @@
   <ImportGroup Label="ExtensionSettings" />
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
-      <PrecompiledHeader>Use</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>$(CasablancaIncludeDir);$(CasablancaIncludeDir)</AdditionalIncludeDirectories>
       <ExceptionHandling>Async</ExceptionHandling>
       <AdditionalOptions>-Zm140 %(AdditionalOptions)</AdditionalOptions>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -77,13 +77,13 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
-      <PrecompiledHeader>Use</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>$(CasablancaIncludeDir);$(CasablancaIncludeDir)</AdditionalIncludeDirectories>
       <ExceptionHandling>Async</ExceptionHandling>
       <AdditionalOptions>-Zm140 %(AdditionalOptions)</AdditionalOptions>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -93,7 +93,6 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
-      <PrecompiledHeader>Use</PrecompiledHeader>
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -101,6 +100,7 @@
       <AdditionalIncludeDirectories>$(CasablancaIncludeDir);$(CasablancaIncludeDir)</AdditionalIncludeDirectories>
       <ExceptionHandling>Async</ExceptionHandling>
       <AdditionalOptions>-Zm140 %(AdditionalOptions)</AdditionalOptions>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -112,7 +112,6 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
-      <PrecompiledHeader>Use</PrecompiledHeader>
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -120,6 +119,7 @@
       <AdditionalIncludeDirectories>$(CasablancaIncludeDir);$(CasablancaIncludeDir)</AdditionalIncludeDirectories>
       <ExceptionHandling>Async</ExceptionHandling>
       <AdditionalOptions>-Zm140 %(AdditionalOptions)</AdditionalOptions>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -137,6 +137,7 @@
   <ItemGroup>
     <ClCompile Include="..\BlackJack_Server.cpp" />
     <ClCompile Include="..\Dealer.cpp" />
+    <ClCompile Include="..\Dealer.h" />
     <ClCompile Include="..\stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
