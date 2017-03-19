@@ -126,38 +126,26 @@ void CALLBACK IoCompletionCallback(
 void _get_create_flags(std::ios_base::openmode mode, int prot, DWORD &dwDesiredAccess, DWORD &dwCreationDisposition, DWORD &dwShareMode)
 {
     dwDesiredAccess = 0x0;
-    if ( mode & std::ios_base::in ) dwDesiredAccess |= GENERIC_READ;
-    if ( mode & std::ios_base::out ) dwDesiredAccess |= GENERIC_WRITE;
+    if ( mode & std::ios_base::in	) dwDesiredAccess |= GENERIC_READ;
+    if ( mode & std::ios_base::out	) dwDesiredAccess |= GENERIC_WRITE;
 
-    if ( mode & std::ios_base::in )
-    {
+    if ( mode & std::ios_base::in ) {
         if ( mode & std::ios_base::out )
             dwCreationDisposition = OPEN_ALWAYS;
         else
             dwCreationDisposition = OPEN_EXISTING;
     }
     else if ( mode & std::ios_base::trunc )
-    {
         dwCreationDisposition = CREATE_ALWAYS;
-    }
     else
-    {
         dwCreationDisposition = OPEN_ALWAYS;
-    }
 
     // C++ specifies what permissions to deny, Windows which permissions to give,
     dwShareMode = 0x3;
-    switch (prot)
-    {
-    case _SH_DENYRW:
-        dwShareMode = 0x0;
-        break;
-    case _SH_DENYWR:
-        dwShareMode = 0x1;
-        break;
-    case _SH_DENYRD:
-        dwShareMode = 0x2;
-        break;
+    switch (prot) {
+    case _SH_DENYRW	:	dwShareMode = 0x0;	break;
+    case _SH_DENYWR	:	dwShareMode = 0x1;	break;
+    case _SH_DENYRD	:	dwShareMode = 0x2;	break;
     }
 }
 
@@ -169,29 +157,25 @@ void _get_create_flags(std::ios_base::openmode mode, int prot, DWORD &dwDesiredA
 /// <param name="mode">The C++ file open mode</param>
 void _finish_create(HANDLE fh, _In_ _filestream_callback *callback, std::ios_base::openmode mode, int prot)
 {
-    if (fh == INVALID_HANDLE_VALUE)
-    {
+    if (fh == INVALID_HANDLE_VALUE) {
         callback->on_error(std::make_exception_ptr(utility::details::create_system_error(GetLastError())));
         return;
     }
 
     void *io_ctxt = nullptr;
 #if _WIN32_WINNT < _WIN32_WINNT_VISTA
-    if (!BindIoCompletionCallback(fh, IoCompletionCallback, 0))
-    {
+    if (!BindIoCompletionCallback(fh, IoCompletionCallback, 0)) {
         callback->on_error(std::make_exception_ptr(utility::details::create_system_error(GetLastError())));
         return;
     }
 #else
     io_ctxt = CreateThreadpoolIo(fh, IoCompletionCallback, nullptr, nullptr);
-    if (io_ctxt == nullptr)
-    {
+    if (io_ctxt == nullptr) {
         callback->on_error(std::make_exception_ptr(utility::details::create_system_error(GetLastError())));
         return;
     }
 
-    if (!SetFileCompletionNotificationModes(fh, FILE_SKIP_COMPLETION_PORT_ON_SUCCESS))
-    {
+    if (!SetFileCompletionNotificationModes(fh, FILE_SKIP_COMPLETION_PORT_ON_SUCCESS)) {
         CloseThreadpoolIo(static_cast<PTP_IO>(io_ctxt));
         callback->on_error(std::make_exception_ptr(utility::details::create_system_error(GetLastError())));
         return;
@@ -207,9 +191,7 @@ void _finish_create(HANDLE fh, _In_ _filestream_callback *callback, std::ios_bas
     auto info = new _file_info_impl(fh, io_ctxt, mode, buffer ? 512 : 0);
 
     if (mode & std::ios_base::app || mode & std::ios_base::ate)
-    {
         info->m_wrpos = static_cast<size_t>(-1); // Start at the end of the file.
-    }
 
     callback->on_opened(info);
 }
@@ -267,25 +249,19 @@ bool __cdecl _close_fsb_nolock(_In_ _file_info **info, _In_ streams::details::_f
     // Since closing a file may involve waiting for outstanding writes which can take some time
     // if the file is on a network share, the close action is done in a separate task, as
     // CloseHandle doesn't have I/O completion events.
-    pplx::create_task([=]()
-    {
+    pplx::create_task([=]() {
         bool result = false;
-
         {
             pplx::extensibility::scoped_recursive_lock_t lck(fInfo->m_lock);
-
-            if (fInfo->m_handle != INVALID_HANDLE_VALUE)
-            {
+            if (fInfo->m_handle != INVALID_HANDLE_VALUE) {
 #if _WIN32_WINNT >= _WIN32_WINNT_VISTA
                 CloseThreadpoolIo(static_cast<PTP_IO>(fInfo->m_io_context));
 #endif // _WIN32_WINNT >= _WIN32_WINNT_VISTA
 
                 result = CloseHandle(fInfo->m_handle) != FALSE;
             }
-
             delete fInfo->m_buffer;
         }
-
         delete fInfo;
 
         if (result)
@@ -315,18 +291,13 @@ bool __cdecl _close_fsb(_In_ _file_info **info, _In_ streams::details::_filestre
 /// The signature is the standard IO completion signature, documented on MSDN
 /// </remarks>
 template<typename InfoType>
-VOID CALLBACK _WriteFileCompletionRoutine(DWORD dwErrorCode, DWORD dwNumberOfBytesTransfered, LPOVERLAPPED lpOverlapped)
-{
+VOID CALLBACK _WriteFileCompletionRoutine(DWORD dwErrorCode, DWORD dwNumberOfBytesTransfered, LPOVERLAPPED lpOverlapped) {
     EXTENDED_OVERLAPPED* pOverlapped = static_cast<EXTENDED_OVERLAPPED *>(lpOverlapped);
 
     if (dwErrorCode != ERROR_SUCCESS && dwErrorCode != ERROR_HANDLE_EOF)
-    {
         pOverlapped->callback->on_error(std::make_exception_ptr(utility::details::create_system_error(dwErrorCode)));
-    }
     else
-    {
         pOverlapped->callback->on_completed(static_cast<size_t>(dwNumberOfBytesTransfered));
-    }
 }
 
 /// <summary>
@@ -341,13 +312,9 @@ VOID CALLBACK _ReadFileCompletionRoutine(DWORD dwErrorCode, DWORD dwNumberOfByte
     EXTENDED_OVERLAPPED* pOverlapped = static_cast<EXTENDED_OVERLAPPED *>(lpOverlapped);
 
     if (dwErrorCode != ERROR_SUCCESS && dwErrorCode != ERROR_HANDLE_EOF)
-    {
         pOverlapped->callback->on_error(std::make_exception_ptr(utility::details::create_system_error(dwErrorCode)));
-    }
     else
-    {
         pOverlapped->callback->on_completed(static_cast<size_t>(dwNumberOfBytesTransfered));
-    }
 }
 
 /// <summary>
@@ -362,13 +329,11 @@ size_t _write_file_async(_In_ streams::details::_file_info_impl *fInfo, _In_ str
 {
     auto pOverlapped = std::unique_ptr<EXTENDED_OVERLAPPED>(new EXTENDED_OVERLAPPED(_WriteFileCompletionRoutine<streams::details::_file_info_impl>, callback));
 
-    if (position == static_cast<size_t>(-1))
-    {
+    if (position == static_cast<size_t>(-1)) {
         pOverlapped->Offset = 0xFFFFFFFF;
         pOverlapped->OffsetHigh = 0xFFFFFFFF;
     }
-    else
-    {
+    else {
         pOverlapped->Offset = static_cast<DWORD>(position);
 #ifdef _WIN64
         pOverlapped->OffsetHigh = static_cast<DWORD>(position >> 32);
@@ -385,8 +350,7 @@ size_t _write_file_async(_In_ streams::details::_file_info_impl *fInfo, _In_ str
 
     // WriteFile will return false when a) the operation failed, or b) when the request is still
     // pending. The error code will tell us which is which.
-    if (wrResult == FALSE && error == ERROR_IO_PENDING)
-    {
+    if (wrResult == FALSE && error == ERROR_IO_PENDING) {
         // Overlapped is deleted in the threadpool callback.
         pOverlapped.release();
         return 0;
@@ -395,9 +359,7 @@ size_t _write_file_async(_In_ streams::details::_file_info_impl *fInfo, _In_ str
     CancelThreadpoolIo(static_cast<PTP_IO>(fInfo->m_io_context));
 
     size_t result = static_cast<size_t>(-1);
-
-    if ( wrResult == TRUE )
-    {
+    if ( wrResult == TRUE ) {
         // If WriteFile returned true, it must be because the operation completed immediately.
         // However, we didn't pass in an  address for the number of bytes written, so
         // we have to retrieve it using 'GetOverlappedResult,' which may, in turn, fail.
@@ -420,16 +382,14 @@ size_t _write_file_async(_In_ streams::details::_file_info_impl *fInfo, _In_ str
     // We directly return 0 and leave all the completion callbacks working on the workerthread.
     // We do not need to call GetOverlappedResult, the workerthread will call the "on_error()" if the WriteFaile falied.
     // "req" is deleted in "_WriteFileCompletionRoutine, "pOverlapped" is deleted in io_scheduler::FileIOCompletionRoutine.
-    if (wrResult == TRUE)
-    {
+    if (wrResult == TRUE) {
         pOverlapped.release();
         return 0;
     }
 
     // 2. If WriteFile returned false and GetLastError is ERROR_IO_PENDING, return 0,
     //    The xp threadpool will create a workerthread to run "_WriteFileCompletionRoutine" after the operation completed.
-    if (wrResult == FALSE && error == ERROR_IO_PENDING)
-    {
+    if (wrResult == FALSE && error == ERROR_IO_PENDING) {
         // Overlapped is deleted in the threadpool callback.
         pOverlapped.release();
         return 0;
@@ -470,8 +430,7 @@ size_t _read_file_async(_In_ streams::details::_file_info_impl *fInfo, _In_ stre
 
     // ReadFile will return false when a) the operation failed, or b) when the request is still
     // pending. The error code will tell us which is which.
-    if (wrResult == FALSE && error == ERROR_IO_PENDING)
-    {
+    if (wrResult == FALSE && error == ERROR_IO_PENDING) {
         // Overlapped is deleted in the threadpool callback.
         pOverlapped.release();
         return 0;
@@ -483,18 +442,12 @@ size_t _read_file_async(_In_ streams::details::_file_info_impl *fInfo, _In_ stre
     CancelThreadpoolIo(static_cast<PTP_IO>(fInfo->m_io_context));
 
     size_t result = static_cast<size_t>(-1);
-
-    if (wrResult == TRUE)
-    {
-        // If ReadFile returned true, it must be because the operation completed immediately.
-        // However, we didn't pass in an address for the number of bytes written, so
-        // we have to retrieve it using 'GetOverlappedResult,' which may, in turn, fail.
-        DWORD read = 0;
-        result = GetOverlappedResult(fInfo->m_handle, pOverlapped.get(), &read, FALSE) ? static_cast<size_t>(read) : static_cast<size_t>(-1);
+    if (wrResult == TRUE) {																														// If ReadFile returned true, it must be because the operation completed immediately.
+        DWORD read = 0;																															// However, we didn't pass in an address for the number of bytes written, so
+        result = GetOverlappedResult(fInfo->m_handle, pOverlapped.get(), &read, FALSE) ? static_cast<size_t>(read) : static_cast<size_t>(-1);	// we have to retrieve it using 'GetOverlappedResult,' which may, in turn, fail.
     }
 
-    if (wrResult == FALSE && error == ERROR_HANDLE_EOF)
-    {
+    if (wrResult == FALSE && error == ERROR_HANDLE_EOF) {
         callback->on_completed(0);
         return 0;
     }
@@ -514,33 +467,20 @@ size_t _read_file_async(_In_ streams::details::_file_info_impl *fInfo, _In_ stre
     // We can directly return 0 and leave all the completion callbacks working on the workerthread.
     // We do not need to call GetOverlappedResult, the workerthread will call the "on_error()" if the ReadFile falied.
     // "req" is deleted in "_ReadFileCompletionRoutine, "pOverlapped" is deleted in io_scheduler::FileIOCompletionRoutine.
-    if (wrResult == TRUE)
-    {
+    if (wrResult == TRUE) {
         pOverlapped.release();
         return 0;
     }
-
-    // 2. If ReadFile returned false and GetLastError is ERROR_IO_PENDING, return 0.
-    //    The xp threadpool will create a workerthread to run "_WriteFileCompletionRoutine" after the operation completed.
-    if (wrResult == FALSE && error == ERROR_IO_PENDING)
-    {
-        // Overlapped is deleted in the threadpool callback.
-        pOverlapped.release();
+    if (wrResult == FALSE && error == ERROR_IO_PENDING)     {									// 2. If ReadFile returned false and GetLastError is ERROR_IO_PENDING, return 0.
+        pOverlapped.release();	// Overlapped is deleted in the threadpool callback.			//    The xp threadpool will create a workerthread to run "_WriteFileCompletionRoutine" after the operation completed.
         return 0;
     }
-
-    // 3. If ReadFile returned false and GetLastError is ERROR_HANDLE_EOF, we must call "callback->on_completed(0)".
-    //    The threadpool will not start the workerthread.
-    if (wrResult == FALSE && error == ERROR_HANDLE_EOF)
-    {
-        callback->on_completed(0);
+    if (wrResult == FALSE && error == ERROR_HANDLE_EOF)     {									// 3. If ReadFile returned false and GetLastError is ERROR_HANDLE_EOF, we must call "callback->on_completed(0)".
+        callback->on_completed(0);																//    The threadpool will not start the workerthread.
         return 0;
     }
-
-    // 4. If ReadFile returned false and GetLastError is not a valid error code, we must call "callback->on_error()".
-    //    The threadpool will not start the workerthread.
-    callback->on_error(std::make_exception_ptr(utility::details::create_system_error(error)));
-
+    callback->on_error(std::make_exception_ptr(utility::details::create_system_error(error)));	// 4. If ReadFile returned false and GetLastError is not a valid error code, we must call "callback->on_error()".
+																								//    The threadpool will not start the workerthread.
     return static_cast<size_t>(-1);
 #endif // _WIN32_WINNT >= _WIN32_WINNT_VISTA
 }
@@ -551,8 +491,7 @@ class _filestream_callback_fill_buffer : public _filestream_callback
 public:
     _filestream_callback_fill_buffer(_In_ _file_info *info, const Func &func) : m_func(func), m_info(info) { }
 
-    virtual void on_completed(size_t result)
-    {
+    virtual void on_completed(size_t result) {
         m_func(result);
         delete this;
     }
@@ -572,8 +511,7 @@ size_t _fill_buffer_fsb(_In_ _file_info_impl *fInfo, _In_ _filestream_callback *
 {
     msl::safeint3::SafeInt<size_t> safeCount = count;
 
-    if ( fInfo->m_buffer == nullptr || safeCount > fInfo->m_bufsize )
-    {
+    if ( fInfo->m_buffer == nullptr || safeCount > fInfo->m_bufsize ) {
         if ( fInfo->m_buffer != nullptr )
             delete fInfo->m_buffer;
 
@@ -582,8 +520,7 @@ size_t _fill_buffer_fsb(_In_ _file_info_impl *fInfo, _In_ _filestream_callback *
         fInfo->m_bufoff = fInfo->m_rdpos;
 
         auto cb = create_callback(fInfo,
-            [=] (size_t result)
-            {
+            [=] (size_t result) {
                 pplx::extensibility::scoped_recursive_lock_t lck(fInfo->m_lock);
                 fInfo->m_buffill = result/char_size;
                 callback->on_completed(result);
@@ -591,26 +528,15 @@ size_t _fill_buffer_fsb(_In_ _file_info_impl *fInfo, _In_ _filestream_callback *
 
         auto read =  _read_file_async(fInfo, cb, reinterpret_cast<uint8_t *>(fInfo->m_buffer), fInfo->m_bufsize*char_size, fInfo->m_rdpos*char_size);
 
-        switch (read)
-        {
-        case 0:
-            // pending
-            return read;
-
-        case (-1):
-            // error
-            delete cb;
-            return read;
-
-        default:
-            // operation is complete. The pattern of returning synchronously
-            // has the expectation that we duplicate the callback code here...
-            // Do the expedient thing for now.
-            cb->on_completed(read);
-
-            // return pending
-            return 0;
-        };
+		switch (read) {
+        case 0		:					return read;	// pending
+        case (-1)	:	delete cb;		return read;	// error
+        default		:
+            cb->on_completed(read);	// operation is complete. The pattern of returning synchronously
+									// has the expectation that we duplicate the callback code here...
+									// Do the expedient thing for now.
+            return 0;	// return pending
+		}
     }
 
     // First, we need to understand how far into the buffer we have already read
@@ -641,37 +567,21 @@ size_t _fill_buffer_fsb(_In_ _file_info_impl *fInfo, _In_ _filestream_callback *
 
         auto read = _read_file_async(fInfo, cb, reinterpret_cast<uint8_t *>(fInfo->m_buffer), fInfo->m_bufsize*char_size, fInfo->m_rdpos*char_size);
 
-        switch (read)
-        {
-        case 0:
-            // pending
-            return read;
-
-        case (-1):
-            // error
-            delete cb;
-            return read;
-
-        default:
-            // operation is complete. The pattern of returning synchronously
-            // has the expectation that we duplicate the callback code here...
-            // Do the expedient thing for now.
-            cb->on_completed(read);
-
-            // return pending
-            return 0;
-        };
+        switch (read) {
+        case 0		:				return read;	// - pending
+        case (-1)	:	delete cb;	return read;	// - error
+        default		:								// - operation is complete. The pattern of returning synchronously
+            cb->on_completed(read);					// has the expectation that we duplicate the callback code here...
+													// Do the expedient thing for now.
+            return 0;	// return pending
+        }
     }
-    else if ( bufrem < count )
-    {
+    else if ( bufrem < count ) {
         fInfo->m_bufsize = safeCount.Max(fInfo->m_buffer_size);
 
-        // Then, we allocate a new buffer.
-
-        char *newbuf = new char[fInfo->m_bufsize*char_size];
+        char *newbuf = new char[fInfo->m_bufsize*char_size];	// Then, we allocate a new buffer.
 
         // Then, we copy the unread part to the new buffer and delete the old buffer
-
         if ( bufrem > 0 )
             memcpy(newbuf, fInfo->m_buffer+bufpos*char_size, bufrem*char_size);
 
@@ -691,45 +601,30 @@ size_t _fill_buffer_fsb(_In_ _file_info_impl *fInfo, _In_ _filestream_callback *
 
         auto read = _read_file_async(fInfo, cb, reinterpret_cast<uint8_t *>(fInfo->m_buffer) + bufrem*char_size, (fInfo->m_bufsize - bufrem)*char_size, (fInfo->m_rdpos + bufrem)*char_size);
 
-        switch (read)
-        {
-        case 0:
-            // pending
-            return read;
-
-        case (-1):
-            // error
-            delete cb;
-            return read;
-
-        default:
-            // operation is complete. The pattern of returning synchronously
-            // has the expectation that we duplicate the callback code here...
-            // Do the expedient thing for now.
-            cb->on_completed(read);
-
-            // return pending
-            return 0;
-        };
+        switch (read) {
+        case 0		:					return read;	// pending
+        case (-1)	:	delete cb;		return read;	// error
+        default		:
+            cb->on_completed(read);	// operation is complete. The pattern of returning synchronously
+									// has the expectation that we duplicate the callback code here...
+									// Do the expedient thing for now.
+            return 0;	// return pending
+        }
     }
-    else
-    {
-        // If we are here, it means that we didn't need to read, we already have enough data in the buffer
-        return count*char_size;
-    }
+    else 
+        return count*char_size;	// If we are here, it means that we didn't need to read, we already have enough data in the buffer
 }
 
 
-/// <summary>
-/// Read data from a file stream into a buffer
-/// </summary>
-/// <param name="info">The file info record of the file</param>
-/// <param name="callback">A pointer to the callback interface to invoke when the write request is completed.</param>
-/// <param name="ptr">A pointer to a buffer where the data should be placed</param>
-/// <param name="count">The size (in characters) of the buffer</param>
-/// <returns>0 if the read request is still outstanding, -1 if the request failed, otherwise the size of the data read into the buffer</returns>
-size_t __cdecl _getn_fsb(_In_ streams::details::_file_info *info, _In_ streams::details::_filestream_callback *callback, _Out_writes_ (count) void *ptr, _In_ size_t count, size_t char_size)
-{
+
+// Read data from a file stream into a buffer
+// 
+// info			The file info record of the file</param>
+// callback		A pointer to the callback interface to invoke when the write request is completed.</param>
+// ptr			A pointer to a buffer where the data should be placed</param>
+// count		The size (in characters) of the buffer</param>
+// Returns 0 if the read request is still outstanding, -1 if the request failed, otherwise the size of the data read into the buffer
+size_t __cdecl _getn_fsb(_In_ streams::details::_file_info *info, _In_ streams::details::_filestream_callback *callback, _Out_writes_ (count) void *ptr, _In_ size_t count, size_t char_size) {
     _ASSERTE(callback != nullptr);
     _ASSERTE(info != nullptr);
 
@@ -737,8 +632,7 @@ size_t __cdecl _getn_fsb(_In_ streams::details::_file_info *info, _In_ streams::
 
     pplx::extensibility::scoped_recursive_lock_t lck(info->m_lock);
 
-    if ( fInfo->m_handle == INVALID_HANDLE_VALUE )
-    {
+    if ( fInfo->m_handle == INVALID_HANDLE_VALUE )    {
         callback->on_error(std::make_exception_ptr(utility::details::create_system_error(ERROR_INVALID_HANDLE)));
         return (size_t)-1;
     }
@@ -746,8 +640,7 @@ size_t __cdecl _getn_fsb(_In_ streams::details::_file_info *info, _In_ streams::
     if ( fInfo->m_buffer_size > 0 )
     {
         auto cb = create_callback(fInfo,
-            [=] (size_t read)
-            {
+            [=] (size_t read)            {
                 auto sz = count*char_size;
                 auto copy = (read < sz) ? read : sz;
                 auto bufoff = fInfo->m_rdpos - fInfo->m_bufoff;
@@ -758,8 +651,7 @@ size_t __cdecl _getn_fsb(_In_ streams::details::_file_info *info, _In_ streams::
 
         size_t read = _fill_buffer_fsb(fInfo, cb, count, char_size);
 
-        if ( read > 0 )
-        {
+        if ( read > 0 )        {
             auto sz = count*char_size;
             auto copy = (read < sz) ? read : sz;
             auto bufoff = fInfo->m_rdpos - fInfo->m_bufoff;
@@ -792,16 +684,14 @@ size_t __cdecl _putn_fsb(_In_ streams::details::_file_info *info, _In_ streams::
 
     pplx::extensibility::scoped_recursive_lock_t lck(fInfo->m_lock);
 
-    if ( fInfo->m_handle == INVALID_HANDLE_VALUE )
-    {
-        callback->on_error(std::make_exception_ptr(utility::details::create_system_error(ERROR_INVALID_HANDLE)));
+    if ( fInfo->m_handle == INVALID_HANDLE_VALUE ) {        
+		callback->on_error(std::make_exception_ptr(utility::details::create_system_error(ERROR_INVALID_HANDLE)));
         return static_cast<size_t>(-1);
     }
 
     // To preserve the async write order, we have to move the write head before read.
     auto lastPos = fInfo->m_wrpos;
-    if (fInfo->m_wrpos != static_cast<size_t>(-1))
-    {
+    if (fInfo->m_wrpos != static_cast<size_t>(-1)) {
         fInfo->m_wrpos += count;
         lastPos *= char_size;
     }
@@ -840,8 +730,7 @@ size_t __cdecl _seekrdpos_fsb(_In_ streams::details::_file_info *info, size_t po
 
     if (fInfo->m_handle == INVALID_HANDLE_VALUE) return static_cast<size_t>(-1);
 
-    if ( pos < fInfo->m_bufoff || pos > (fInfo->m_bufoff+fInfo->m_buffill) )
-    {
+    if ( pos < fInfo->m_bufoff || pos > (fInfo->m_bufoff+fInfo->m_buffill) )    {
         delete fInfo->m_buffer;
         fInfo->m_buffer = nullptr;
         fInfo->m_bufoff = fInfo->m_buffill = fInfo->m_bufsize = 0;
@@ -866,10 +755,10 @@ size_t __cdecl _seekrdtoend_fsb(_In_ streams::details::_file_info *info, int64_t
 
     pplx::extensibility::scoped_recursive_lock_t lck(info->m_lock);
 
-    if (fInfo->m_handle == INVALID_HANDLE_VALUE) return static_cast<size_t>(-1);
+    if (fInfo->m_handle == INVALID_HANDLE_VALUE) 
+		return static_cast<size_t>(-1);
 
-    if ( fInfo->m_buffer != nullptr )
-    {
+    if ( fInfo->m_buffer != nullptr )    {
         // Clear the internal buffer.
         delete fInfo->m_buffer;
         fInfo->m_buffer = nullptr;

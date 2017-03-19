@@ -52,8 +52,8 @@ pplx::task<web::json::value> CasaLens::get_events(const utility::string_t& posta
 				key	= U("url"			);	objectIterator = event.as_object().find(key);	if (objectIterator == event.as_object().end()) { throw web::json::json_exception(key.c_str()); }	event_result_node[events_json_key][i][U("url"			)] = objectIterator->second;
 				key	= U("start_time"	);	objectIterator = event.as_object().find(key);	if (objectIterator == event.as_object().end()) { throw web::json::json_exception(key.c_str()); }	event_result_node[events_json_key][i][U("start_time"	)] = objectIterator->second;
 				key	= U("description"	);	objectIterator = event.as_object().find(key);	if (objectIterator == event.as_object().end()) { throw web::json::json_exception(key.c_str()); }	event_result_node[events_json_key][i][U("description"	)] = objectIterator->second;
-				key	= U("venue_address"	);	objectIterator = event.as_object().find(key);	if (objectIterator == event.as_object().end()) { throw web::json::json_exception(key.c_str()); }	event_result_node[events_json_key][i][U("venue_address"	)] = objectIterator->second;
 				key	= U("city_name"		);	objectIterator = event.as_object().find(key);	if (objectIterator == event.as_object().end()) { throw web::json::json_exception(key.c_str()); }	event_result_node[events_json_key][i][U("city_name"		)] = objectIterator->second;
+				key	= U("venue_address"	);	objectIterator = event.as_object().find(key);	if (objectIterator == event.as_object().end()) { throw web::json::json_exception(key.c_str()); }	event_result_node[events_json_key][i][U("venue_address"	)] = web::json::value::string(objectIterator->second.as_string() + U(" ") + event_result_node[events_json_key][i][U("city_name")].as_string());
                 if (i++ > num_events)
                     break;
             }

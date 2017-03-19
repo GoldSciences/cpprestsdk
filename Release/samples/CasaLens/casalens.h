@@ -59,9 +59,8 @@ class CasaLens {
 																							// Element2: Mime type/content type of the file
 
 
-    static inline	void												handle_error						(pplx::task<void>& t)										{ try { t.get(); } catch(...) { } } // Ignore the error, Log it if a logger is available 
+    static inline	void												handle_error						(pplx::task<void>& t)										{ try { t.get(); } catch(...) {} } // Ignore the error, Log it if a logger is available 
 					pplx::task<web::json::value>						handle_exception					(pplx::task<web::json::value>& t, const utility::string_t& field_name);
-
 	// methods to fetch data from the services
 					pplx::task<web::json::value>						get_events							(const utility::string_t& post_code);
 					pplx::task<web::json::value>						get_weather							(const utility::string_t& post_code);
