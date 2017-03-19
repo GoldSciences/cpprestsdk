@@ -191,16 +191,13 @@ void									DealerTable::Insure							(web::http::http_request message)			{
             message.reply(web::http::status_codes::Forbidden, U("Already insured")); 
             return; 
         }
-
         if ( dealer.cards.size() < 1 || dealer.revealBoth || dealer.cards[0].value != CV_Ace ) {
             message.reply(web::http::status_codes::Forbidden, U("Dealer is not showing an Ace")); 
             return; 
         }
-
         Players[playerIdx].Balance							-= amount;
         Players[playerIdx].Hand.insurance					+= amount;
     }
-
     message.reply(web::http::status_codes::OK, BJPutResponse(ST_YourTurn, this->AsJSON()).AsJSON());
 }
 

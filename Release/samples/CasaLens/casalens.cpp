@@ -54,11 +54,9 @@ void CasaLens::handle_get(web::http::http_request message) {
 
     auto						file_name					= std::get<0>(content_data->second);
     auto						content_type				= std::get<1>(content_data->second);
-    concurrency::streams::fstream::open_istream(file_name, std::ios::in).then([=](concurrency::streams::istream is)
-    {
+    concurrency::streams::fstream::open_istream(file_name, std::ios::in).then([=](concurrency::streams::istream is) {
         message.reply(web::http::status_codes::OK, is, content_type).then([](pplx::task<void> t) { handle_error(t); });
-    }).then([=](pplx::task<void>& t)
-    {
+    }).then([=](pplx::task<void>& t) {
         try {
             t.get();
         }

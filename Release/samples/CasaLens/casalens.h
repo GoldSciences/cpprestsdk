@@ -74,11 +74,11 @@ class CasaLens {
 					void												fetch_data							(web::http::http_request message, const std::wstring& postal_code, const std::wstring& location);
 					void												get_data							(web::http::http_request message, const std::wstring& location);
 public:
-																		CasaLens() {}
-																		CasaLens(utility::string_t url);
+																		CasaLens							()															{}
+																		CasaLens							(utility::string_t url);
 
-					pplx::task<void>									open		()																					{ return m_listener.open ().then([](pplx::task<void> t) { handle_error(t); }); }
-					pplx::task<void>									close		()																					{ return m_listener.close().then([](pplx::task<void> t) { handle_error(t); }); }
-					void												handle_get	(web::http::http_request message);
-					void												handle_post	(web::http::http_request message);
+					pplx::task<void>									open								()															{ return m_listener.open ().then([](pplx::task<void> t) { handle_error(t); }); }
+					pplx::task<void>									close								()															{ return m_listener.close().then([](pplx::task<void> t) { handle_error(t); }); }
+					void												handle_get							(web::http::http_request message);
+					void												handle_post							(web::http::http_request message);
 };

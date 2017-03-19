@@ -34,11 +34,9 @@ pplx::task<web::json::value> CasaLens::get_events(const utility::string_t& posta
     auto event_url = ub.to_string();
 
 	web::http::client::http_client ev_client(event_url);
-    return ev_client.request(web::http::methods::GET, event_url).then([](web::http::http_response resp)
-    {
+    return ev_client.request(web::http::methods::GET, event_url).then([](web::http::http_response resp) {
         return resp.extract_json();
-    }).then([](web::json::value event_json)
-    {
+    }).then([](web::json::value event_json) {
         web::json::value event_result_node = web::json::value::object();
 
         if (!event_json[U("events")][U("event")].is_null()) {
@@ -60,15 +58,13 @@ pplx::task<web::json::value> CasaLens::get_events(const utility::string_t& posta
                     break;
             }
         }
-        else
-        { // Event data is null, we hit an error.
+        else { // Event data is null, we hit an error.
             event_result_node[events_json_key]					= web::json::value::object();
             event_result_node[events_json_key][error_json_key]	= event_json[U("events")][U("description")];
         }
 
         return event_result_node;
-    }).then([=](pplx::task<web::json::value> t)
-    {
+    }).then([=](pplx::task<web::json::value> t) {
         return handle_exception(t, events_json_key);
     });
 }
@@ -84,11 +80,9 @@ pplx::task<web::json::value> CasaLens::get_weather(const utility::string_t& post
     ub_weather.append_query(U("units"), U("imperial"));
 
     web::http::client::http_client weather_client(ub_weather.to_string());
-    return weather_client.request(web::http::methods::GET).then([](web::http::http_response resp)
-    {
+    return weather_client.request(web::http::methods::GET).then([](web::http::http_response resp) {
         return resp.extract_string(); 
-    }).then([](utility::string_t weather_str)
-    {
+    }).then([](utility::string_t weather_str) {
         web::json::value weather_json = web::json::value::parse(weather_str);
         auto& j = weather_json[U("list")][0][U("main")];
 
@@ -102,8 +96,7 @@ pplx::task<web::json::value> CasaLens::get_weather(const utility::string_t& post
         w[U("image")] = web::json::value::string(U("http://openweathermap.org/img/w/") + weather_json[U("list")][0][U("weather")][0][U("icon")].as_string() + U(".png"));
         w[U("description")] = weather_json[U("list")][0][U("weather")][0][U("description")];
         return weather_result_node;
-    }).then([=](pplx::task<web::json::value> t)
-    {
+    }).then([=](pplx::task<web::json::value> t) {
         return handle_exception(t, weather_json_key);
     });
 }
@@ -123,11 +116,9 @@ pplx::task<web::json::value> CasaLens::get_pictures(const utility::string_t& loc
     ub_bing.append_query(U("ImageFilters"), U("'Size:Medium'"));
 
     web::http::client::http_client bing_client(ub_bing.to_string(), config);
-    return bing_client.request(web::http::methods::GET).then([](web::http::http_response resp)
-    {
+    return bing_client.request(web::http::methods::GET).then([](web::http::http_response resp) {
         return resp.extract_json();
-    }).then([](web::json::value image_json)
-    {
+    }).then([](web::json::value image_json) {
         web::json::value image_result_node = web::json::value::object();
         image_result_node[images_json_key] = web::json::value::array();
 
@@ -143,8 +134,7 @@ pplx::task<web::json::value> CasaLens::get_pictures(const utility::string_t& loc
                 break;
         }
         return image_result_node;
-    }).then([=](pplx::task<web::json::value> t)
-    {
+    }).then([=](pplx::task<web::json::value> t) {
         return handle_exception(t, images_json_key);
     });
 }
@@ -176,11 +166,9 @@ pplx::task<web::json::value> CasaLens::get_movies(const utility::string_t& posta
     ub_movie.append_query(U("imageSize"), U("Sm"));
 
     web::http::client::http_client tms_client(ub_movie.to_string());
-    return tms_client.request(web::http::methods::GET).then([](web::http::http_response resp)
-    {
+    return tms_client.request(web::http::methods::GET).then([](web::http::http_response resp) {
         return resp.extract_json();
-    }).then([](web::json::value movie_json)
-    {
+    }).then([](web::json::value movie_json) {
         // From the data obtained from tmsapi, construct movie JSON value to be sent to the client
         // We will collect data for 5 movies, and 5 showtime info per movie.
         web::json::value movie_result_node = web::json::value::object();
@@ -216,8 +204,7 @@ pplx::task<web::json::value> CasaLens::get_movies(const utility::string_t& posta
         }
 
         return pplx::task_from_result(movie_result_node);
-    }).then([=](web::json::value movie_result)
-    {
+    }).then([=](web::json::value movie_result) {
         try {
             // For every movie, obtain movie poster URL from bing
             std::vector<utility::string_t> movie_list;
