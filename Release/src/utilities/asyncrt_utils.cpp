@@ -902,10 +902,8 @@ datetime __cdecl datetime::from_string(const utility::string_t& dateString, date
 #endif
 }
 
-/// <summary>
 /// Converts a timespan/interval in seconds to xml duration string as specified by
 /// http://www.w3.org/TR/xmlschema-2/#duration
-/// </summary>
 utility::string_t __cdecl timespan::seconds_to_xml_duration(utility::seconds durationSecs)
 {
     auto numSecs = durationSecs.count();

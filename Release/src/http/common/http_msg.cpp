@@ -412,9 +412,7 @@ static const utility::string_t textual_types [] = {
 };
 #endif
 
-/// <summary>
 /// Determines whether or not the given content type is 'textual' according the feature specifications.
-/// </summary>
 static bool is_content_type_textual(const utility::string_t &content_type)
 {
 #if !defined(_WIN32) || _MSC_VER >= 1900
@@ -450,9 +448,7 @@ static const utility::string_t json_types [] = {
 };
 #endif
 
-/// <summary>
 /// Determines whether or not the given content type is JSON according the feature specifications.
-/// </summary>
 static bool is_content_type_json(const utility::string_t &content_type)
 {
 #if !defined(_WIN32) || _MSC_VER >= 1900
@@ -471,9 +467,7 @@ static bool is_content_type_json(const utility::string_t &content_type)
     return (is_content_type_one_of(std::begin(json_types), std::end(json_types), content_type));
 }
 
-/// <summary>
 /// Gets the default charset for given content type. If the MIME type is not textual or recognized Latin1 will be returned.
-/// </summary>
 static utility::string_t get_default_charset(const utility::string_t &content_type)
 {
     // We are defaulting everything to Latin1 except JSON which is utf-8.
@@ -488,10 +482,8 @@ static utility::string_t get_default_charset(const utility::string_t &content_ty
 }
 
 
-/// <summary>
 /// Parses the given Content-Type header value to get out actual content type and charset.
 /// If the charset isn't specified the default charset for the content type will be set.
-/// </summary>
 static void parse_content_type_and_charset(const utility::string_t &content_type, utility::string_t &content, utility::string_t &charset)
 {
     const size_t semi_colon_index = content_type.find_first_of(_XPLATSTR(";"));

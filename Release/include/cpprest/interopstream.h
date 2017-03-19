@@ -28,12 +28,10 @@ namespace Concurrency { namespace streams {
 
     namespace details {
 
-    /// <summary>
     /// The basic_stdio_buffer class serves to support interoperability with STL stream buffers.
     /// Sitting atop a std::streambuf, which does all the I/O, instances of this class may read
     /// and write data to standard iostreams. The class itself should not be used in application
     /// code, it is used by the stream definitions farther down in the header file.
-    /// </summary>
     template<typename _CharType>
     class basic_stdio_buffer : public streambuf_state_manager<_CharType>
     {
@@ -41,19 +39,15 @@ namespace Concurrency { namespace streams {
         typedef typename traits::int_type int_type;
         typedef typename traits::pos_type pos_type;
         typedef typename traits::off_type off_type;
-        /// <summary>
-        /// Private constructor
-        /// </summary>
-        basic_stdio_buffer(_In_ std::basic_streambuf<_CharType>* streambuf, std::ios_base::openmode mode)
+            /// Private constructor
+            basic_stdio_buffer(_In_ std::basic_streambuf<_CharType>* streambuf, std::ios_base::openmode mode)
             : streambuf_state_manager<_CharType>(mode), m_buffer(streambuf)
         {
         }
 
     public:
-        /// <summary>
-        /// Destructor
-        /// </summary>
-        virtual ~basic_stdio_buffer()
+            /// Destructor
+            virtual ~basic_stdio_buffer()
         {
             this->_close_read();
             this->_close_write();
@@ -108,100 +102,78 @@ namespace Concurrency { namespace streams {
 
     } // namespace details
 
-    /// <summary>
     /// stdio_ostream represents an async ostream derived from a standard synchronous stream, as
     /// defined by the "std" namespace. It is constructed from a reference to a standard stream, which
     /// must be valid for the lifetime of the asynchronous stream.
-    /// </summary>
     /// <typeparam name="CharType">
     /// The data type of the basic element of the <c>stdio_ostream</c>.
     /// </typeparam>
-    /// <remarks>
-    /// Since std streams are not reference-counted, great care must be taken by an application to make
+        /// Since std streams are not reference-counted, great care must be taken by an application to make
     /// sure that the std stream does not get destroyed until all uses of the asynchronous stream are
     /// done and have been serviced.
-    /// </remarks>
-    template<typename CharType>
+        template<typename CharType>
     class stdio_ostream : public basic_ostream<CharType>
     {
     public:
-        /// <summary>
-        /// Constructor
-        /// </summary>
-        /// <typeparam name="AlterCharType">
+            /// Constructor
+            /// <typeparam name="AlterCharType">
         /// The data type of the basic element of the source output stream.
         /// </typeparam>
-        /// <param name="stream">The synchronous stream that this is using for its I/O</param>
+        /// <param name="stream">The synchronous stream that this is using for its I/O
         template <typename AlterCharType>
         stdio_ostream(std::basic_ostream<AlterCharType>& stream)
             : basic_ostream<CharType>(streams::streambuf<AlterCharType>(std::shared_ptr<details::basic_stdio_buffer<AlterCharType>>(new details::basic_stdio_buffer<AlterCharType>(stream.rdbuf(), std::ios_base::out))))
         {
         }
 
-        /// <summary>
-        /// Copy constructor
-        /// </summary>
-        /// <param name="other">The source object</param>
+            /// Copy constructor
+            /// <param name="other">The source object
         stdio_ostream(const stdio_ostream &other) : basic_ostream<CharType>(other) { }
 
-        /// <summary>
-        /// Assignment operator
-        /// </summary>
-        /// <param name="other">The source object</param>
-        /// <returns>A reference to the output stream object that contains the result of the assignment.</returns>
+            /// Assignment operator
+            /// <param name="other">The source object
+        /// Returns a reference to the output stream object that contains the result of the assignment.
         stdio_ostream & operator =(const stdio_ostream &other) { basic_ostream<CharType>::operator=(other); return *this; }
     };
 
-    /// <summary>
     /// stdio_istream represents an async istream derived from a standard synchronous stream, as
     /// defined by the "std" namespace. It is constructed from a reference to a standard stream, which
     /// must be valid for the lifetime of the asynchronous stream.
-    /// </summary>
     /// <typeparam name="CharType">
     /// The data type of the basic element of the <c>stdio_istream</c>.
     /// </typeparam>
-    /// <remarks>
-    /// Since std streams are not reference-counted, great care must be taken by an application to make
+        /// Since std streams are not reference-counted, great care must be taken by an application to make
     /// sure that the std stream does not get destroyed until all uses of the asynchronous stream are
     /// done and have been serviced.
-    /// </remarks>
-    template<typename CharType>
+        template<typename CharType>
     class stdio_istream : public basic_istream<CharType>
     {
     public:
-        /// <summary>
-        /// Constructor
-        /// </summary>
-        /// <typeparam name="AlterCharType">
+            /// Constructor
+            /// <typeparam name="AlterCharType">
         /// The data type of the basic element of the source <c>istream</c>
         /// </typeparam>
-        /// <param name="stream">The synchronous stream that this is using for its I/O</param>
+        /// <param name="stream">The synchronous stream that this is using for its I/O
         template <typename AlterCharType>
         stdio_istream(std::basic_istream<AlterCharType>& stream)
             : basic_istream<CharType>(streams::streambuf<AlterCharType>(std::shared_ptr<details::basic_stdio_buffer<AlterCharType>>(new details::basic_stdio_buffer<AlterCharType>(stream.rdbuf(), std::ios_base::in))))
         {
         }
 
-        /// <summary>
-        /// Copy constructor
-        /// </summary>
-        /// <param name="other">The source object</param>
+            /// Copy constructor
+            /// <param name="other">The source object
         stdio_istream(const stdio_istream &other) : basic_istream<CharType>(other) { }
 
-        /// <summary>
-        /// Assignment operator
-        /// </summary>
-        /// <param name="other">The source object</param>
-        /// <returns>A reference to the input stream object that contains the result of the assignment.</returns>
+            /// Assignment operator
+            /// <param name="other">The source object
+        /// Returns a reference to the input stream object that contains the result of the assignment.
         stdio_istream & operator =(const stdio_istream &other) { basic_istream<CharType>::operator=(other); return *this; }
     };
 
     namespace details {
 
-    /// <summary>
     /// IO streams stream buffer implementation used to interface with an async streambuffer underneath.
     /// Used for implementing the standard synchronous streams that provide interop between std:: and concurrency::streams::
-    /// </summary>
     template<typename CharType>
     class basic_async_streambuf : public std::basic_streambuf<CharType>
     {
@@ -220,10 +192,8 @@ namespace Concurrency { namespace streams {
         // The following are the functions in std::basic_streambuf that we need to override.
         //
 
-        /// <summary>
-        /// Writes one byte to the stream buffer.
-        /// </summary>
-        int_type overflow(int_type ch)
+            /// Writes one byte to the stream buffer.
+            int_type overflow(int_type ch)
         {
             try
             {
@@ -235,10 +205,8 @@ namespace Concurrency { namespace streams {
             }
         }
 
-        /// <summary>
-        /// Gets one byte from the stream buffer without moving the read position.
-        /// </summary>
-        int_type underflow()
+            /// Gets one byte from the stream buffer without moving the read position.
+            int_type underflow()
         {
             try
             {
@@ -250,10 +218,8 @@ namespace Concurrency { namespace streams {
             }
         }
 
-        /// <summary>
-        /// Gets one byte from the stream buffer and move the read position one character.
-        /// </summary>
-        int_type uflow()
+            /// Gets one byte from the stream buffer and move the read position one character.
+            int_type uflow()
         {
             try
             {
@@ -265,10 +231,8 @@ namespace Concurrency { namespace streams {
             }
         }
 
-        /// <summary>
-        /// Gets a number of characters from the buffer and place it into the provided memory block.
-        /// </summary>
-        std::streamsize xsgetn(_Out_writes_ (count) CharType* ptr, _In_ std::streamsize count)
+            /// Gets a number of characters from the buffer and place it into the provided memory block.
+            std::streamsize xsgetn(_Out_writes_ (count) CharType* ptr, _In_ std::streamsize count)
         {
             size_t cnt = size_t(count);
             size_t read_so_far = 0;
@@ -290,10 +254,8 @@ namespace Concurrency { namespace streams {
             }
         }
 
-        /// <summary>
-        /// Writes a given number of characters from the provided block into the stream buffer.
-        /// </summary>
-        std::streamsize xsputn(const CharType* ptr, std::streamsize count)
+            /// Writes a given number of characters from the provided block into the stream buffer.
+            std::streamsize xsputn(const CharType* ptr, std::streamsize count)
         {
             try
             {
@@ -305,10 +267,8 @@ namespace Concurrency { namespace streams {
             }
         }
 
-        /// <summary>
-        /// Synchronizes with the underlying medium.
-        /// </summary>
-        int sync() // must be int as per std::basic_streambuf
+            /// Synchronizes with the underlying medium.
+            int sync() // must be int as per std::basic_streambuf
         {
             try
             {
@@ -320,10 +280,8 @@ namespace Concurrency { namespace streams {
             return 0;
         }
 
-        /// <summary>
-        /// Seeks to the given offset relative to the beginning, end, or current position.
-        /// </summary>
-        pos_type seekoff(off_type offset,
+            /// Seeks to the given offset relative to the beginning, end, or current position.
+            pos_type seekoff(off_type offset,
                          std::ios_base::seekdir dir,
                          std::ios_base::openmode mode = std::ios_base::in | std::ios_base::out)
         {
@@ -339,10 +297,8 @@ namespace Concurrency { namespace streams {
             }
         }
 
-        /// <summary>
-        /// Seeks to the given offset relative to the beginning of the stream.
-        /// </summary>
-        pos_type seekpos(pos_type pos,
+            /// Seeks to the given offset relative to the beginning of the stream.
+            pos_type seekpos(pos_type pos,
                          std::ios_base::openmode mode = std::ios_base::in | std::ios_base::out)
         {
             try
@@ -361,9 +317,7 @@ namespace Concurrency { namespace streams {
 
     } // namespace details
 
-    /// <summary>
     /// A concrete STL ostream which relies on an asynchronous stream for its I/O.
-    /// </summary>
     /// <typeparam name="CharType">
     /// The data type of the basic element of the stream.
     /// </typeparam>
@@ -371,13 +325,11 @@ namespace Concurrency { namespace streams {
     class async_ostream : public std::basic_ostream<CharType>
     {
     public:
-        /// <summary>
-        /// Constructor
-        /// </summary>
-        /// <typeparam name="AlterCharType">
+            /// Constructor
+            /// <typeparam name="AlterCharType">
         /// The data type of the basic element of the source ostream.
         /// </typeparam>
-        /// <param name="astream">The asynchronous stream whose stream buffer should be used for I/O</param>
+        /// <param name="astream">The asynchronous stream whose stream buffer should be used for I/O
         template <typename AlterCharType>
         async_ostream(const streams::basic_ostream<AlterCharType> &astream)
             : std::basic_ostream<CharType>(&m_strbuf),
@@ -385,13 +337,11 @@ namespace Concurrency { namespace streams {
         {
         }
 
-        /// <summary>
-        /// Constructor
-        /// </summary>
-        /// <typeparam name="AlterCharType">
+            /// Constructor
+            /// <typeparam name="AlterCharType">
         /// The data type of the basic element of the source <c>streambuf</c>.
         /// </typeparam>
-        /// <param name="strbuf">The asynchronous stream buffer to use for I/O</param>
+        /// <param name="strbuf">The asynchronous stream buffer to use for I/O
         template <typename AlterCharType>
         async_ostream(const streams::streambuf<AlterCharType> &strbuf)
             : std::basic_ostream<CharType>(&m_strbuf),
@@ -403,9 +353,7 @@ namespace Concurrency { namespace streams {
         details::basic_async_streambuf<CharType> m_strbuf;
     };
 
-    /// <summary>
     /// A concrete STL istream which relies on an asynchronous stream for its I/O.
-    /// </summary>
     /// <typeparam name="CharType">
     /// The data type of the basic element of the stream.
     /// </typeparam>
@@ -413,13 +361,11 @@ namespace Concurrency { namespace streams {
     class async_istream : public std::basic_istream<CharType>
     {
     public:
-        /// <summary>
-        /// Constructor
-        /// </summary>
-        /// <typeparam name="AlterCharType">
+            /// Constructor
+            /// <typeparam name="AlterCharType">
         /// The data type of the basic element of the source istream.
         /// </typeparam>
-        /// <param name="astream">The asynchronous stream whose stream buffer should be used for I/O</param>
+        /// <param name="astream">The asynchronous stream whose stream buffer should be used for I/O
         template <typename AlterCharType>
         async_istream(const streams::basic_istream<AlterCharType> &astream)
             : std::basic_istream<CharType>(&m_strbuf),
@@ -427,13 +373,11 @@ namespace Concurrency { namespace streams {
         {
         }
 
-        /// <summary>
-        /// Constructor
-        /// </summary>
-        /// <typeparam name="AlterCharType">
+            /// Constructor
+            /// <typeparam name="AlterCharType">
         /// The data type of the basic element of the source <c>streambuf</c>.
         /// </typeparam>
-        /// <param name="strbuf">The asynchronous stream buffer to use for I/O</param>
+        /// <param name="strbuf">The asynchronous stream buffer to use for I/O
         template <typename AlterCharType>
         async_istream(const streams::streambuf<AlterCharType> &strbuf)
             : std::basic_istream<CharType>(&m_strbuf),
@@ -445,9 +389,7 @@ namespace Concurrency { namespace streams {
         details::basic_async_streambuf<CharType> m_strbuf;
     };
 
-    /// <summary>
     /// A concrete STL istream which relies on an asynchronous stream buffer for its I/O.
-    /// </summary>
     /// <typeparam name="CharType">
     /// The data type of the basic element of the stream.
     /// </typeparam>
@@ -455,10 +397,8 @@ namespace Concurrency { namespace streams {
     class async_iostream : public std::basic_iostream<CharType>
     {
     public:
-        /// <summary>
-        /// Constructor
-        /// </summary>
-        /// <param name="strbuf">The asynchronous stream buffer to use for I/O</param>
+            /// Constructor
+            /// <param name="strbuf">The asynchronous stream buffer to use for I/O
         async_iostream(const streams::streambuf<CharType> &strbuf)
             : std::basic_iostream<CharType>(&m_strbuf),
               m_strbuf(strbuf)
@@ -471,48 +411,34 @@ namespace Concurrency { namespace streams {
 
 #if defined(__cplusplus_winrt)
 
-    /// <summary>
     /// Static class containing factory functions for WinRT streams implemented on top of Casablanca async streams.
-    /// </summary>
-    /// <remarks>WinRT streams are defined in terms of single-byte characters only.</remarks>
+    /// WinRT streams are defined in terms of single-byte characters only.
     class winrt_stream
     {
     public:
-        /// <summary>
-        /// Creates a WinRT <c>IInputStream</c> reference from an asynchronous stream buffer.
-        /// </summary>
-        /// <param name="buffer">A stream buffer based on a single-byte character.</param>
-        /// <returns>A reference to a WinRT <c>IInputStream</c>.</returns>
-        /// <remarks>
-        /// The stream buffer passed in must allow reading.
+            /// Creates a WinRT <c>IInputStream</c> reference from an asynchronous stream buffer.
+            /// <param name="buffer">A stream buffer based on a single-byte character.
+        /// Returns a reference to a WinRT <c>IInputStream</c>.
+                /// The stream buffer passed in must allow reading.
         /// The stream buffer is shared with the caller, allowing data to be passed between the two contexts. For
         /// example, using a <c>producer_consumer_buffer</c>, a Casablanca-based caller can pass data to a WinRT component.
-        /// </remarks>
-        _ASYNCRTIMP static Windows::Storage::Streams::IInputStream^ __cdecl create_input_stream(const concurrency::streams::streambuf<uint8_t> &buffer);
+                _ASYNCRTIMP static Windows::Storage::Streams::IInputStream^ __cdecl create_input_stream(const concurrency::streams::streambuf<uint8_t> &buffer);
 
-        /// <summary>
-        /// Creates a WinRT <c>IOutputStream</c> reference from an asynchronous stream buffer.
-        /// </summary>
-        /// <param name="buffer">A stream buffer based on a single-byte character.</param>
-        /// <returns>A reference to a WinRT <c>IOutputStream</c>.</returns>
-        /// <remarks>
-        /// The stream buffer passed in must allow writing.
+            /// Creates a WinRT <c>IOutputStream</c> reference from an asynchronous stream buffer.
+            /// <param name="buffer">A stream buffer based on a single-byte character.
+        /// Returns a reference to a WinRT <c>IOutputStream</c>.
+                /// The stream buffer passed in must allow writing.
         /// The stream buffer is shared with the caller, allowing data to be passed between the two contexts. For
         /// example, using a <c>producer_consumer_buffer</c>, a Casablanca-based caller can retrieve data from a WinRT component.
-        /// </remarks>
-        _ASYNCRTIMP static Windows::Storage::Streams::IOutputStream^ __cdecl create_output_stream(const concurrency::streams::streambuf<uint8_t> &buffer);
+                _ASYNCRTIMP static Windows::Storage::Streams::IOutputStream^ __cdecl create_output_stream(const concurrency::streams::streambuf<uint8_t> &buffer);
 
-        /// <summary>
-        /// Creates a WinRT <c>IRandomAccessStream reference from an asynchronous input stream.
-        /// </summary>
-        /// <param name="buffer">A stream based on a single-byte character.</param>
-        /// <returns>A reference to a WinRT <c>IRandomAccessStream</c>.</returns>
-        /// <remarks>
-        /// The stream buffer is shared with the caller, allowing data to be passed between the two contexts. For
+            /// Creates a WinRT <c>IRandomAccessStream reference from an asynchronous input stream.
+            /// <param name="buffer">A stream based on a single-byte character.
+        /// Returns a reference to a WinRT <c>IRandomAccessStream</c>.
+                /// The stream buffer is shared with the caller, allowing data to be passed between the two contexts. For
         /// example, using a <c>producer_consumer_buffer</c>, a Casablanca-based caller can pass data to and retrieve data
         /// from a WinRT component.
-        /// </remarks>
-        _ASYNCRTIMP static Windows::Storage::Streams::IRandomAccessStream^ __cdecl create_random_access_stream(const concurrency::streams::streambuf<uint8_t> &buffer);
+                _ASYNCRTIMP static Windows::Storage::Streams::IRandomAccessStream^ __cdecl create_random_access_stream(const concurrency::streams::streambuf<uint8_t> &buffer);
     };
 
 #endif

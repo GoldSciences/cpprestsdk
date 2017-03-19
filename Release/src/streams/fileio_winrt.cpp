@@ -27,11 +27,9 @@ using namespace ::Windows::Networking::Sockets;
 
 namespace Concurrency { namespace streams { namespace details {
 
-/// <summary>
 /// The public parts of the file information record contain only what is implementation-
 /// independent. The actual allocated record is larger and has details that the implementation
 /// require in order to function.
-/// </summary>
 struct _file_info_impl : _file_info
 {
     _file_info_impl(Streams::IRandomAccessStream^ stream, std::ios_base::openmode mode) :
@@ -62,14 +60,12 @@ using namespace Concurrency::streams::details;
 #pragma warning(push)
 #pragma warning(disable : 4100)
 
-/// <summary>
 /// Translate from C++ STL file open modes to Win32 flags.
-/// </summary>
-/// <param name="mode">The C++ file open mode</param>
-/// <param name="prot">The C++ file open protection</param>
-/// <param name="dwDesiredAccess">A pointer to a DWORD that will hold the desired access flags</param>
-/// <param name="dwCreationDisposition">A pointer to a DWORD that will hold the creation disposition</param>
-/// <param name="dwShareMode">A pointer to a DWORD that will hold the share mode</param>
+/// <param name="mode">The C++ file open mode
+/// <param name="prot">The C++ file open protection
+/// <param name="dwDesiredAccess">A pointer to a DWORD that will hold the desired access flags
+/// <param name="dwCreationDisposition">A pointer to a DWORD that will hold the creation disposition
+/// <param name="dwShareMode">A pointer to a DWORD that will hold the share mode
 void _get_create_flags(std::ios_base::openmode mode, int prot, FileAccessMode &acc_mode, CreationCollisionOption &options)
 {
     options = CreationCollisionOption::OpenIfExists;
@@ -81,13 +77,11 @@ void _get_create_flags(std::ios_base::openmode mode, int prot, FileAccessMode &a
         options = CreationCollisionOption::ReplaceExisting;
 }
 
-/// <summary>
 /// Perform post-CreateFile processing.
-/// </summary>
-/// <param name="fh">The Win32 file handle</param>
-/// <param name="callback">The callback interface pointer</param>
-/// <param name="mode">The C++ file open mode</param>
-/// <returns>The error code if there was an error in file creation.</returns>
+/// <param name="fh">The Win32 file handle
+/// <param name="callback">The callback interface pointer
+/// <param name="mode">The C++ file open mode
+/// Returns the error code if there was an error in file creation.
 void _finish_create(Streams::IRandomAccessStream^ stream, _In_ _filestream_callback *callback, std::ios_base::openmode mode, int prot)
 {
     _file_info_impl *info = nullptr;
@@ -103,17 +97,13 @@ void _finish_create(Streams::IRandomAccessStream^ stream, _In_ _filestream_callb
     callback->on_opened(info);
 }
 
-/// <summary>
 /// Create a streambuf instance to represent a WinRT file.
-/// </summary>
-/// <param name="callback">A pointer to the callback interface to invoke when the file has been opened.</param>
-/// <param name="file">The file object</param>
-/// <param name="mode">A creation mode for the stream buffer</param>
-/// <returns>True if the opening operation could be initiated, false otherwise.</returns>
-/// <remarks>
+/// <param name="callback">A pointer to the callback interface to invoke when the file has been opened.
+/// <param name="file">The file object
+/// <param name="mode">A creation mode for the stream buffer
+/// Returns true if the opening operation could be initiated, false otherwise.
 /// True does not signal that the file will eventually be successfully opened, just that the process was started.
 /// This is only available for WinRT.
-/// </remarks>
 bool __cdecl _open_fsb_stf_str(_In_ Concurrency::streams::details::_filestream_callback *callback, ::Windows::Storage::StorageFile^ file, std::ios_base::openmode mode, int prot)
 {
     _ASSERTE(callback != nullptr);
@@ -179,15 +169,11 @@ bool __cdecl _sync_fsb_winrt(_In_ Concurrency::streams::details::_file_info *inf
     return true;
 }
 
-/// <summary>
 /// Close a file stream buffer.
-/// </summary>
-/// <param name="info">The file info record of the file</param>
-/// <param name="callback">A pointer to the callback interface to invoke when the file has been opened.</param>
-/// <returns>True if the closing operation could be initiated, false otherwise.</returns>
-/// <remarks>
+/// <param name="info">The file info record of the file
+/// <param name="callback">A pointer to the callback interface to invoke when the file has been opened.
+/// Returns true if the closing operation could be initiated, false otherwise.
 /// True does not signal that the file will eventually be successfully closed, just that the process was started.
-/// </remarks>
 bool __cdecl _close_fsb_nolock(_In_ _file_info **info, _In_ Concurrency::streams::details::_filestream_callback *callback)
 {
     _ASSERTE(callback != nullptr);
@@ -230,15 +216,13 @@ bool __cdecl _close_fsb(_In_ _file_info **info, _In_ Concurrency::streams::detai
 }
 
 
-/// <summary>
 /// Initiate an asynchronous (overlapped) read from the file stream.
-/// </summary>
-/// <param name="info">The file info record of the file</param>
-/// <param name="callback">A pointer to the callback interface to invoke when the write request is completed.</param>
-/// <param name="ptr">A pointer to a buffer where the data should be placed</param>
-/// <param name="count">The size (in bytes) of the buffer</param>
-/// <param name="offset">The offset in the file to read from</param>
-/// <returns>0 if the read request is still outstanding, -1 if the request failed, otherwise the size of the data read into the buffer</returns>
+/// <param name="info">The file info record of the file
+/// <param name="callback">A pointer to the callback interface to invoke when the write request is completed.
+/// <param name="ptr">A pointer to a buffer where the data should be placed
+/// <param name="count">The size (in bytes) of the buffer
+/// <param name="offset">The offset in the file to read from
+/// <returns>0 if the read request is still outstanding, -1 if the request failed, otherwise the size of the data read into the buffer
 size_t __cdecl _read_file_async(_In_ Concurrency::streams::details::_file_info_impl *fInfo, _In_ Concurrency::streams::details::_filestream_callback *callback, _Out_writes_ (count) void *ptr, _In_ size_t count, size_t offset)
 {
     if ( fInfo->m_stream == nullptr )
@@ -326,26 +310,15 @@ size_t _fill_buffer_fsb(_In_ _file_info_impl *fInfo, _In_ _filestream_callback *
 
         auto read =  _read_file_async(fInfo, cb, (uint8_t *)fInfo->m_buffer, fInfo->m_bufsize*char_size, fInfo->m_rdpos*char_size);
 
-        switch (read)
-        {
-        case 0:
-            // pending
-            return read;
-
-        case (-1):
-            // error
-            delete cb;
-            return read;
-
-        default:
-            // operation is complete. The pattern of returning synchronously
-            // has the expectation that we duplicate the callback code here...
-            // Do the expedient thing for now.
-            cb->on_completed(read);
-
-            // return pending
-            return 0;
-        };
+		switch (read) {
+        case 0		:					return read;	// pending
+        case (-1)	:	delete cb;		return read;	// error
+        default		:
+            cb->on_completed(read);	// operation is complete. The pattern of returning synchronously
+									// has the expectation that we duplicate the callback code here...
+									// Do the expedient thing for now.
+            return 0;	// return pending
+		}
     }
 
     // First, we need to understand how far into the buffer we have already read
@@ -378,33 +351,19 @@ size_t _fill_buffer_fsb(_In_ _file_info_impl *fInfo, _In_ _filestream_callback *
 
         auto read = _read_file_async(fInfo, cb, (uint8_t*)fInfo->m_buffer, fInfo->m_bufsize*char_size, fInfo->m_rdpos*char_size);
 
-        switch (read)
-        {
-        case 0:
-            // pending
-            return read;
-
-        case (-1):
-            // error
-            delete cb;
-            return read;
-
-        default:
-            // operation is complete. The pattern of returning synchronously
-            // has the expectation that we duplicate the callback code here...
-            // Do the expedient thing for now.
-            cb->on_completed(read);
-
-            // return pending
-            return 0;
-        };
+		switch (read) {
+        case 0		:					return read;	// pending
+        case (-1)	:	delete cb;		return read;	// error
+        default		:
+            cb->on_completed(read);	// operation is complete. The pattern of returning synchronously
+									// has the expectation that we duplicate the callback code here...
+									// Do the expedient thing for now.
+            return 0;	// return pending
+		}
     }
     else if ( bufrem < count )
     {
         fInfo->m_bufsize = safeCount.Max(fInfo->m_buffer_size);
-
-        // Then, we allocate a new buffer.
-
         char *newbuf = new char[fInfo->m_bufsize*char_size];
 
         // Then, we copy the unread part to the new buffer and delete the old buffer
@@ -419,8 +378,7 @@ size_t _fill_buffer_fsb(_In_ _file_info_impl *fInfo, _In_ _filestream_callback *
         fInfo->m_bufoff = fInfo->m_rdpos;
 
         auto cb = create_callback(fInfo,
-            [=] (size_t result)
-            {
+            [=] (size_t result) {
                 {
                     pplx::extensibility::scoped_recursive_lock_t lck(fInfo->m_lock);
                     fInfo->m_buffill = result / char_size;
@@ -430,26 +388,16 @@ size_t _fill_buffer_fsb(_In_ _file_info_impl *fInfo, _In_ _filestream_callback *
 
         auto read = _read_file_async(fInfo, cb, (uint8_t*)fInfo->m_buffer+bufrem*char_size, (fInfo->m_bufsize-bufrem)*char_size, (fInfo->m_rdpos+bufrem)*char_size);
 
-        switch (read)
-        {
-        case 0:
-            // pending
-            return read;
+		switch (read) {
+        case 0		:					return read;	// pending
+        case (-1)	:	delete cb;		return read;	// error
+        default		:
+            cb->on_completed(read);	// operation is complete. The pattern of returning synchronously
+									// has the expectation that we duplicate the callback code here...
+									// Do the expedient thing for now.
+            return 0;	// return pending
+		}
 
-        case (-1):
-            // error
-            delete cb;
-            return read;
-
-        default:
-            // operation is complete. The pattern of returning synchronously
-            // has the expectation that we duplicate the callback code here...
-            // Do the expedient thing for now.
-            cb->on_completed(read);
-
-            // return pending
-            return 0;
-        };
     }
     else
     {
@@ -458,14 +406,12 @@ size_t _fill_buffer_fsb(_In_ _file_info_impl *fInfo, _In_ _filestream_callback *
     }
 }
 
-/// <summary>
 /// Read data from a file stream into a buffer
-/// </summary>
-/// <param name="info">The file info record of the file</param>
-/// <param name="callback">A pointer to the callback interface to invoke when the write request is completed.</param>
-/// <param name="ptr">A pointer to a buffer where the data should be placed</param>
-/// <param name="count">The size (in characters) of the buffer</param>
-/// <returns>0 if the read request is still outstanding, -1 if the request failed, otherwise the size of the data read into the buffer</returns>
+/// <param name="info">The file info record of the file
+/// <param name="callback">A pointer to the callback interface to invoke when the write request is completed.
+/// <param name="ptr">A pointer to a buffer where the data should be placed
+/// <param name="count">The size (in characters) of the buffer
+/// <returns>0 if the read request is still outstanding, -1 if the request failed, otherwise the size of the data read into the buffer
 size_t __cdecl _getn_fsb(_In_ Concurrency::streams::details::_file_info *info, _In_ Concurrency::streams::details::_filestream_callback *callback, _Out_writes_ (count) void *ptr, _In_ size_t count, size_t char_size)
 {
     _ASSERTE(callback != nullptr);
@@ -510,14 +456,12 @@ size_t __cdecl _getn_fsb(_In_ Concurrency::streams::details::_file_info *info, _
 }
 
 
-/// <summary>
 /// Write data from a buffer into the file stream.
-/// </summary>
-/// <param name="info">The file info record of the file</param>
-/// <param name="callback">A pointer to the callback interface to invoke when the write request is completed.</param>
-/// <param name="ptr">A pointer to a buffer where the data should be placed</param>
-/// <param name="count">The size (in characters) of the buffer</param>
-/// <returns>0 if the write request is still outstanding, -1 if the request failed, otherwise the size of the data read into the buffer</returns>
+/// <param name="info">The file info record of the file
+/// <param name="callback">A pointer to the callback interface to invoke when the write request is completed.
+/// <param name="ptr">A pointer to a buffer where the data should be placed
+/// <param name="count">The size (in characters) of the buffer
+/// <returns>0 if the write request is still outstanding, -1 if the request failed, otherwise the size of the data read into the buffer
 size_t __cdecl _putn_fsb(_In_ Concurrency::streams::details::_file_info *info, _In_ Concurrency::streams::details::_filestream_callback *callback, const void *ptr, size_t count, size_t char_size)
 {
     _ASSERTE(callback != nullptr);
@@ -577,23 +521,19 @@ size_t __cdecl _putn_fsb(_In_ Concurrency::streams::details::_file_info *info, _
         return safeWriteSize;
 }
 
-/// <summary>
 /// Flush all buffered data to the underlying file.
-/// </summary>
-/// <param name="info">The file info record of the file</param>
-/// <param name="callback">A pointer to the callback interface to invoke when the write request is completed.</param>
-/// <returns>True if the request was initiated</returns>
+/// <param name="info">The file info record of the file
+/// <param name="callback">A pointer to the callback interface to invoke when the write request is completed.
+/// Returns true if the request was initiated
 bool __cdecl _sync_fsb(_In_ Concurrency::streams::details::_file_info *info, _In_ Concurrency::streams::details::_filestream_callback *callback)
 {
     return _sync_fsb_winrt(info, callback);
 }
 
-/// <summary>
 /// Adjust the internal buffers and pointers when the application seeks to a new read location in the stream.
-/// </summary>
-/// <param name="info">The file info record of the file</param>
-/// <param name="pos">The new position (offset from the start) in the file stream</param>
-/// <returns>New file position or -1 if error</returns>
+/// <param name="info">The file info record of the file
+/// <param name="pos">The new position (offset from the start) in the file stream
+/// <returns>New file position or -1 if error
 size_t __cdecl _seekrdpos_fsb(_In_ Concurrency::streams::details::_file_info *info, size_t pos, size_t char_size)
 {
     _ASSERTE(info != nullptr);
@@ -616,13 +556,11 @@ size_t __cdecl _seekrdpos_fsb(_In_ Concurrency::streams::details::_file_info *in
     return fInfo->m_rdpos;
 }
 
-/// <summary>
 /// Adjust the internal buffers and pointers when the application seeks to a new read location in the stream.
-/// </summary>
-/// <param name="info">The file info record of the file</param>
-/// <param name="offset">The new position (offset from the end of the stream) in the file stream</param>
-/// <param name="char_size">The size of the character type used for this stream</param>
-/// <returns>New file position or -1 if error</returns>
+/// <param name="info">The file info record of the file
+/// <param name="offset">The new position (offset from the end of the stream) in the file stream
+/// <param name="char_size">The size of the character type used for this stream
+/// <returns>New file position or -1 if error
 _ASYNCRTIMP size_t __cdecl _seekrdtoend_fsb(_In_ Concurrency::streams::details::_file_info *info, int64_t offset, size_t char_size)
 {
     _ASSERTE(info != nullptr);
@@ -644,12 +582,10 @@ utility::size64_t __cdecl _get_size(_In_ concurrency::streams::details::_file_in
     return utility::size64_t(fInfo->m_stream->Size/char_size);
 }
 
-/// <summary>
 /// Adjust the internal buffers and pointers when the application seeks to a new write location in the stream.
-/// </summary>
-/// <param name="info">The file info record of the file</param>
-/// <param name="pos">The new position (offset from the start) in the file stream</param>
-/// <returns>New file position or -1 if error</returns>
+/// <param name="info">The file info record of the file
+/// <param name="pos">The new position (offset from the start) in the file stream
+/// <returns>New file position or -1 if error
 size_t __cdecl _seekwrpos_fsb(_In_ Concurrency::streams::details::_file_info *info, size_t pos, size_t char_size)
 {
     _ASSERTE(info != nullptr);
@@ -687,29 +623,24 @@ size_t __cdecl _seekwrpos_fsb(_In_ Concurrency::streams::details::_file_info *in
 
 namespace Concurrency { namespace streams { namespace details
 {
-/// <summary>
 /// This class acts as a bridge between WinRT input streams and Casablanca asynchronous streams.
-/// </summary>
 ref class IRandomAccessStream_bridge sealed : public Windows::Storage::Streams::IRandomAccessStream
 {
 public:
-    virtual property bool CanRead { bool get() { return m_buffer.can_read(); } }
+    virtual property bool		CanRead		{ bool get() { return m_buffer.can_read(); } }
 
-    virtual property bool CanWrite { bool get() { return m_buffer.can_write(); } }
+    virtual property bool		CanWrite	{ bool get() { return m_buffer.can_write(); } }
 
-    virtual property uint64_t Position { uint64_t get() { return m_position; } }
+    virtual property uint64_t	Position	{ uint64_t get() { return m_position; } }
 
-    virtual property uint64_t Size
-    {
-        uint64_t get()
-        {
+    virtual property uint64_t	Size		{
+        uint64_t get() {
             if (!m_buffer.has_size())
                 return m_remembered_size;
             return m_buffer.size();
         }
 
-        void set(uint64_t sz)
-        {
+        void set(uint64_t sz) {
             if (!m_buffer.has_size() || !m_buffer.can_write())
                 m_remembered_size = sz;
             else
@@ -717,39 +648,31 @@ public:
         }
     }
 
-    virtual Windows::Storage::Streams::IRandomAccessStream^ CloneStream()
-    {
-        return ref new IRandomAccessStream_bridge(m_buffer);
-    }
-
-    virtual Windows::Storage::Streams::IInputStream^ GetInputStreamAt(uint64_t position)
-    {
-        if ( !m_buffer.can_read() ) return nullptr;
+    virtual Windows::Storage::Streams::IRandomAccessStream^ CloneStream() { return ref new IRandomAccessStream_bridge(m_buffer); }
+    virtual Windows::Storage::Streams::IInputStream^ GetInputStreamAt(uint64_t position) {
+        if ( !m_buffer.can_read() ) 
+			return nullptr;
 
         concurrency::streams::streambuf<uint8_t>::pos_type pos = position;
 
         if ( m_buffer.can_seek() || pos == m_buffer.getpos(std::ios_base::in) )
-        {
             return ref new IRandomAccessStream_bridge(m_buffer,position);
-        }
         return nullptr;
     }
 
-    virtual Windows::Storage::Streams::IOutputStream^ GetOutputStreamAt(uint64_t position)
-    {
-        if ( !m_buffer.can_write() ) return nullptr;
+    virtual Windows::Storage::Streams::IOutputStream^ GetOutputStreamAt(uint64_t position) {
+        if ( !m_buffer.can_write() ) 
+			return nullptr;
 
         concurrency::streams::streambuf<uint8_t>::pos_type pos = position;
 
         if ( m_buffer.can_seek() || pos == m_buffer.getpos(std::ios_base::out) )
-        {
             return ref new IRandomAccessStream_bridge(m_buffer,position);
-        }
-        return nullptr;
+
+		return nullptr;
     };
 
-    virtual void Seek(uint64_t position)
-    {
+    virtual void Seek(uint64_t position) {
         if (!m_buffer.can_seek())
             throw ref new Platform::InvalidArgumentException(L"underlying buffer cannot seek");
 
@@ -763,9 +686,7 @@ public:
     virtual Windows::Foundation::IAsyncOperationWithProgress<::Windows::Storage::Streams::IBuffer^, unsigned int>^ ReadAsync(::Windows::Storage::Streams::IBuffer^ buffer, unsigned int count, Windows::Storage::Streams::InputStreamOptions options);
     virtual Windows::Foundation::IAsyncOperation<bool>^ FlushAsync();
 
-    virtual ~IRandomAccessStream_bridge()
-    {
-    }
+    virtual ~IRandomAccessStream_bridge() {}
 
 internal:
 
@@ -773,16 +694,13 @@ internal:
         m_buffer(buffer),
         m_remembered_size(0),
         m_position(0)
-    {
-    }
+    {}
 
-    IRandomAccessStream_bridge(const concurrency::streams::streambuf<uint8_t> &buffer,
-                               concurrency::streams::streambuf<uint8_t>::pos_type position) :
+    IRandomAccessStream_bridge(const concurrency::streams::streambuf<uint8_t> &buffer, concurrency::streams::streambuf<uint8_t>::pos_type position) :
         m_buffer(buffer),
         m_remembered_size(0),
         m_position(position)
-    {
-    }
+    {}
 
 private:
     uint64_t m_remembered_size;
@@ -790,51 +708,38 @@ private:
     concurrency::streams::streambuf<uint8_t> m_buffer;
 };
 
-struct _alloc_protector
-{
-    _alloc_protector(concurrency::streams::streambuf<uint8_t>& buffer) :
+struct _alloc_protector {
+    ~_alloc_protector	() { m_buffer.commit(m_size); }
+    _alloc_protector	(concurrency::streams::streambuf<uint8_t>& buffer) :
         m_buffer(buffer), m_size(0)
-    {
-    }
+    {}
 
-    ~_alloc_protector()
-    {
-        m_buffer.commit(m_size);
-    }
 
     size_t m_size;
 
 private:
     _alloc_protector& operator=(const _alloc_protector&);
 
-    concurrency::streams::streambuf<uint8_t>& m_buffer;
+    concurrency::streams::streambuf<uint8_t>	& m_buffer;
 };
 
-struct _acquire_protector
-{
-    _acquire_protector(concurrency::streams::streambuf<uint8_t>& buffer, uint8_t* ptr) :
+struct _acquire_protector {
+    size_t										m_size;
+
+	~_acquire_protector	() { m_buffer.release(m_ptr, m_size); }
+    _acquire_protector	(concurrency::streams::streambuf<uint8_t>& buffer, uint8_t* ptr) :
         m_buffer(buffer), m_ptr(ptr), m_size(0)
-    {
-    }
-
-    ~_acquire_protector()
-    {
-        m_buffer.release(m_ptr, m_size);
-    }
-
-    size_t   m_size;
-
+    {}
 private:
     _acquire_protector& operator=(const _acquire_protector&);
 
-    uint8_t* m_ptr;
-    concurrency::streams::streambuf<uint8_t>& m_buffer;
+    uint8_t										* m_ptr;
+    concurrency::streams::streambuf<uint8_t>	& m_buffer;
 };
 
 // Rather than using ComPtr, which is somewhat complex, a simple RAII class
 // to make sure that Release() is called is useful here.
-struct _IUnknown_protector
-{
+struct _IUnknown_protector {
     _IUnknown_protector(IUnknown* unk_ptr) : m_unknown(unk_ptr) {}
     ~_IUnknown_protector() { if (m_unknown != nullptr) m_unknown->Release(); }
 private:
@@ -842,12 +747,9 @@ private:
 };
 
 Windows::Foundation::IAsyncOperationWithProgress<::Windows::Storage::Streams::IBuffer^, unsigned int>^
-IRandomAccessStream_bridge::ReadAsync(::Windows::Storage::Streams::IBuffer^ buffer, unsigned int count, Windows::Storage::Streams::InputStreamOptions options)
-{
+IRandomAccessStream_bridge::ReadAsync(::Windows::Storage::Streams::IBuffer^ buffer, unsigned int count, Windows::Storage::Streams::InputStreamOptions options) {
     if (!m_buffer.can_read())
-    {
         return pplx::create_async([buffer](pplx::progress_reporter<uint32> reporter) { return buffer; });
-    }
 
     if (buffer->Capacity < count)
         return pplx::create_async([buffer](pplx::progress_reporter<uint32> reporter) { return buffer; });
@@ -865,8 +767,7 @@ IRandomAccessStream_bridge::ReadAsync(::Windows::Storage::Streams::IBuffer^ buff
             uint8_t* ptr = nullptr;
             size_t   acquired_size = 0;
 
-            if ( sbuf.acquire(ptr, acquired_size) && acquired_size >= count )
-            {
+            if ( sbuf.acquire(ptr, acquired_size) && acquired_size >= count ) {
                 _acquire_protector prot(sbuf, ptr);
 
                 IUnknown* pUnk = reinterpret_cast<IUnknown*>(buffer);
@@ -887,12 +788,9 @@ IRandomAccessStream_bridge::ReadAsync(::Windows::Storage::Streams::IBuffer^ buff
 
                 return pplx::task_from_result(buffer);
             }
-            else
-            {
+            else {
                 if ( acquired_size > 0 )
-                {
                     sbuf.release(ptr, 0);
-                }
 
                 IUnknown* pUnk = reinterpret_cast<IUnknown*>(buffer);
                 ::Windows::Storage::Streams::IBufferByteAccess* pBufferByteAccess = nullptr;
@@ -919,12 +817,9 @@ IRandomAccessStream_bridge::ReadAsync(::Windows::Storage::Streams::IBuffer^ buff
 }
 
 Windows::Foundation::IAsyncOperationWithProgress<unsigned int, unsigned int>^
-IRandomAccessStream_bridge::WriteAsync(Windows::Storage::Streams::IBuffer^ buffer)
-{
+IRandomAccessStream_bridge::WriteAsync(Windows::Storage::Streams::IBuffer^ buffer) {
     if (!m_buffer.can_write())
-    {
         return pplx::create_async([](pplx::progress_reporter<uint32> reporter) { return 0U; });
-    }
 
     m_buffer.seekpos(concurrency::streams::streambuf<uint8_t>::pos_type(m_position),std::ios_base::out);
 
@@ -937,8 +832,7 @@ IRandomAccessStream_bridge::WriteAsync(Windows::Storage::Streams::IBuffer^ buffe
             auto sbuf = streambuf;
             uint8_t* ptr = sbuf.alloc(size);
 
-            if ( ptr != nullptr)
-            {
+            if ( ptr != nullptr) {
                 {
                     _alloc_protector prot(sbuf);
 
@@ -959,8 +853,7 @@ IRandomAccessStream_bridge::WriteAsync(Windows::Storage::Streams::IBuffer^ buffe
                 }
                 return pplx::task_from_result((unsigned int)size);
             }
-            else
-            {
+            else {
                 IUnknown* pUnk = reinterpret_cast<IUnknown*>(buffer);
                 ::Windows::Storage::Streams::IBufferByteAccess* pBufferByteAccess = nullptr;
                 HRESULT hr = pUnk->QueryInterface(IID_PPV_ARGS(&pBufferByteAccess));
@@ -985,15 +878,12 @@ IRandomAccessStream_bridge::WriteAsync(Windows::Storage::Streams::IBuffer^ buffe
 }
 
 Windows::Foundation::IAsyncOperation<bool>^
-IRandomAccessStream_bridge::FlushAsync()
-{
+IRandomAccessStream_bridge::FlushAsync() {
     concurrency::streams::streambuf<uint8_t> streambuf = m_buffer;
     return pplx::create_async([streambuf]()
         {
             if (!streambuf.can_write())
-            {
                 return pplx::task_from_result(false);
-            }
 
             auto sbuf = streambuf;
             return sbuf.sync().then([] { return pplx::task_from_result(true); });
@@ -1002,19 +892,8 @@ IRandomAccessStream_bridge::FlushAsync()
 
 }}} // namespaces
 
-Windows::Storage::Streams::IInputStream^ Concurrency::streams::winrt_stream::create_input_stream(const concurrency::streams::streambuf<uint8_t> &buffer)
-{
-    return ref new ::Concurrency::streams::details::IRandomAccessStream_bridge(buffer,0);
-}
-
-Windows::Storage::Streams::IOutputStream^ Concurrency::streams::winrt_stream::create_output_stream(const concurrency::streams::streambuf<uint8_t> &buffer)
-{
-    return ref new Concurrency::streams::details::IRandomAccessStream_bridge(buffer,0);
-}
-
-Windows::Storage::Streams::IRandomAccessStream^ Concurrency::streams::winrt_stream::create_random_access_stream(const concurrency::streams::streambuf<uint8_t> &buffer)
-{
-    return ref new Concurrency::streams::details::IRandomAccessStream_bridge(buffer);
-}
+Windows::Storage::Streams::IInputStream			^	Concurrency::streams::winrt_stream::create_input_stream			(const concurrency::streams::streambuf<uint8_t> &buffer)	{ return ref new Concurrency::streams::details::IRandomAccessStream_bridge(buffer,0);	}
+Windows::Storage::Streams::IOutputStream		^	Concurrency::streams::winrt_stream::create_output_stream		(const concurrency::streams::streambuf<uint8_t> &buffer)	{ return ref new Concurrency::streams::details::IRandomAccessStream_bridge(buffer,0);	}
+Windows::Storage::Streams::IRandomAccessStream	^	Concurrency::streams::winrt_stream::create_random_access_stream	(const concurrency::streams::streambuf<uint8_t> &buffer)	{ return ref new Concurrency::streams::details::IRandomAccessStream_bridge(buffer);		}
 
 #pragma warning(pop)

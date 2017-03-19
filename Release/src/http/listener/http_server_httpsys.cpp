@@ -36,10 +36,8 @@ namespace experimental
 namespace details
 {
 
-/// <summary>
 /// String values for all HTTP Server API known headers.
 /// NOTE: the order here is important it is from the _HTTP_HEADER_ID enum.
-/// </summary>
 static utility::string_t HttpServerAPIKnownHeaders[] =
 {
     U("Cache-Control"),
@@ -522,9 +520,7 @@ void windows_request_context::async_process_request(HTTP_REQUEST_ID request_id, 
     }
 }
 
-/// <summary>
 ///  The read request headers completion callback function.
-/// </summary>
 void windows_request_context::read_headers_io_completion(DWORD error_code, DWORD)
 {
     if(error_code != NO_ERROR)
@@ -611,9 +607,7 @@ void windows_request_context::read_request_body_chunk()
     }
 }
 
-/// <summary>
 ///  The read request body completion callback function.
-/// </summary>
 void windows_request_context::read_body_io_completion(DWORD error_code, DWORD bytes_read)
 {
     auto request_body_buf = m_msg._get_impl()->outstream().streambuf();
@@ -848,9 +842,7 @@ void windows_request_context::async_process_response()
     }
 }
 
-/// <summary>
 ///  The send response headers completion callback function.
-/// </summary>
 void windows_request_context::send_response_io_completion(DWORD error_code, DWORD)
 {
     if(error_code != NO_ERROR)
@@ -976,9 +968,7 @@ void windows_request_context::send_entity_body(_In_reads_(data_length) unsigned 
     }
 }
 
-/// <summary>
 ///  The send response body completion callback function.
-/// </summary>
 void windows_request_context::send_response_body_io_completion(DWORD error_code, DWORD)
 {
     if(error_code != NO_ERROR)
@@ -989,9 +979,7 @@ void windows_request_context::send_response_body_io_completion(DWORD error_code,
     transmit_body();
 }
 
-/// <summary>
 ///  The cancel request completion callback function.
-/// </summary>
 void windows_request_context::cancel_request_io_completion(DWORD, DWORD)
 {
     std::unique_lock<std::mutex> lock(m_responseCompletedLock);

@@ -20,8 +20,7 @@ namespace Concurrency
 /// Library for asynchronous streams.
 namespace streams
 {
-    // Extending the standard char_traits type with one that adds values and types
-    // that are unique to "C++ REST SDK" streams.
+    // Extending the standard char_traits type with one that adds values and types that are unique to "C++ REST SDK" streams.
     template<typename _CharType>
     struct char_traits : std::char_traits<_CharType> {
         // Some synchronous functions will return this value if the operation requires an asynchronous call in a given situation.
@@ -92,9 +91,9 @@ namespace streams
         virtual pplx::task<int_type>									putc					(_CharType ch)																		= 0;	// Writes a single character to the stream. Returns a task that holds the value of the character. This value is EOF if the write operation fails.
         virtual pplx::task<size_t>										putn					(const _CharType *source, size_t count)												= 0;	// Writes a number of characters to the stream. Returns a task that holds the number of characters actually written, either 'count' or 0.
         // Writes a number of characters to the stream. Note: callers must make sure the data to be written is valid until the returned task completes.
-        // <param name="ptr">A pointer to the block of data to be written.</param>
-        // <param name="count">The number of characters to write.</param>
-        // Returns>A <c>task</c> that holds the number of characters actually written, either 'count' or 0.</returns>
+        // <param name="ptr">A pointer to the block of data to be written.
+        // <param name="count">The number of characters to write.
+        // Returns>A <c>task</c> that holds the number of characters actually written, either 'count' or 0.
         virtual pplx::task<size_t>										putn_nocopy				(const _CharType *source, size_t count)												= 0;
 
         // Reads a single character from the stream and advances the read position.
@@ -124,14 +123,14 @@ namespace streams
         virtual pplx::task<int_type>									ungetc					()																					= 0;
 
         // Reads up to a given number of characters from the stream.
-        // <param name="ptr">The address of the target memory area.</param>
-        // <param name="count">The maximum number of characters to read.</param>
+        // <param name="ptr">The address of the target memory area.
+        // <param name="count">The maximum number of characters to read.
         // Returns a task that holds the number of characters read. This value is O if the end of the stream is reached.
         virtual pplx::task<size_t>										getn					(_Out_writes_(count) _CharType *ptr, _In_ size_t count)								= 0;
 
         // Copies up to a given number of characters from the stream, synchronously.
-        // <param name="ptr">The address of the target memory area.</param>
-        // <param name="count">The maximum number of characters to read.</param>
+        // <param name="ptr">The address of the target memory area.
+        // <param name="count">The maximum number of characters to read.
         // Returns the number of characters copied. 0 if the end of the stream is reached or an asynchronous read is required.
         // This is a synchronous operation, but is guaranteed to never block.
         virtual size_t													scopy					(_Out_writes_(count) _CharType *ptr, _In_ size_t count)								= 0;
@@ -170,15 +169,15 @@ namespace streams
         // such failure, the application should fall back on the copying interfaces (putn / getn)
 
         // Allocates a contiguous memory block and returns it.
-        // <param name="count">The number of characters to allocate.</param>
+        // <param name="count">The number of characters to allocate.
         // Returns a pointer to a block to write to, null if the stream buffer implementation does not support alloc/commit.
         virtual _CharType*												alloc					(_In_ size_t count)																	= 0;
         virtual void													commit					(_In_ size_t countCharacters)														= 0;	// Submits a block already allocated by the stream buffer.
 
         // Gets a pointer to the next already allocated contiguous block of data.
-        // <param name="ptr">A reference to a pointer variable that will hold the address of the block on success.</param>
-        // <param name="count">The number of contiguous characters available at the address in 'ptr.'</param>
-        // <returns><c>true</c> if the operation succeeded, <c>false</c> otherwise.</returns>
+        // <param name="ptr">A reference to a pointer variable that will hold the address of the block on success.
+        // <param name="count">The number of contiguous characters available at the address in 'ptr.'
+        // <returns><c>true</c> if the operation succeeded, <c>false</c> otherwise.
         // Notes: A return of false does not necessarily indicate that a subsequent read operation would fail, only that
         // there is no block to return immediately or that the stream buffer does not support the operation.
         // The stream buffer may not de-allocate the block until release() is called.
@@ -187,8 +186,8 @@ namespace streams
         virtual bool													acquire					(_Out_ _CharType*& ptr, _Out_ size_t& count)										= 0;
 
         // Releases a block of data acquired using acquire. This frees the stream buffer to de-allocate the memory, if it so desires. Move the read position ahead by the count.
-        // <param name="ptr">A pointer to the block of data to be released.</param>
-        // <param name="count">The number of characters that were read.</param>
+        // <param name="ptr">A pointer to the block of data to be released.
+        // <param name="count">The number of characters that were read.
         virtual void													release					(_Out_writes_(count) _CharType *ptr, _In_ size_t count)								= 0;
 
         // Retrieves the stream buffer exception_ptr if it has been set. Returns pointer to the exception, if it has been set; otherwise, nullptr will be returned
@@ -419,14 +418,14 @@ namespace streams
         pplx::task<_CharType1>											create_exception_checked_task		
 			( pplx::task<_CharType1>			result
 			, std::function<bool(_CharType1)>	eof_test
-			, std::ios_base::openmode			mode = std::ios_base::in | std::ios_base::out
+			, std::ios_base::openmode			mode		= std::ios_base::in | std::ios_base::out
 			)
         {
             auto																thisPointer				= this->shared_from_this();
 
             auto func1 = [=](pplx::task<_CharType1> t1) -> pplx::task<_CharType1> {
                 try {
-                    thisPointer->m_stream_read_eof = eof_test(t1.get());
+                    thisPointer->m_stream_read_eof									= eof_test(t1.get());
                 } catch (...) {
                     thisPointer->close(mode, std::current_exception()).get();
                     return pplx::task_from_exception<_CharType1>(thisPointer->exception(), pplx::task_options());

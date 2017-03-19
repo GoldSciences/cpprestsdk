@@ -61,22 +61,16 @@
 
 #pragma pack(push,_CRT_PACKING)
 
-/// <summary>
 ///     The <c>pplx</c> namespace provides classes and functions that give you access to the Concurrency Runtime,
 ///     a concurrent programming framework for C++. For more information, see <see cref="Concurrency Runtime"/>.
-/// </summary>
 /**/
 namespace pplx
 {
 
-/// <summary>
 /// Sets the ambient scheduler to be used by the PPL constructs.
-/// </summary>
 _PPLXIMP void _pplx_cdecl set_ambient_scheduler(std::shared_ptr<pplx::scheduler_interface> _Scheduler);
 
-/// <summary>
 /// Gets the ambient scheduler to be used by the PPL constructs
-/// </summary>
 _PPLXIMP std::shared_ptr<pplx::scheduler_interface> _pplx_cdecl get_ambient_scheduler();
 
 namespace details

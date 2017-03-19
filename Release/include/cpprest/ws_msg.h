@@ -39,12 +39,10 @@ namespace details
 #endif
 }
 
-/// <summary>
 /// The different types of websocket message.
 /// Text type contains UTF-8 encoded data.
 /// Interpretation of Binary type is left to the application.
 /// Note: The fragment types and control frames like close, ping, pong are not supported on WinRT.
-/// </summary>
 enum class websocket_message_type
 {
     text_message,
@@ -54,77 +52,61 @@ enum class websocket_message_type
     pong
 };
 
-/// <summary>
 /// Represents an outgoing websocket message
-/// </summary>
 class websocket_outgoing_message
 {
 public:
 
 #if !defined(__cplusplus_winrt)
-    /// <summary>
     /// Sets a the outgoing message to be an unsolicited pong message.
     /// This is useful when the client side wants to check whether the server is alive.
-    /// </summary>
     void set_pong_message()
     {
         this->set_message_pong();
     }
 #endif
 
-    /// <summary>
     /// Sets a UTF-8 message as the message body.
-    /// </summary>
-    /// <param name="data">UTF-8 String containing body of the message.</param>
+    /// <param name="data">UTF-8 String containing body of the message.
     void set_utf8_message(std::string &&data)
     {
         this->set_message(concurrency::streams::container_buffer<std::string>(std::move(data)));
     }
 
-    /// <summary>
     /// Sets a UTF-8 message as the message body.
-    /// </summary>
-    /// <param name="data">UTF-8 String containing body of the message.</param>
+    /// <param name="data">UTF-8 String containing body of the message.
     void set_utf8_message(const std::string &data)
     {
         this->set_message(concurrency::streams::container_buffer<std::string>(data));
     }
 
-    /// <summary>
     /// Sets a UTF-8 message as the message body.
-    /// </summary>
-    /// <param name="istream">casablanca input stream representing the body of the message.</param>
-    /// <remarks>Upon sending, the entire stream may be buffered to determine the length.</remarks>
+    /// <param name="istream">casablanca input stream representing the body of the message.
+    /// Upon sending, the entire stream may be buffered to determine the length.
     void set_utf8_message(const concurrency::streams::istream &istream)
     {
         this->set_message(istream, SIZE_MAX, websocket_message_type::text_message);
     }
 
-    /// <summary>
     /// Sets a UTF-8 message as the message body.
-    /// </summary>
-    /// <param name="istream">casablanca input stream representing the body of the message.</param>
-    /// <param name="len">number of bytes to send.</param>
+    /// <param name="istream">casablanca input stream representing the body of the message.
+    /// <param name="len">number of bytes to send.
     void set_utf8_message(const concurrency::streams::istream &istream, size_t len)
     {
         this->set_message(istream, len, websocket_message_type::text_message);
     }
 
-    /// <summary>
     /// Sets binary data as the message body.
-    /// </summary>
-    /// <param name="istream">casablanca input stream representing the body of the message.</param>
-    /// <param name="len">number of bytes to send.</param>
+    /// <param name="istream">casablanca input stream representing the body of the message.
+    /// <param name="len">number of bytes to send.
     void set_binary_message(const concurrency::streams::istream &istream, size_t len)
     {
         this->set_message(istream, len, websocket_message_type::binary_message);
     }
 
-    /// <summary>
     /// Sets binary data as the message body.
-    /// </summary>
-    /// <param name="istream">Input stream representing the body of the message.</param>
-    /// <remarks>Upon sending, the entire stream may be buffered to determine the length.</remarks>
+    /// <param name="istream">Input stream representing the body of the message.
+    /// Upon sending, the entire stream may be buffered to determine the length.
     void set_binary_message(const concurrency::streams::istream &istream)
     {
         this->set_message(istream, SIZE_MAX, websocket_message_type::binary_message);
@@ -176,29 +158,21 @@ private:
     }
 };
 
-/// <summary>
 /// Represents an incoming websocket message
-/// </summary>
 class websocket_incoming_message
 {
 public:
 
-    /// <summary>
     /// Extracts the body of the incoming message as a string value, only if the message type is UTF-8.
     /// A body can only be extracted once because in some cases an optimization is made where the data is 'moved' out.
-    /// </summary>
-    /// <returns>String containing body of the message.</returns>
+    /// Returns string containing body of the message.
     _ASYNCRTIMP pplx::task<std::string> extract_string() const;
 
-    /// <summary>
     /// Produces a stream which the caller may use to retrieve body from an incoming message.
     /// Can be used for both UTF-8 (text) and binary message types.
-    /// </summary>
-    /// <returns>A readable, open asynchronous stream.</returns>
-    /// <remarks>
-    /// This cannot be used in conjunction with any other means of getting the body of the message.
-    /// </remarks>
-    concurrency::streams::istream body() const
+    /// Returns a readable, open asynchronous stream.
+        /// This cannot be used in conjunction with any other means of getting the body of the message.
+        concurrency::streams::istream body() const
     {
         auto to_uint8_t_stream = [](const concurrency::streams::streambuf<uint8_t> &buf) -> concurrency::streams::istream
         {
@@ -207,27 +181,21 @@ public:
         return to_uint8_t_stream(m_body);
     }
 
-    /// <summary>
     /// Returns the length of the received message.
-    /// </summary>
     size_t length() const
     {
         return static_cast<size_t>(m_body.size());
     }
 
-    /// <summary>
     /// Returns the type of the received message.
-    /// </summary>
     CASABLANCA_DEPRECATED("Incorrectly spelled API, use message_type() instead.")
     websocket_message_type messge_type() const
     {
         return m_msg_type;
     }
 
-    /// <summary>
     /// Returns the type of the received message, either string or binary.
-    /// </summary>
-    /// <returns>websocket_message_type</returns>
+    /// <returns>websocket_message_type
     websocket_message_type message_type() const
     {
         return m_msg_type;

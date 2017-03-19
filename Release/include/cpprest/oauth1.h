@@ -89,9 +89,7 @@ public:
 namespace experimental
 {
 
-/// <summary>
 /// Constant strings for OAuth 1.0 signature methods.
-/// </summary>
 typedef utility::string_t oauth1_method;
 class oauth1_methods
 {
@@ -103,9 +101,7 @@ public:
 #undef DAT
 };
 
-/// <summary>
 /// Exception type for OAuth 1.0 errors.
-/// </summary>
 class oauth1_exception : public std::exception
 {
 public:
@@ -117,100 +113,72 @@ private:
     std::string m_msg;
 };
 
-/// <summary>
 /// OAuth 1.0 token and associated information.
-/// </summary>
 class oauth1_token
 {
 public:
 
-    /// <summary>
     /// Constructs an initially empty invalid access token.
-    /// </summary>
     oauth1_token() {}
 
-    /// <summary>
     /// Constructs a OAuth1 token from a given access token and secret.
-    /// </summary>
-    /// <param name="access_token">Access token string.</param>
-    /// <param name="secret">Token secret string.</param>
+    /// <param name="access_token">Access token string.
+    /// <param name="secret">Token secret string.
     oauth1_token(utility::string_t access_token, utility::string_t secret) :
         m_token(std::move(access_token)),
         m_secret(std::move(secret))
     {}
 
-    /// <summary>
     /// Get access token validity state.
     /// If true, token is a valid access token.
-    /// </summary>
-    /// <returns>Access token validity state of the token.</returns>
+    /// Returns access token validity state of the token.
     bool is_valid_access_token() const { return !(access_token().empty() || secret().empty()); }
 
-    /// <summary>
     /// Get access token.
-    /// </summary>
-    /// <returns>The access token string.</returns>
+    /// Returns the access token string.
     const utility::string_t& access_token() const { return m_token; }
 
-    /// <summary>
     /// Set access token.
-    /// </summary>
-    /// <param name="access_token">Access token string to set.</param>
+    /// <param name="access_token">Access token string to set.
     void set_access_token(utility::string_t &&access_token) { m_token = std::move(access_token); }
 
-    /// <summary>
     /// Set access token.
-    /// </summary>
-    /// <param name="access_token">Access token string to set.</param>
+    /// <param name="access_token">Access token string to set.
     void set_access_token(const utility::string_t &access_token) { m_token = access_token; }
 
-    /// <summary>
     /// Get token secret.
-    /// </summary>
-    /// <returns>Token secret string.</returns>
+    /// Returns token secret string.
     const utility::string_t& secret() const { return m_secret; }
 
-    /// <summary>
     /// Set token secret.
-    /// </summary>
-    /// <param name="secret">Token secret string to set.</param>
+    /// <param name="secret">Token secret string to set.
     void set_secret(utility::string_t &&secret) { m_secret = std::move(secret); }
 
-    /// <summary>
     /// Set token secret.
-    /// </summary>
-    /// <param name="secret">Token secret string to set.</param>
+    /// <param name="secret">Token secret string to set.
     void set_secret(const utility::string_t &secret) { m_secret = secret; }
 
-    /// <summary>
     /// Retrieves any additional parameters.
-    /// </summary>
-    /// <returns>A map containing the additional parameters.</returns>
+    /// Returns a map containing the additional parameters.
     const std::map<utility::string_t, utility::string_t> &additional_parameters() const { return m_additional_parameters; }
 
-    /// <summary>
     /// Sets a specific parameter additional parameter.
-    /// </summary>
-    /// <param name="paramName">Parameter name.</param>
-    /// <param name="paramValue">Parameter value.</param>
+    /// <param name="paramName">Parameter name.
+    /// <param name="paramValue">Parameter value.
     void set_additional_parameter(utility::string_t &&paramName, utility::string_t &&paramValue)
     {
         m_additional_parameters[std::move(paramName)] = std::move(paramValue);
     }
 
-    /// <summary>
     /// Sets a specific parameter additional parameter.
-    /// </summary>
-    /// <param name="paramName">Parameter name.</param>
-    /// <param name="paramValue">Parameter value.</param>
+    /// <param name="paramName">Parameter name.
+    /// <param name="paramValue">Parameter value.
     void set_additional_parameter(const utility::string_t &paramName, const utility::string_t &paramValue)
     {
         m_additional_parameters[paramName] = paramValue;
     }
 
-    /// <summary>
     /// Clears all additional parameters.
-    /// </summary>
     void clear_additional_parameters() { m_additional_parameters.clear(); }
 
 private:
@@ -221,9 +189,7 @@ private:
     std::map<utility::string_t, utility::string_t> m_additional_parameters;
 };
 
-/// <summary>
 /// OAuth 1.0 configuration class.
-/// </summary>
 class oauth1_config
 {
 public:
@@ -242,16 +208,13 @@ public:
         m_is_authorization_completed(false)
     {}
 
-    /// <summary>
     /// Builds an authorization URI to be loaded in a web browser/view.
     /// The URI is built with auth_endpoint() as basis.
     /// The method creates a task for HTTP request to first obtain a
     /// temporary token. The authorization URI build based on this token.
-    /// </summary>
-    /// <returns>Authorization URI to be loaded in a web browser/view.</returns>
+    /// Returns authorization URI to be loaded in a web browser/view.
     _ASYNCRTIMP pplx::task<utility::string_t> build_authorization_uri();
 
-    /// <summary>
     /// Fetch an access token based on redirected URI.
     /// The URI is expected to contain 'oauth_verifier'
     /// parameter, which is then used to fetch an access token using the
@@ -260,146 +223,103 @@ public:
     /// The received 'oauth_token' is parsed and verified to match the current token().
     /// When access token is successfully obtained, set_token() is called, and config is
     /// ready for use by oauth1_handler.
-    /// </summary>
-    /// <param name="redirected_uri">The URI where web browser/view was redirected after resource owner's authorization.</param>
-    /// <returns>Task that fetches the access token based on redirected URI.</returns>
+    /// <param name="redirected_uri">The URI where web browser/view was redirected after resource owner's authorization.
+    /// Returns task that fetches the access token based on redirected URI.
     _ASYNCRTIMP pplx::task<void> token_from_redirected_uri(const web::http::uri& redirected_uri);
 
-    /// <summary>
     /// Creates a task with HTTP request to fetch an access token from the token endpoint.
     /// The request exchanges a verifier code to an access token.
     /// If successful, the resulting token is set as active via set_token().
     /// See: http://tools.ietf.org/html/rfc5849#section-2.3
-    /// </summary>
-    /// <param name="verifier">Verifier received via redirect upon successful authorization.</param>
-    /// <returns>Task that fetches the access token based on the verifier.</returns>
+    /// <param name="verifier">Verifier received via redirect upon successful authorization.
+    /// Returns task that fetches the access token based on the verifier.
     pplx::task<void> token_from_verifier(utility::string_t verifier)
     {
         return _request_token(_generate_auth_state(details::oauth1_strings::verifier, std::move(verifier)), false);
     }
 
-    /// <summary>
     /// Creates a task with HTTP request to fetch an access token from the token endpoint.
     /// If successful, the resulting token is set as active via set_token().
-    /// </summary>
-    /// <returns>Task that fetches the access token based on the verifier.</returns>
+    /// Returns task that fetches the access token based on the verifier.
     pplx::task<void> refresh_token(const utility::string_t &key)
     {
         return _request_token(_generate_auth_state(key, m_token.additional_parameters().at(key)), false);
     }
 
-    /// <summary>
     /// Get consumer key used in authorization and authentication.
-    /// </summary>
-    /// <returns>Consumer key string.</returns>
+    /// <returns>Consumer key string.
     const utility::string_t& consumer_key() const { return m_consumer_key; }
-    /// <summary>
     /// Set consumer key used in authorization and authentication.
-    /// </summary>
-    /// <param name="key">Consumer key string to set.</param>
+    /// <param name="key">Consumer key string to set.
     void set_consumer_key(utility::string_t key) { m_consumer_key = std::move(key); }
 
-    /// <summary>
     /// Get consumer secret used in authorization and authentication.
-    /// </summary>
-    /// <returns>Consumer secret string.</returns>
+    /// <returns>Consumer secret string.
     const utility::string_t& consumer_secret() const { return m_consumer_secret; }
-    /// <summary>
     /// Set consumer secret used in authorization and authentication.
-    /// </summary>
-    /// <param name="secret">Consumer secret string to set.</param>
+    /// <param name="secret">Consumer secret string to set.
     void set_consumer_secret(utility::string_t secret) { m_consumer_secret = std::move(secret); }
 
-    /// <summary>
     /// Get temporary token endpoint URI string.
-    /// </summary>
-    /// <returns>Temporary token endpoint URI string.</returns>
+    /// Returns temporary token endpoint URI string.
     const utility::string_t& temp_endpoint() const { return m_temp_endpoint; }
-    /// <summary>
     /// Set temporary token endpoint URI string.
-    /// </summary>
-    /// <param name="temp_endpoint">Temporary token endpoint URI string to set.</param>
+    /// <param name="temp_endpoint">Temporary token endpoint URI string to set.
     void set_temp_endpoint(utility::string_t temp_endpoint) { m_temp_endpoint = std::move(temp_endpoint); }
 
-    /// <summary>
     /// Get authorization endpoint URI string.
-    /// </summary>
-    /// <returns>Authorization endpoint URI string.</returns>
+    /// Returns authorization endpoint URI string.
     const utility::string_t& auth_endpoint() const { return m_auth_endpoint; }
-    /// <summary>
     /// Set authorization endpoint URI string.
-    /// </summary>
-    /// <param name="auth_endpoint">Authorization endpoint URI string to set.</param>
+    /// <param name="auth_endpoint">Authorization endpoint URI string to set.
     void set_auth_endpoint(utility::string_t auth_endpoint) { m_auth_endpoint = std::move(auth_endpoint); }
 
-    /// <summary>
     /// Get token endpoint URI string.
-    /// </summary>
-    /// <returns>Token endpoint URI string.</returns>
+    /// Returns token endpoint URI string.
     const utility::string_t& token_endpoint() const { return m_token_endpoint; }
-    /// <summary>
     /// Set token endpoint URI string.
-    /// </summary>
-    /// <param name="token_endpoint">Token endpoint URI string to set.</param>
+    /// <param name="token_endpoint">Token endpoint URI string to set.
     void set_token_endpoint(utility::string_t token_endpoint) { m_token_endpoint = std::move(token_endpoint); }
 
-    /// <summary>
     /// Get callback URI string.
-    /// </summary>
-    /// <returns>Callback URI string.</returns>
+    /// <returns>Callback URI string.
     const utility::string_t& callback_uri() const { return m_callback_uri; }
-    /// <summary>
     /// Set callback URI string.
-    /// </summary>
-    /// <param name="callback_uri">Callback URI string to set.</param>
+    /// <param name="callback_uri">Callback URI string to set.
     void set_callback_uri(utility::string_t callback_uri) { m_callback_uri = std::move(callback_uri); }
 
-    /// <summary>
     /// Get token.
-    /// </summary>
-    /// <returns>Token.</returns>
+    /// Returns token.
     _ASYNCRTIMP const oauth1_token& token() const;
 
-    /// <summary>
     /// Set token.
-    /// </summary>
-    /// <param name="token">Token to set.</param>
+    /// <param name="token">Token to set.
     void set_token(oauth1_token token)
     {
         m_token = std::move(token);
         m_is_authorization_completed = true;
     }
 
-    /// <summary>
     /// Get signature method.
-    /// </summary>
-    /// <returns>Signature method.</returns>
+    /// Returns signature method.
     const oauth1_method& method() const { return m_method; }
-    /// <summary>
     /// Set signature method.
-    /// </summary>
-    /// <param name="method">Signature method.</param>
+    /// <param name="method">Signature method.
     void set_method(oauth1_method method) { m_method = std::move(method); }
 
-    /// <summary>
     /// Get authentication realm.
-    /// </summary>
-    /// <returns>Authentication realm string.</returns>
+    /// Returns authentication realm string.
     const utility::string_t& realm() const { return m_realm; }
-    /// <summary>
     /// Set authentication realm.
-    /// </summary>
-    /// <param name="realm">Authentication realm string to set.</param>
+    /// <param name="realm">Authentication realm string to set.
     void set_realm(utility::string_t realm) { m_realm = std::move(realm); }
 
-    /// <summary>
     /// Returns enabled state of the configuration.
     /// The oauth1_handler will perform OAuth 1.0 authentication only if
     /// this method returns true.
     /// Return value is true if access token is valid (=fetched or manually set)
     /// and both consumer_key() and consumer_secret() are set (=non-empty).
-    /// </summary>
-    /// <returns>The configuration enabled state.</returns>
+    /// Returns the configuration enabled state.
     bool is_enabled() const { return token().is_valid_access_token() && !(consumer_key().empty() || consumer_secret().empty()); }
 
     // Builds signature base string according to:
@@ -433,54 +353,40 @@ public:
         return details::oauth1_state(_generate_timestamp(), _generate_nonce());
     }
 
-    /// <summary>
     /// Gets map of parameters to sign.
-    /// </summary>
-    /// <returns>Map of parameters.</returns>
+    /// <returns>Map of parameters.
     const std::map<utility::string_t, utility::string_t>& parameters() const { return m_parameters_to_sign; }
 
-    /// <summary>
     /// Adds a key value parameter.
-    /// </summary>
-    /// <param name="key">Key as a string value.</param>
-    /// <param name="value">Value as a string value.</param>
+    /// <param name="key">Key as a string value.
+    /// <param name="value">Value as a string value.
     void add_parameter(const utility::string_t &key, const utility::string_t &value) { m_parameters_to_sign[key] = value; }
 
-    /// <summary>
     /// Adds a key value parameter.
-    /// </summary>
-    /// <param name="key">Key as a string value.</param>
-    /// <param name="value">Value as a string value.</param>
+    /// <param name="key">Key as a string value.
+    /// <param name="value">Value as a string value.
     void add_parameter(utility::string_t &&key, utility::string_t &&value) { m_parameters_to_sign[std::move(key)] = std::move(value); }
 
-    /// <summary>
     /// Sets entire map or parameters replacing all previously values.
-    /// </summary>
-    /// <param name="parameters">Map of values.</param>
+    /// <param name="parameters">Map of values.
     void set_parameters(const std::map<utility::string_t, utility::string_t> &parameters)
     {
         m_parameters_to_sign.clear();
         m_parameters_to_sign = parameters;
     }
 
-    /// <summary>
     /// Clears all parameters.
-    /// </summary>
     void clear_parameters() { m_parameters_to_sign.clear(); }
 
-    /// <summary>
     /// Get the web proxy object
-    /// </summary>
-    /// <returns>A reference to the web proxy object.</returns>
+    /// Returns a reference to the web proxy object.
     const web_proxy& proxy() const
     {
         return m_proxy;
     }
 
-    /// <summary>
     /// Set the web proxy object that will be used by token_from_code and token_from_refresh
-    /// </summary>
-    /// <param name="proxy">A reference to the web proxy object.</param>
+    /// <param name="proxy">A reference to the web proxy object.
     void set_proxy(const web_proxy& proxy)
     {
         m_proxy = proxy;

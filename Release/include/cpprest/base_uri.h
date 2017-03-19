@@ -92,9 +92,7 @@ namespace web {
         };
     }
 
-    /// <summary>
     /// A single exception type to represent errors in parsing, encoding, and decoding URIs.
-    /// </summary>
     class uri_exception : public std::exception
     {
     public:
@@ -112,14 +110,11 @@ namespace web {
         std::string m_msg;
     };
 
-    /// <summary>
     /// A flexible, protocol independent URI implementation.
     ///
     /// URI instances are immutable. Querying the various fields on an emtpy URI will return empty strings. Querying
     /// various diagnostic members on an empty URI will return false.
-    /// </summary>
-    /// <remarks>
-    /// This implementation accepts both URIs ('http://msn.com/path') and URI relative-references
+        /// This implementation accepts both URIs ('http://msn.com/path') and URI relative-references
     /// ('/path?query#frag').
     ///
     /// This implementation does not provide any scheme-specific handling -- an example of this
@@ -135,19 +130,16 @@ namespace web {
     /// the 'default' port can be either omitted or explicit. Since we don't have a way to map a scheme
     /// to it's default port, we don't have a way to know these are equal. This is just one of a class of
     /// issues with regard to scheme-specific behavior.
-    /// </remarks>
-    class uri
+        class uri
     {
     public:
 
-        /// <summary>
-        /// The various components of a URI. This enum is used to indicate which
+            /// The various components of a URI. This enum is used to indicate which
         /// URI component is being encoded to the encode_uri_component. This allows
         /// specific encoding to be performed.
         ///
         /// Scheme and port don't allow '%' so they don't need to be encoded.
-        /// </summary>
-        class components
+            class components
         {
         public:
             enum component
@@ -161,88 +153,64 @@ namespace web {
             };
         };
 
-        /// <summary>
-        /// Encodes a URI component according to RFC 3986.
+            /// Encodes a URI component according to RFC 3986.
         /// Note if a full URI is specified instead of an individual URI component all
         /// characters not in the unreserved set are escaped.
-        /// </summary>
-        /// <param name="raw">The URI as a string.</param>
-        /// <returns>The encoded string.</returns>
+            /// <param name="raw">The URI as a string.
+        /// Returns the encoded string.
         _ASYNCRTIMP static utility::string_t __cdecl encode_uri(const utility::string_t &raw, uri::components::component = components::full_uri);
 
-        /// <summary>
-        /// Encodes a string by converting all characters except for RFC 3986 unreserved characters to their
+            /// Encodes a string by converting all characters except for RFC 3986 unreserved characters to their
         /// hexadecimal representation.
-        /// </summary>
-        /// <param name="utf8data">The UTF-8 string data.</param>
-        /// <returns>The encoded string.</returns>
+            /// <param name="utf8data">The UTF-8 string data.
+        /// Returns the encoded string.
         _ASYNCRTIMP static utility::string_t __cdecl encode_data_string(const utility::string_t &utf8data);
 
-        /// <summary>
-        /// Decodes an encoded string.
-        /// </summary>
-        /// <param name="encoded">The URI as a string.</param>
-        /// <returns>The decoded string.</returns>
+            /// Decodes an encoded string.
+            /// <param name="encoded">The URI as a string.
+        /// Returns the decoded string.
         _ASYNCRTIMP static utility::string_t __cdecl decode(const utility::string_t &encoded);
 
-        /// <summary>
-        /// Splits a path into its hierarchical components.
-        /// </summary>
-        /// <param name="path">The path as a string</param>
-        /// <returns>A <c>std::vector&lt;utility::string_t&gt;</c> containing the segments in the path.</returns>
+            /// Splits a path into its hierarchical components.
+            /// <param name="path">The path as a string
+        /// Returns a <c>std::vector&lt;utility::string_t&gt;</c> containing the segments in the path.
         _ASYNCRTIMP static std::vector<utility::string_t> __cdecl split_path(const utility::string_t &path);
 
-        /// <summary>
-        /// Splits a query into its key-value components.
-        /// </summary>
-        /// <param name="query">The query string</param>
-        /// <returns>A <c>std::map&lt;utility::string_t, utility::string_t&gt;</c> containing the key-value components of the query.</returns>
+            /// Splits a query into its key-value components.
+            /// <param name="query">The query string
+        /// Returns a <c>std::map&lt;utility::string_t, utility::string_t&gt;</c> containing the key-value components of the query.
         _ASYNCRTIMP static std::map<utility::string_t, utility::string_t> __cdecl split_query(const utility::string_t &query);
 
-        /// <summary>
-        /// Validates a string as a URI.
-        /// </summary>
-        /// <param name="uri_string">The URI string to be validated.</param>
-        /// <returns><c>true</c> if the given string represents a valid URI, <c>false</c> otherwise.</returns>
+            /// Validates a string as a URI.
+            /// <param name="uri_string">The URI string to be validated.
+        /// <returns><c>true</c> if the given string represents a valid URI, <c>false</c> otherwise.
         _ASYNCRTIMP static bool __cdecl validate(const utility::string_t &uri_string);
 
-        /// <summary>
-        /// Creates an empty uri
-        /// </summary>
-        uri() { m_uri = _XPLATSTR("/");};
+            /// Creates an empty uri
+            uri() { m_uri = _XPLATSTR("/");};
 
-        /// <summary>
-        /// Creates a URI from the given URI components.
-        /// </summary>
-        /// <param name="components">A URI components object to create the URI instance.</param>
+            /// Creates a URI from the given URI components.
+            /// <param name="components">A URI components object to create the URI instance.
         _ASYNCRTIMP uri(const details::uri_components &components);
 
-        /// <summary>
-        /// Creates a URI from the given encoded string. This will throw an exception if the string
+            /// Creates a URI from the given encoded string. This will throw an exception if the string
         /// does not contain a valid URI. Use uri::validate if processing user-input.
-        /// </summary>
-        /// <param name="uri_string">A pointer to an encoded string to create the URI instance.</param>
+            /// <param name="uri_string">A pointer to an encoded string to create the URI instance.
         _ASYNCRTIMP uri(const utility::char_t *uri_string);
 
-        /// <summary>
-        /// Creates a URI from the given encoded string. This will throw an exception if the string
+            /// Creates a URI from the given encoded string. This will throw an exception if the string
         /// does not contain a valid URI. Use uri::validate if processing user-input.
-        /// </summary>
-        /// <param name="uri_string">An encoded URI string to create the URI instance.</param>
+            /// <param name="uri_string">An encoded URI string to create the URI instance.
         _ASYNCRTIMP uri(const utility::string_t &uri_string);
 
-        /// <summary>
-        /// Copy constructor.
-        /// </summary>
-        uri(const uri &other) :
+            /// Copy constructor.
+            uri(const uri &other) :
             m_uri(other.m_uri),
             m_components(other.m_components)
         {}
 
-        /// <summary>
-        /// Copy assignment operator.
-        /// </summary>
-        uri & operator=(const uri &other)
+            /// Copy assignment operator.
+            uri & operator=(const uri &other)
         {
             if (this != &other)
             {
@@ -252,18 +220,14 @@ namespace web {
             return *this;
         }
 
-        /// <summary>
-        /// Move constructor.
-        /// </summary>
-        uri(uri &&other) CPPREST_NOEXCEPT :
+            /// Move constructor.
+            uri(uri &&other) CPPREST_NOEXCEPT :
             m_uri(std::move(other.m_uri)),
             m_components(std::move(other.m_components))
         {}
 
-        /// <summary>
-        /// Move assignment operator
-        /// </summary>
-        uri & operator=(uri &&other) CPPREST_NOEXCEPT
+            /// Move assignment operator
+            uri & operator=(uri &&other) CPPREST_NOEXCEPT
         {
             if (this != &other)
             {
@@ -273,84 +237,58 @@ namespace web {
             return *this;
         }
 
-        /// <summary>
-        /// Get the scheme component of the URI as an encoded string.
-        /// </summary>
-        /// <returns>The URI scheme as a string.</returns>
+            /// Get the scheme component of the URI as an encoded string.
+            /// Returns the URI scheme as a string.
         const utility::string_t &scheme() const { return m_components.m_scheme; }
 
-        /// <summary>
-        /// Get the user information component of the URI as an encoded string.
-        /// </summary>
-        /// <returns>The URI user information as a string.</returns>
+            /// Get the user information component of the URI as an encoded string.
+            /// Returns the URI user information as a string.
         const utility::string_t &user_info() const { return m_components.m_user_info; }
 
-        /// <summary>
-        /// Get the host component of the URI as an encoded string.
-        /// </summary>
-        /// <returns>The URI host as a string.</returns>
+            /// Get the host component of the URI as an encoded string.
+            /// Returns the URI host as a string.
         const utility::string_t &host() const { return m_components.m_host; }
 
-        /// <summary>
-        /// Get the port component of the URI. Returns -1 if no port is specified.
-        /// </summary>
-        /// <returns>The URI port as an integer.</returns>
+            /// Get the port component of the URI. Returns -1 if no port is specified.
+            /// Returns the URI port as an integer.
         int port() const { return m_components.m_port; }
 
-        /// <summary>
-        /// Get the path component of the URI as an encoded string.
-        /// </summary>
-        /// <returns>The URI path as a string.</returns>
+            /// Get the path component of the URI as an encoded string.
+            /// Returns the URI path as a string.
         const utility::string_t &path() const { return m_components.m_path; }
 
-        /// <summary>
-        /// Get the query component of the URI as an encoded string.
-        /// </summary>
-        /// <returns>The URI query as a string.</returns>
+            /// Get the query component of the URI as an encoded string.
+            /// Returns the URI query as a string.
         const utility::string_t &query() const { return m_components.m_query; }
 
-        /// <summary>
-        /// Get the fragment component of the URI as an encoded string.
-        /// </summary>
-        /// <returns>The URI fragment as a string.</returns>
+            /// Get the fragment component of the URI as an encoded string.
+            /// Returns the URI fragment as a string.
         const utility::string_t &fragment() const { return m_components.m_fragment; }
 
-        /// <summary>
-        /// Creates a new uri object with the same authority portion as this one, omitting the resource and query portions.
-        /// </summary>
-        /// <returns>The new uri object with the same authority.</returns>
+            /// Creates a new uri object with the same authority portion as this one, omitting the resource and query portions.
+            /// Returns the new uri object with the same authority.
         _ASYNCRTIMP uri authority() const;
 
-        /// <summary>
-        /// Gets the path, query, and fragment portion of this uri, which may be empty.
-        /// </summary>
-        /// <returns>The new URI object with the path, query and fragment portion of this URI.</returns>
+            /// Gets the path, query, and fragment portion of this uri, which may be empty.
+            /// Returns the new URI object with the path, query and fragment portion of this URI.
         _ASYNCRTIMP uri resource() const;
 
-        /// <summary>
-        /// An empty URI specifies no components, and serves as a default value
-        /// </summary>
-        bool is_empty() const
+            /// An empty URI specifies no components, and serves as a default value
+            bool is_empty() const
         {
             return this->m_uri.empty() || this->m_uri == _XPLATSTR("/");
         }
 
-        /// <summary>
-        /// A loopback URI is one which refers to a hostname or ip address with meaning only on the local machine.
-        /// </summary>
-        /// <remarks>
-        /// Examples include "locahost", or ip addresses in the loopback range (127.0.0.0/24).
-        /// </remarks>
-        /// <returns><c>true</c> if this URI references the local host, <c>false</c> otherwise.</returns>
+            /// A loopback URI is one which refers to a hostname or ip address with meaning only on the local machine.
+                    /// Examples include "locahost", or ip addresses in the loopback range (127.0.0.0/24).
+                /// <returns><c>true</c> if this URI references the local host, <c>false</c> otherwise.
         bool is_host_loopback() const
         {
             return !is_empty() && ((host() == _XPLATSTR("localhost")) || (host().size() > 4 && host().substr(0,4) == _XPLATSTR("127.")));
         }
 
-        /// <summary>
-        /// A wildcard URI is one which refers to all hostnames that resolve to the local machine (using the * or +)
-        /// </summary>
-        /// <example>
+            /// A wildcard URI is one which refers to all hostnames that resolve to the local machine (using the * or +)
+            /// <example>
         /// http://*:80
         /// </example>
         bool is_host_wildcard() const
@@ -358,16 +296,12 @@ namespace web {
             return !is_empty() && (this->host() == _XPLATSTR("*") || this->host() == _XPLATSTR("+"));
         }
 
-        /// <summary>
-        /// A portable URI is one with a hostname that can be resolved globally (used from another machine).
-        /// </summary>
-        /// <returns><c>true</c> if this URI can be resolved globally (used from another machine), <c>false</c> otherwise.</returns>
-        /// <remarks>
-        /// The hostname "localhost" is a reserved name that is guaranteed to resolve to the local machine,
+            /// A portable URI is one with a hostname that can be resolved globally (used from another machine).
+            /// <returns><c>true</c> if this URI can be resolved globally (used from another machine), <c>false</c> otherwise.
+                /// The hostname "localhost" is a reserved name that is guaranteed to resolve to the local machine,
         /// and cannot be used for inter-machine communication. Likewise the hostnames "*" and "+" on Windows
         /// represent wildcards, and do not map to a resolvable address.
-        /// </remarks>
-        bool is_host_portable() const
+                bool is_host_portable() const
         {
             return !(is_empty() || is_host_loopback() || is_host_wildcard());
         }
@@ -375,45 +309,36 @@ namespace web {
         // <summary>
         /// A default port is one where the port is unspecified, and will be determined by the operating system.
         /// The choice of default port may be dictated by the scheme (http -> 80) or not.
-        /// </summary>
-        /// <returns><c>true</c> if this URI instance has a default port, <c>false</c> otherwise.</returns>
+            /// <returns><c>true</c> if this URI instance has a default port, <c>false</c> otherwise.
         bool is_port_default() const
         {
             return !is_empty() && this->port() == 0;
         }
 
-        /// <summary>
-        /// An "authority" URI is one with only a scheme, optional userinfo, hostname, and (optional) port.
-        /// </summary>
-        /// <returns><c>true</c> if this is an "authority" URI, <c>false</c> otherwise.</returns>
+            /// An "authority" URI is one with only a scheme, optional userinfo, hostname, and (optional) port.
+            /// <returns><c>true</c> if this is an "authority" URI, <c>false</c> otherwise.
         bool is_authority() const
         {
             return !is_empty() && is_path_empty() && query().empty() && fragment().empty();
         }
 
-        /// <summary>
-        /// Returns whether the other URI has the same authority as this one
-        /// </summary>
-        /// <param name="other">The URI to compare the authority with.</param>
-        /// <returns><c>true</c> if both the URI's have the same authority, <c>false</c> otherwise.</returns>
+            /// Returns whether the other URI has the same authority as this one
+            /// <param name="other">The URI to compare the authority with.
+        /// <returns><c>true</c> if both the URI's have the same authority, <c>false</c> otherwise.
         bool has_same_authority(const uri &other) const
         {
             return !is_empty() && this->authority() == other.authority();
         }
 
-        /// <summary>
-        /// Returns whether the path portion of this URI is empty
-        /// </summary>
-        /// <returns><c>true</c> if the path portion of this URI is empty, <c>false</c> otherwise.</returns>
+            /// Returns whether the path portion of this URI is empty
+            /// <returns><c>true</c> if the path portion of this URI is empty, <c>false</c> otherwise.
         bool is_path_empty() const
         {
             return path().empty() || path() == _XPLATSTR("/");
         }
 
-        /// <summary>
-        /// Returns the full (encoded) URI as a string.
-        /// </summary>
-         /// <returns>The full encoded URI string.</returns>
+            /// Returns the full (encoded) URI as a string.
+             /// Returns the full encoded URI string.
         utility::string_t to_string() const
         {
             return m_uri;

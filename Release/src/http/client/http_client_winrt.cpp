@@ -179,14 +179,10 @@ private:
     std::shared_ptr<winrt_request_context> m_request;
 };
 
-/// <summary>
 /// This class acts as a bridge for the underlying request stream.
-/// </summary>
-/// <remarks>
 /// These operations are completely synchronous, so it's important to block on both
 /// read and write operations. The I/O will be done off the UI thread, so there is no risk
 /// of causing the UI to become unresponsive.
-/// </remarks>
 class IRequestStream
     : public Microsoft::WRL::RuntimeClass<Microsoft::WRL::RuntimeClassFlags<ClassicCom>, ISequentialStream>
 {
@@ -268,14 +264,10 @@ private:
     size_t m_read_length;
 };
 
-/// <summary>
 /// This class acts as a bridge for the underlying response stream.
-/// </summary>
-/// <remarks>
 /// These operations are completely synchronous, so it's important to block on both
 /// read and write operations. The I/O will be done off the UI thread, so there is no risk
 /// of causing the UI to become unresponsive.
-/// </remarks>
 class IResponseStream
     : public Microsoft::WRL::RuntimeClass<Microsoft::WRL::RuntimeClassFlags<ClassicCom>, ISequentialStream>
 {

@@ -144,10 +144,8 @@ utility::string_t uri::encode_impl(const utility::string_t &raw, const std::func
     return encoded;
 }
 
-/// </summary>
 /// Encodes a string by converting all characters except for RFC 3986 unreserved characters to their
 /// hexadecimal representation.
-/// </summary>
 utility::string_t uri::encode_data_string(const utility::string_t &raw)
 {
     return uri::encode_impl(raw, [](int ch) -> bool
@@ -202,10 +200,8 @@ utility::string_t uri::encode_uri(const utility::string_t &raw, uri::components:
     };
 }
 
-/// <summary>
 /// Helper function to convert a hex character digit to a decimal character value.
 /// Throws an exception if not a valid hex digit.
-/// </summary>
 static int hex_char_digit_to_decimal_char(int hex)
 {
     int decimal;

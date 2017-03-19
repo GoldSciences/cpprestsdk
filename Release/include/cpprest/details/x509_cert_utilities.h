@@ -35,13 +35,11 @@
 
 namespace web { namespace http { namespace client { namespace details {
 
-/// <summary>
 /// Using platform specific APIs verifies server certificate.
 /// Currently implemented to work on iOS, Android, and OS X.
-/// </summary>
-/// <param name="verifyCtx">Boost.ASIO context to get certificate chain from.</param>
-/// <param name="hostName">Host name from the URI.</param>
-/// <returns>True if verification passed and server can be trusted, false otherwise.</returns>
+/// <param name="verifyCtx">Boost.ASIO context to get certificate chain from.
+/// <param name="hostName">Host name from the URI.
+/// Returns true if verification passed and server can be trusted, false otherwise.
 bool verify_cert_chain_platform_specific(boost::asio::ssl::verify_context &verifyCtx, const std::string &hostName);
 
 }}}}

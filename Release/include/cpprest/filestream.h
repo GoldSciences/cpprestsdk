@@ -79,10 +79,8 @@ namespace details {
     };
 
 
-    /// <summary>
     /// Private stream buffer implementation for file streams.
     /// The class itself should not be used in application code, it is used by the stream definitions farther down in the header file.
-    /// </summary>
     template<typename _CharType>
     class basic_file_buffer : public details::streambuf_state_manager<_CharType>
     {
@@ -107,15 +105,11 @@ namespace details {
 
     protected:
 
-        /// <summary>
-        /// <c>can_seek</c> is used to determine whether a stream buffer supports seeking.
-        /// </summary>
-        virtual bool can_seek() const { return this->is_open(); }
+            /// <c>can_seek</c> is used to determine whether a stream buffer supports seeking.
+            virtual bool can_seek() const { return this->is_open(); }
 
-        /// <summary>
-        /// <c>has_size<c/> is used to determine whether a stream buffer supports size().
-        /// </summary>
-        virtual bool has_size() const { return this->is_open(); }
+            /// <c>has_size<c/> is used to determine whether a stream buffer supports size().
+            virtual bool has_size() const { return this->is_open(); }
 
         virtual utility::size64_t size() const
         {
@@ -125,11 +119,9 @@ namespace details {
         }
 
 
-        /// <summary>
-        /// Gets the stream buffer size, if one has been set.
-        /// </summary>
-        /// <param name="direction">The direction of buffering (in or out)</param>
-        /// <remarks>An implementation that does not support buffering will always return '0'.</remarks>
+            /// Gets the stream buffer size, if one has been set.
+            /// <param name="direction">The direction of buffering (in or out)
+        /// An implementation that does not support buffering will always return '0'.
         virtual size_t buffer_size(std::ios_base::openmode direction = std::ios_base::in) const
         {
             if ( direction == std::ios_base::in )
@@ -138,13 +130,11 @@ namespace details {
                 return 0;
         }
 
-        /// <summary>
-        /// Sets the stream buffer implementation to buffer or not buffer.
-        /// </summary>
-        /// <param name="size">The size to use for internal buffering, 0 if no buffering should be done.</param>
-        /// <param name="direction">The direction of buffering (in or out)</param>
-        /// <remarks>An implementation that does not support buffering will silently ignore calls to this function and it will not have
-        ///          any effect on what is returned by subsequent calls to buffer_size().</remarks>
+            /// Sets the stream buffer implementation to buffer or not buffer.
+            /// <param name="size">The size to use for internal buffering, 0 if no buffering should be done.
+        /// <param name="direction">The direction of buffering (in or out)
+        /// An implementation that does not support buffering will silently ignore calls to this function and it will not have
+        ///          any effect on what is returned by subsequent calls to buffer_size().
         virtual void set_buffer_size(size_t size, std::ios_base::openmode direction = std::ios_base::in)
         {
             if ( direction == std::ios_base::out ) return;
@@ -158,12 +148,10 @@ namespace details {
             }
         }
 
-        /// <summary>
-        /// For any input stream, <c>in_avail</c> returns the number of characters that are immediately available
+            /// For any input stream, <c>in_avail</c> returns the number of characters that are immediately available
         /// to be consumed without blocking. May be used in conjunction with <cref="::sbumpc method"/> to read data without
         /// incurring the overhead of using tasks.
-        /// </summary>
-        virtual size_t in_avail() const
+            virtual size_t in_avail() const
         {
             pplx::extensibility::scoped_recursive_lock_t lck(m_info->m_lock);
 
@@ -264,11 +252,9 @@ namespace details {
             }
         }
 
-        /// <summary>
-        /// Writes a single byte to an output stream.
-        /// </summary>
-        /// <param name="ch">The byte to write</param>
-            /// <returns>A <c>task</c> that holds the value of the byte written. This is EOF if the write operation fails.</returns>
+            /// Writes a single byte to an output stream.
+            /// <param name="ch">The byte to write
+            /// Returns a <c>task</c> that holds the value of the byte written. This is EOF if the write operation fails.
         virtual pplx::task<int_type> _putc(_CharType ch)
         {
             auto result_tce = pplx::task_completion_event<size_t>();
@@ -298,61 +284,49 @@ namespace details {
             });
         }
 
-        /// <summary>
-        /// Allocates a contiguous memory block and returns it.
-        /// </summary>
-        /// <param name="count">The number of characters to allocate.</param>
-        /// <returns>A pointer to a block to write to, null if the stream buffer implementation does not support alloc/commit.</returns>
+            /// Allocates a contiguous memory block and returns it.
+            /// <param name="count">The number of characters to allocate.
+        /// Returns a pointer to a block to write to, null if the stream buffer implementation does not support alloc/commit.
         _CharType* _alloc(size_t)
         {
             return nullptr;
         }
 
-        /// <summary>
-        /// Submits a block already allocated by the stream buffer.
-        /// </summary>
-        /// <param name="ptr">Count of characters to be commited.</param>
+            /// Submits a block already allocated by the stream buffer.
+            /// <param name="ptr">Count of characters to be commited.
         void _commit(size_t)
         {
         }
 
-        /// <summary>
-        /// Gets a pointer to the next already allocated contiguous block of data.
-        /// </summary>
-        /// <param name="ptr">A reference to a pointer variable that will hold the address of the block on success.</param>
-        /// <param name="count">The number of contiguous characters available at the address in 'ptr.'</param>
-        /// <returns><c>true</c> if the operation succeeded, <c>false</c> otherwise.</returns>
-        /// <remarks>
-        /// A return of false does not necessarily indicate that a subsequent read operation would fail, only that
+            /// Gets a pointer to the next already allocated contiguous block of data.
+            /// <param name="ptr">A reference to a pointer variable that will hold the address of the block on success.
+        /// <param name="count">The number of contiguous characters available at the address in 'ptr.'
+        /// <returns><c>true</c> if the operation succeeded, <c>false</c> otherwise.
+                /// A return of false does not necessarily indicate that a subsequent read operation would fail, only that
         /// there is no block to return immediately or that the stream buffer does not support the operation.
         /// The stream buffer may not de-allocate the block until <see cref="::release method" /> is called.
         /// If the end of the stream is reached, the function will return <c>true</c>, a null pointer, and a count of zero;
         /// a subsequent read will not succeed.
-        /// </remarks>
-        virtual bool acquire(_Out_ _CharType*& ptr, _Out_ size_t& count)
+                virtual bool acquire(_Out_ _CharType*& ptr, _Out_ size_t& count)
         {
             ptr = nullptr;
             count = 0;
             return false;
         }
 
-        /// <summary>
-        /// Releases a block of data acquired using <see cref="::acquire method"/>. This frees the stream buffer to de-allocate the
+            /// Releases a block of data acquired using <see cref="::acquire method"/>. This frees the stream buffer to de-allocate the
         /// memory, if it so desires. Move the read position ahead by the count.
-        /// </summary>
-        /// <param name="ptr">A pointer to the block of data to be released.</param>
-        /// <param name="count">The number of characters that were read.</param>
+            /// <param name="ptr">A pointer to the block of data to be released.
+        /// <param name="count">The number of characters that were read.
         virtual void release(_Out_writes_ (count) _CharType *, _In_ size_t count)
         {
             (void)(count);
         }
 
-        /// <summary>
-        /// Writes a number of characters to the stream.
-        /// </summary>
-        /// <param name="ptr">A pointer to the block of data to be written.</param>
-        /// <param name="count">The number of characters to write.</param>
-        /// <returns>A <c>task</c> that holds the number of characters actually written, either 'count' or 0.</returns>
+            /// Writes a number of characters to the stream.
+            /// <param name="ptr">A pointer to the block of data to be written.
+        /// <param name="count">The number of characters to write.
+        /// Returns a <c>task</c> that holds the number of characters actually written, either 'count' or 0.
         virtual pplx::task<size_t> _putn(const _CharType *ptr, size_t count)
         {
             auto result_tce = pplx::task_completion_event<size_t>();
@@ -386,10 +360,8 @@ namespace details {
             }
         }
 
-        /// <summary>
-        /// Reads a single byte from the stream and advance the read position.
-        /// </summary>
-            /// <returns>A <c>task</c> that holds the value of the byte read. This is EOF if the read fails.</returns>
+            /// Reads a single byte from the stream and advance the read position.
+                /// Returns a <c>task</c> that holds the value of the byte read. This is EOF if the read fails.
         virtual pplx::task<int_type> _bumpc()
         {
             return m_readOps.enqueue_operation([this]()-> pplx::task<int_type> {
@@ -425,11 +397,9 @@ namespace details {
             });
         }
 
-        /// <summary>
-        /// Reads a single byte from the stream and advance the read position.
-        /// </summary>
-        /// <returns>The value of the byte. EOF if the read fails. <see cref="::requires_async method" /> if an asynchronous read is required</returns>
-        /// <remarks>This is a synchronous operation, but is guaranteed to never block.</remarks>
+            /// Reads a single byte from the stream and advance the read position.
+            /// Returns the value of the byte. EOF if the read fails. <see cref="::requires_async method" /> if an asynchronous read is required
+        /// This is a synchronous operation, but is guaranteed to never block.
         virtual int_type _sbumpc()
         {
             m_readOps.wait();
@@ -479,10 +449,8 @@ namespace details {
 
         }
 
-        /// <summary>
-        /// Reads a single byte from the stream without advancing the read position.
-        /// </summary>
-        /// <returns>The value of the byte. EOF if the read fails.</returns>
+            /// Reads a single byte from the stream without advancing the read position.
+            /// Returns the value of the byte. EOF if the read fails.
         pplx::task<int_type> _getc()
         {
             return m_readOps.enqueue_operation([this]()-> pplx::task<int_type> {
@@ -490,11 +458,9 @@ namespace details {
             });
         }
 
-        /// <summary>
-        /// Reads a single byte from the stream without advancing the read position.
-        /// </summary>
-        /// <returns>The value of the byte. EOF if the read fails. <see cref="::requires_async method" /> if an asynchronous read is required</returns>
-        /// <remarks>This is a synchronous operation, but is guaranteed to never block.</remarks>
+            /// Reads a single byte from the stream without advancing the read position.
+            /// Returns the value of the byte. EOF if the read fails. <see cref="::requires_async method" /> if an asynchronous read is required
+        /// This is a synchronous operation, but is guaranteed to never block.
         int_type _sgetc()
         {
             m_readOps.wait();
@@ -511,10 +477,8 @@ namespace details {
             return (int_type)ch;
         }
 
-        /// <summary>
-        /// Advances the read position, then return the next character without advancing again.
-        /// </summary>
-            /// <returns>A <c>task</c> that holds the value of the byte, which is EOF if the read fails.</returns>
+            /// Advances the read position, then return the next character without advancing again.
+                /// Returns a <c>task</c> that holds the value of the byte, which is EOF if the read fails.
         virtual pplx::task<int_type> _nextc()
         {
             return m_readOps.enqueue_operation([this]()-> pplx::task<int_type> {
@@ -525,10 +489,8 @@ namespace details {
             });
         }
 
-        /// <summary>
-        /// Retreats the read position, then return the current character without advancing.
-        /// </summary>
-            /// <returns>A <c>task</c> that holds the value of the byte. The value is EOF if the read fails, <c>requires_async</c> if an asynchronous read is required</returns>
+            /// Retreats the read position, then return the current character without advancing.
+                /// Returns a <c>task</c> that holds the value of the byte. The value is EOF if the read fails, <c>requires_async</c> if an asynchronous read is required
         virtual pplx::task<int_type> _ungetc()
         {
             return m_readOps.enqueue_operation([this]()-> pplx::task<int_type> {
@@ -539,12 +501,10 @@ namespace details {
             });
         }
 
-        /// <summary>
-        /// Reads up to a given number of characters from the stream.
-        /// </summary>
-        /// <param name="ptr">The address of the target memory area</param>
-        /// <param name="count">The maximum number of characters to read</param>
-            /// <returns>A <c>task</c> that holds the number of characters read. This number is O if the end of the stream is reached, EOF if there is some error.</returns>
+            /// Reads up to a given number of characters from the stream.
+            /// <param name="ptr">The address of the target memory area
+        /// <param name="count">The maximum number of characters to read
+            /// Returns a <c>task</c> that holds the number of characters read. This number is O if the end of the stream is reached, EOF if there is some error.
         virtual pplx::task<size_t> _getn(_Out_writes_ (count) _CharType *ptr, _In_ size_t count)
         {
             return m_readOps.enqueue_operation([=] ()-> pplx::task<size_t>{
@@ -583,13 +543,11 @@ namespace details {
             });
         }
 
-        /// <summary>
-        /// Reads up to a given number of characters from the stream.
-        /// </summary>
-        /// <param name="ptr">The address of the target memory area</param>
-        /// <param name="count">The maximum number of characters to read</param>
-        /// <returns>The number of characters read. O if the end of the stream is reached or an asynchronous read is required.</returns>
-        /// <remarks>This is a synchronous operation, but is guaranteed to never block.</remarks>
+            /// Reads up to a given number of characters from the stream.
+            /// <param name="ptr">The address of the target memory area
+        /// <param name="count">The maximum number of characters to read
+        /// Returns the number of characters read. O if the end of the stream is reached or an asynchronous read is required.
+        /// This is a synchronous operation, but is guaranteed to never block.
         size_t _sgetn(_Out_writes_ (count) _CharType *ptr, _In_ size_t count)
         {
             m_readOps.wait();
@@ -610,38 +568,32 @@ namespace details {
             return copy;
         }
 
-        /// <summary>
-        /// Copies up to a given number of characters from the stream.
-        /// </summary>
-        /// <param name="ptr">The address of the target memory area</param>
-        /// <param name="count">The maximum number of characters to copy</param>
-        /// <returns>The number of characters copied. O if the end of the stream is reached or an asynchronous read is required.</returns>
-        /// <remarks>This is a synchronous operation, but is guaranteed to never block.</remarks>
+            /// Copies up to a given number of characters from the stream.
+            /// <param name="ptr">The address of the target memory area
+        /// <param name="count">The maximum number of characters to copy
+        /// Returns the number of characters copied. O if the end of the stream is reached or an asynchronous read is required.
+        /// This is a synchronous operation, but is guaranteed to never block.
         virtual size_t _scopy(_CharType *, size_t)
         {
             return 0;
         }
 
-        /// <summary>
-        /// Gets the current read or write position in the stream.
-        /// </summary>
-        /// <param name="direction">The I/O direction to seek (see remarks)</param>
-        /// <returns>The current position. EOF if the operation fails.</returns>
-        /// <remarks>Some streams may have separate write and read cursors.
-        ///          For such streams, the direction parameter defines whether to move the read or the write cursor.</remarks>
+            /// Gets the current read or write position in the stream.
+            /// <param name="direction">The I/O direction to seek (see remarks)
+        /// Returns the current position. EOF if the operation fails.
+        /// Some streams may have separate write and read cursors.
+        ///          For such streams, the direction parameter defines whether to move the read or the write cursor.
         virtual pos_type getpos(std::ios_base::openmode mode) const
         {
             return const_cast<basic_file_buffer*>(this)->seekoff(0, std::ios_base::cur, mode);
         }
 
-        /// <summary>
-        /// Seeks to the given position.
-        /// </summary>
-        /// <param name="pos">The offset from the beginning of the stream</param>
-        /// <param name="direction">The I/O direction to seek (see remarks)</param>
-        /// <returns>The position. EOF if the operation fails.</returns>
-        /// <remarks>Some streams may have separate write and read cursors.
-        ///          For such streams, the direction parameter defines whether to move the read or the write cursor.</remarks>
+            /// Seeks to the given position.
+            /// <param name="pos">The offset from the beginning of the stream
+        /// <param name="direction">The I/O direction to seek (see remarks)
+        /// Returns the position. EOF if the operation fails.
+        /// Some streams may have separate write and read cursors.
+        ///          For such streams, the direction parameter defines whether to move the read or the write cursor.
         virtual pos_type seekpos(pos_type pos, std::ios_base::openmode mode)
         {
             if ( mode == std::ios_base::in )
@@ -656,15 +608,13 @@ namespace details {
             return (pos_type)Concurrency::streams::char_traits<_CharType>::eof();
         }
 
-        /// <summary>
-        /// Seeks to a position given by a relative offset.
-        /// </summary>
-        /// <param name="offset">The relative position to seek to</param>
-        /// <param name="way">The starting point (beginning, end, current) for the seek.</param>
-        /// <param name="mode">The I/O direction to seek (see remarks)</param>
-        /// <returns>The position. EOF if the operation fails.</returns>
-        /// <remarks>Some streams may have separate write and read cursors.
-        ///          For such streams, the mode parameter defines whether to move the read or the write cursor.</remarks>
+            /// Seeks to a position given by a relative offset.
+            /// <param name="offset">The relative position to seek to
+        /// <param name="way">The starting point (beginning, end, current) for the seek.
+        /// <param name="mode">The I/O direction to seek (see remarks)
+        /// Returns the position. EOF if the operation fails.
+        /// Some streams may have separate write and read cursors.
+        ///          For such streams, the mode parameter defines whether to move the read or the write cursor.
         virtual pos_type seekoff(off_type offset, std::ios_base::seekdir way, std::ios_base::openmode mode)
         {
             if ( mode == std::ios_base::in )
@@ -701,10 +651,8 @@ namespace details {
             return (pos_type)traits::eof();
         }
 
-        /// <summary>
-        /// For output streams, flush any internally buffered data to the underlying medium.
-        /// </summary>
-        virtual pplx::task<bool> _sync()
+            /// For output streams, flush any internally buffered data to the underlying medium.
+            virtual pplx::task<bool> _sync()
         {
             return flush_internal().then([](){return true;});
         }
@@ -937,9 +885,7 @@ namespace details {
 
     } // namespace details
 
-    /// <summary>
     /// Stream buffer for file streams.
-    /// </summary>
     /// <typeparam name="_CharType">
     /// The data type of the basic element of the <c>file_buffer</c>.
     /// </typeparam>
@@ -948,13 +894,11 @@ namespace details {
     {
     public:
 #if !defined(__cplusplus_winrt)
-        /// <summary>
-        /// Open a new stream buffer representing the given file.
-        /// </summary>
-        /// <param name="file_name">The name of the file</param>
-        /// <param name="mode">The opening mode of the file</param>
-        /// <param name="prot">The file protection mode</param>
-        /// <returns>A <c>task</c> that returns an opened stream buffer on completion.</returns>
+            /// Open a new stream buffer representing the given file.
+            /// <param name="file_name">The name of the file
+        /// <param name="mode">The opening mode of the file
+        /// <param name="prot">The file protection mode
+        /// Returns a <c>task</c> that returns an opened stream buffer on completion.
         static pplx::task<streambuf<_CharType>> open(
             const utility::string_t &file_name,
             std::ios_base::openmode mode = std::ios_base::out,
@@ -973,13 +917,11 @@ namespace details {
         }
 
 #else
-        /// <summary>
-        /// Open a new stream buffer representing the given file.
-        /// </summary>
-        /// <param name="file">The StorageFile instance</param>
-        /// <param name="mode">The opening mode of the file</param>
-        /// <param name="prot">The file protection mode</param>
-        /// <returns>A <c>task</c> that returns an opened stream buffer on completion.</returns>
+            /// Open a new stream buffer representing the given file.
+            /// <param name="file">The StorageFile instance
+        /// <param name="mode">The opening mode of the file
+        /// <param name="prot">The file protection mode
+        /// Returns a <c>task</c> that returns an opened stream buffer on completion.
         static pplx::task<streambuf<_CharType>> open(
             ::Windows::Storage::StorageFile^ file,
             std::ios_base::openmode mode = std::ios_base::out)
@@ -994,9 +936,7 @@ namespace details {
     };
 
 
-    /// <summary>
     /// File stream class containing factory functions for file streams.
-    /// </summary>
     /// <typeparam name="_CharType">
     /// The data type of the basic element of the <c>file_stream</c>.
     /// </typeparam>
@@ -1006,14 +946,12 @@ namespace details {
     public:
 
 #if !defined(__cplusplus_winrt)
-        /// <summary>
-        /// Open a new input stream representing the given file.
+            /// Open a new input stream representing the given file.
         /// The file should already exist on disk, or an exception will be thrown.
-        /// </summary>
-        /// <param name="file_name">The name of the file</param>
-        /// <param name="mode">The opening mode of the file</param>
-        /// <param name="prot">The file protection mode</param>
-        /// <returns>A <c>task</c> that returns an opened input stream on completion.</returns>
+            /// <param name="file_name">The name of the file
+        /// <param name="mode">The opening mode of the file
+        /// <param name="prot">The file protection mode
+        /// Returns a <c>task</c> that returns an opened input stream on completion.
         static pplx::task<streams::basic_istream<_CharType>> open_istream(
             const utility::string_t &file_name,
             std::ios_base::openmode mode = std::ios_base::in,
@@ -1032,15 +970,13 @@ namespace details {
                 });
         }
 
-        /// <summary>
-        /// Open a new ouput stream representing the given file.
+            /// Open a new ouput stream representing the given file.
         /// If the file does not exist, it will be create unless the folder or directory
         /// where it is to be found also does not exist.
-        /// </summary>
-        /// <param name="file_name">The name of the file</param>
-        /// <param name="mode">The opening mode of the file</param>
-        /// <param name="prot">The file protection mode</param>
-        /// <returns>A <c>task</c> that returns an opened output stream on completion.</returns>
+            /// <param name="file_name">The name of the file
+        /// <param name="mode">The opening mode of the file
+        /// <param name="prot">The file protection mode
+        /// Returns a <c>task</c> that returns an opened output stream on completion.
         static pplx::task<streams::basic_ostream<_CharType>> open_ostream(
             const utility::string_t &file_name,
             std::ios_base::openmode mode = std::ios_base::out,
@@ -1059,13 +995,11 @@ namespace details {
                 });
         }
 #else
-        /// <summary>
-        /// Open a new input stream representing the given file.
+            /// Open a new input stream representing the given file.
         /// The file should already exist on disk, or an exception will be thrown.
-        /// </summary>
-        /// <param name="file">The StorageFile reference representing the file</param>
-        /// <param name="mode">The opening mode of the file</param>
-        /// <returns>A <c>task</c> that returns an opened input stream on completion.</returns>
+            /// <param name="file">The StorageFile reference representing the file
+        /// <param name="mode">The opening mode of the file
+        /// Returns a <c>task</c> that returns an opened input stream on completion.
         static pplx::task<streams::basic_istream<_CharType>> open_istream(
             ::Windows::Storage::StorageFile^ file,
             std::ios_base::openmode mode = std::ios_base::in)
@@ -1078,14 +1012,12 @@ namespace details {
                 });
         }
 
-        /// <summary>
-        /// Open a new ouput stream representing the given file.
+            /// Open a new ouput stream representing the given file.
         /// If the file does not exist, it will be create unless the folder or directory
         /// where it is to be found also does not exist.
-        /// </summary>
-        /// <param name="file">The StorageFile reference representing the file</param>
-        /// <param name="mode">The opening mode of the file</param>
-        /// <returns>A <c>task</c> that returns an opened output stream on completion.</returns>
+            /// <param name="file">The StorageFile reference representing the file
+        /// <param name="mode">The opening mode of the file
+        /// Returns a <c>task</c> that returns an opened output stream on completion.
         static pplx::task<streams::basic_ostream<_CharType>> open_ostream(
             ::Windows::Storage::StorageFile^ file,
             std::ios_base::openmode mode = std::ios_base::out)

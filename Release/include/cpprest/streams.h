@@ -88,9 +88,7 @@ namespace Concurrency { namespace streams
         static const char *_out_streambuf_msg = "stream buffer not set up for output of data";
     }
 
-    /// <summary>
     /// Base interface for all asynchronous output streams.
-    /// </summary>
     template<typename CharType>
     class basic_ostream
     {
@@ -101,48 +99,36 @@ namespace Concurrency { namespace streams
         typedef typename traits::pos_type pos_type;
         typedef typename traits::off_type off_type;
 
-        /// <summary>
-        /// Default constructor
-        /// </summary>
-        basic_ostream() {}
+            /// Default constructor
+            basic_ostream() {}
 
-        /// <summary>
-        /// Copy constructor
-        /// </summary>
-        /// <param name="other">The source object</param>
+            /// Copy constructor
+            /// <param name="other">The source object
         basic_ostream(const basic_ostream &other) : m_helper(other.m_helper) { }
 
-        /// <summary>
-        /// Assignment operator
-        /// </summary>
-        /// <param name="other">The source object</param>
-        /// <returns>A reference to the stream object that contains the result of the assignment.</returns>
+            /// Assignment operator
+            /// <param name="other">The source object
+        /// Returns a reference to the stream object that contains the result of the assignment.
         basic_ostream & operator =(const basic_ostream &other) { m_helper = other.m_helper; return *this; }
 
-        /// <summary>
-        /// Constructor
-        /// </summary>
-        /// <param name="buffer">A stream buffer.</param>
+            /// Constructor
+            /// <param name="buffer">A stream buffer.
         basic_ostream(streams::streambuf<CharType> buffer) :
             m_helper(std::make_shared<details::basic_ostream_helper<CharType>>(buffer))
         {
             _verify_and_throw(details::_out_streambuf_msg);
         }
 
-        /// <summary>
-        /// Close the stream, preventing further write operations.
-        /// </summary>
-        pplx::task<void> close() const
+            /// Close the stream, preventing further write operations.
+            pplx::task<void> close() const
         {
             return is_valid() ?
                 helper()->m_buffer.close(std::ios_base::out) :
                 pplx::task_from_result();
         }
 
-        /// <summary>
-        /// Close the stream with exception, preventing further write operations.
-        /// </summary>
-        /// <param name="eptr">Pointer to the exception.</param>
+            /// Close the stream with exception, preventing further write operations.
+            /// <param name="eptr">Pointer to the exception.
         pplx::task<void> close(std::exception_ptr eptr) const
         {
             return is_valid() ?
@@ -150,10 +136,8 @@ namespace Concurrency { namespace streams
                 pplx::task_from_result();
         }
 
-        /// <summary>
-        /// Put a single character into the stream.
-        /// </summary>
-        /// <param name="ch">A character</param>
+            /// Put a single character into the stream.
+            /// <param name="ch">A character
         pplx::task<int_type> write(CharType ch) const
         {
             pplx::task<int_type> result;
@@ -161,19 +145,15 @@ namespace Concurrency { namespace streams
             return helper()->m_buffer.putc(ch);
         }
 
-        /// <summary>
-        /// Write a single value of "blittable" type T into the stream.
-        /// </summary>
-        /// <param name="value">A value of type T.</param>
-        /// <remarks>
-        /// This is not a replacement for a proper binary serialization solution, but it may
+            /// Write a single value of "blittable" type T into the stream.
+            /// <param name="value">A value of type T.
+                /// This is not a replacement for a proper binary serialization solution, but it may
         /// form the foundation for one. Writing data bit-wise to a stream is a primitive
         /// operation of binary serialization.
         /// Currently, no attention is paid to byte order. All data is written in the platform's
         /// native byte order, which means little-endian on all platforms that have been tested.
         /// This function is only available for streams using a single-byte character size.
-        /// </remarks>
-        template<typename T>
+                template<typename T>
         CASABLANCA_DEPRECATED("Unsafe API that will be removed in future releases, use one of the other write overloads instead.")
         pplx::task<size_t> write(T value) const
         {
@@ -187,11 +167,9 @@ namespace Concurrency { namespace streams
             return helper()->m_buffer.putn_nocopy((CharType*)copy.get(), sizeof(T)).then([copy](pplx::task<size_t> op) -> size_t { return op.get(); });
         }
 
-        /// <summary>
-        /// Write a number of characters from a given stream buffer into the stream.
-        /// </summary>
-        /// <param name="source">A source stream buffer.</param>
-        /// <param name="count">The number of characters to write.</param>
+            /// Write a number of characters from a given stream buffer into the stream.
+            /// <param name="source">A source stream buffer.
+        /// <param name="count">The number of characters to write.
         pplx::task<size_t> write(streams::streambuf<CharType> source, size_t count) const
         {
             pplx::task<size_t> result;
@@ -259,10 +237,8 @@ namespace Concurrency { namespace streams
             }
         }
 
-        /// <summary>
-        /// Write the specified string to the output stream.
-        /// </summary>
-        /// <param name="str">Input string.</param>
+            /// Write the specified string to the output stream.
+            /// <param name="str">Input string.
         pplx::task<size_t> print(const std::basic_string<CharType>& str) const
         {
             pplx::task<size_t> result;
@@ -279,13 +255,11 @@ namespace Concurrency { namespace streams
             }
         }
 
-        /// <summary>
-        /// Write a value of type <c>T</c> to the output stream.
-        /// </summary>
-        /// <typeparam name="T">
+            /// Write a value of type <c>T</c> to the output stream.
+            /// <typeparam name="T">
         /// The data type of the object to be written to the stream
         /// </typeparam>
-        /// <param name="val">Input object.</param>
+        /// <param name="val">Input object.
         template<typename T>
         pplx::task<size_t> print(const T& val) const
         {
@@ -296,13 +270,11 @@ namespace Concurrency { namespace streams
             return print(details::Value2StringFormatter<CharType>::format(val));
         }
 
-        /// <summary>
-        /// Write a value of type <c>T</c> to the output stream and append a newline character.
-        /// </summary>
-        /// <typeparam name="T">
+            /// Write a value of type <c>T</c> to the output stream and append a newline character.
+            /// <typeparam name="T">
         /// The data type of the object to be written to the stream
         /// </typeparam>
-        /// <param name="val">Input object.</param>
+        /// <param name="val">Input object.
         template<typename T>
         pplx::task<size_t> print_line(const T& val) const
         {
@@ -313,76 +285,58 @@ namespace Concurrency { namespace streams
             return print(str);
         }
 
-        /// <summary>
-        /// Flush any buffered output data.
-        /// </summary>
-        pplx::task<void> flush() const
+            /// Flush any buffered output data.
+            pplx::task<void> flush() const
         {
             pplx::task<void> result;
             if ( !_verify_and_return_task(details::_out_stream_msg, result) ) return result;
             return helper()->m_buffer.sync();
         }
 
-        /// <summary>
-        /// Seeks to the specified write position.
-        /// </summary>
-        /// <param name="pos">An offset relative to the beginning of the stream.</param>
-        /// <returns>The new position in the stream.</returns>
+            /// Seeks to the specified write position.
+            /// <param name="pos">An offset relative to the beginning of the stream.
+        /// Returns the new position in the stream.
         pos_type seek(pos_type pos) const
         {
             _verify_and_throw(details::_out_stream_msg);
             return helper()->m_buffer.seekpos(pos, std::ios_base::out);
         }
 
-        /// <summary>
-        /// Seeks to the specified write position.
-        /// </summary>
-        /// <param name="off">An offset relative to the beginning, current write position, or the end of the stream.</param>
-        /// <param name="way">The starting point (beginning, current, end) for the seek.</param>
-        /// <returns>The new position in the stream.</returns>
+            /// Seeks to the specified write position.
+            /// <param name="off">An offset relative to the beginning, current write position, or the end of the stream.
+        /// <param name="way">The starting point (beginning, current, end) for the seek.
+        /// Returns the new position in the stream.
         pos_type seek(off_type off, std::ios_base::seekdir way) const
         {
             _verify_and_throw(details::_out_stream_msg);
             return helper()->m_buffer.seekoff(off, way, std::ios_base::out);
         }
 
-        /// <summary>
-        /// Get the current write position, i.e. the offset from the beginning of the stream.
-        /// </summary>
-        /// <returns>The current write position.</returns>
+            /// Get the current write position, i.e. the offset from the beginning of the stream.
+            /// Returns the current write position.
         pos_type tell() const
         {
             _verify_and_throw(details::_out_stream_msg);
             return helper()->m_buffer.getpos(std::ios_base::out);
         }
 
-        /// <summary>
-        /// <c>can_seek<c/> is used to determine whether the stream supports seeking.
-        /// </summary>
-        /// <returns><c>true</c> if the stream supports seeking, <c>false</c> otherwise.</returns>
+            /// <c>can_seek<c/> is used to determine whether the stream supports seeking.
+            /// <returns><c>true</c> if the stream supports seeking, <c>false</c> otherwise.
         bool can_seek() const { return is_valid() && m_helper->m_buffer.can_seek(); }
 
-        /// <summary>
-        /// Test whether the stream has been initialized with a valid stream buffer.
-        /// </summary>
-        /// <returns><c>true</c> if the stream has been initialized with a valid stream buffer, <c>false</c> otherwise.</returns>
+            /// Test whether the stream has been initialized with a valid stream buffer.
+            /// <returns><c>true</c> if the stream has been initialized with a valid stream buffer, <c>false</c> otherwise.
         bool is_valid() const { return (m_helper != nullptr) && ((bool)m_helper->m_buffer); }
 
-        /// <summary>
-        /// Test whether the stream has been initialized or not.
-        /// </summary>
-        operator bool() const { return is_valid(); }
+            /// Test whether the stream has been initialized or not.
+            operator bool() const { return is_valid(); }
 
-        /// <summary>
-        /// Test whether the stream is open for writing.
-        /// </summary>
-        /// <returns><c>true</c> if the stream is open for writing, <c>false</c> otherwise.</returns>
+            /// Test whether the stream is open for writing.
+            /// <returns><c>true</c> if the stream is open for writing, <c>false</c> otherwise.
         bool is_open() const { return is_valid() && m_helper->m_buffer.can_write(); }
 
-        /// <summary>
-        /// Get the underlying stream buffer.
-        /// </summary>
-        /// <returns>The underlying stream buffer.</returns>
+            /// Get the underlying stream buffer.
+            /// Returns the underlying stream buffer.
         concurrency::streams::streambuf<CharType> streambuf() const
         {
             return helper()->m_buffer;
@@ -493,10 +447,8 @@ namespace Concurrency { namespace streams
         static pplx::task<ReturnType> _parse_input(streams::streambuf<CharType> buffer, AcceptFunctor accept_character, ExtractFunctor extract);
     };
 
-    /// <summary>
     /// Class used to handle asychronous parsing for basic_istream::extract. To support new
     /// types create a new template specialization and implement the parse function.
-    /// </summary>
     template<typename CharType, typename T>
     class type_parser
     {
@@ -549,9 +501,7 @@ namespace Concurrency { namespace streams
         }
     };
 
-    /// <summary>
     /// Base interface for all asynchronous input streams.
-    /// </summary>
     template<typename CharType>
     class basic_istream
     {
@@ -563,54 +513,42 @@ namespace Concurrency { namespace streams
         typedef typename traits::off_type off_type;
 
 
-        /// <summary>
-        /// Default constructor
-        /// </summary>
-        basic_istream() {}
+            /// Default constructor
+            basic_istream() {}
 
-        /// <summary>
-        /// Constructor
-        /// </summary>
-        /// <typeparam name="CharType">
+            /// Constructor
+            /// <typeparam name="CharType">
         /// The data type of the basic element of the stream.
         /// </typeparam>
-        /// <param name="buffer">A stream buffer.</param>
+        /// <param name="buffer">A stream buffer.
         basic_istream(streams::streambuf<CharType> buffer) : m_helper(std::make_shared<details::basic_istream_helper<CharType>>(buffer))
         {
             _verify_and_throw(details::_in_streambuf_msg);
         }
 
-        /// <summary>
-        /// Copy constructor
-        /// </summary>
-        /// <param name="other">The source object</param>
+            /// Copy constructor
+            /// <param name="other">The source object
         basic_istream(const basic_istream &other) : m_helper(other.m_helper) { }
 
-        /// <summary>
-        /// Assignment operator
-        /// </summary>
-        /// <param name="other">The source object</param>
-        /// <returns>A reference to the stream object that contains the result of the assignment.</returns>
+            /// Assignment operator
+            /// <param name="other">The source object
+        /// Returns a reference to the stream object that contains the result of the assignment.
         basic_istream & operator =(const basic_istream &other)
         {
             m_helper = other.m_helper;
             return *this;
         }
 
-        /// <summary>
-        /// Close the stream, preventing further read operations.
-        /// </summary>
-        pplx::task<void> close() const
+            /// Close the stream, preventing further read operations.
+            pplx::task<void> close() const
         {
             return is_valid() ?
                 helper()->m_buffer.close(std::ios_base::in) :
                 pplx::task_from_result();
         }
 
-        /// <summary>
-        /// Close the stream with exception, preventing further read operations.
-        /// </summary>
-        /// <param name="eptr">Pointer to the exception.</param>
+            /// Close the stream with exception, preventing further read operations.
+            /// <param name="eptr">Pointer to the exception.
         pplx::task<void> close(std::exception_ptr eptr) const
         {
             return is_valid() ?
@@ -618,19 +556,15 @@ namespace Concurrency { namespace streams
                 pplx::task_from_result();
         }
 
-        /// <summary>
-        /// Tests whether last read cause the stream reach EOF.
-        /// </summary>
-        /// <returns>True if the read head has reached the end of the stream, false otherwise.</returns>
+            /// Tests whether last read cause the stream reach EOF.
+            /// Returns true if the read head has reached the end of the stream, false otherwise.
         bool is_eof() const
         {
             return is_valid() ? m_helper->m_buffer.is_eof() : false;
         }
 
-        /// <summary>
-        /// Get the next character and return it as an int_type. Advance the read position.
-        /// </summary>
-        /// <returns>A <c>task</c> that holds the next character as an <c>int_type</c> on successful completion.</returns>
+            /// Get the next character and return it as an int_type. Advance the read position.
+            /// Returns a <c>task</c> that holds the next character as an <c>int_type</c> on successful completion.
         pplx::task<int_type> read() const
         {
             pplx::task<int_type> result;
@@ -638,19 +572,15 @@ namespace Concurrency { namespace streams
             return helper()->m_buffer.bumpc();
         }
 
-        /// <summary>
-        /// Read a single value of "blittable" type T from the stream.
-        /// </summary>
-        /// <returns>A value of type T.</returns>
-        /// <remarks>
-        /// This is not a replacement for a proper binary serialization solution, but it may
+            /// Read a single value of "blittable" type T from the stream.
+            /// Returns a value of type T.
+                /// This is not a replacement for a proper binary serialization solution, but it may
         /// form the foundation for one. Reading data bit-wise to a stream is a primitive
         /// operation of binary serialization.
         /// Currently, no attention is paid to byte order. All data is read in the platform's
         /// native byte order, which means little-endian on all platforms that have been tested.
         /// This function is only available for streams using a single-byte character size.
-        /// </remarks>
-        template<typename T>
+                template<typename T>
         CASABLANCA_DEPRECATED("Unsafe API that will be removed in future releases, use one of the other read overloads instead.")
         pplx::task<T> read() const
         {
@@ -667,12 +597,10 @@ namespace Concurrency { namespace streams
             });
         }
 
-        /// <summary>
-        /// Reads up to <c>count</c> characters and place into the provided buffer.
-        /// </summary>
-        /// <param name="target">An async stream buffer supporting write operations.</param>
-        /// <param name="count">The maximum number of characters to read</param>
-        /// <returns>A <c>task</c> that holds the number of characters read. This number is 0 if the end of the stream is reached.</returns>
+            /// Reads up to <c>count</c> characters and place into the provided buffer.
+            /// <param name="target">An async stream buffer supporting write operations.
+        /// <param name="count">The maximum number of characters to read
+        /// Returns a <c>task</c> that holds the number of characters read. This number is 0 if the end of the stream is reached.
         pplx::task<size_t> read(streams::streambuf<CharType> target, size_t count) const
         {
             pplx::task<size_t> result;
@@ -739,10 +667,8 @@ namespace Concurrency { namespace streams
             }
         }
 
-        /// <summary>
-        /// Get the next character and return it as an int_type. Do not advance the read position.
-        /// </summary>
-        /// <returns>A <c>task</c> that holds the character, widened to an integer. This character is EOF when the peek operation fails.</returns>
+            /// Get the next character and return it as an int_type. Do not advance the read position.
+            /// Returns a <c>task</c> that holds the character, widened to an integer. This character is EOF when the peek operation fails.
         pplx::task<int_type> peek() const
         {
             pplx::task<int_type> result;
@@ -750,13 +676,11 @@ namespace Concurrency { namespace streams
             return helper()->m_buffer.getc();
         }
 
-        /// <summary>
-        /// Read characters until a delimiter or EOF is found, and place them into the target.
+            /// Read characters until a delimiter or EOF is found, and place them into the target.
         /// Proceed past the delimiter, but don't include it in the target buffer.
-        /// </summary>
-        /// <param name="target">An async stream buffer supporting write operations.</param>
-        /// <param name="delim">The delimiting character to stop the read at.</param>
-        /// <returns>A <c>task</c> that holds the number of characters read.</returns>
+            /// <param name="target">An async stream buffer supporting write operations.
+        /// <param name="delim">The delimiting character to stop the read at.
+        /// Returns a <c>task</c> that holds the number of characters read.
         pplx::task<size_t> read_to_delim(streams::streambuf<CharType> target, int_type delim) const
         {
             pplx::task<size_t> result;
@@ -824,11 +748,9 @@ namespace Concurrency { namespace streams
             });
         }
 
-        /// <summary>
-        /// Read until reaching a newline character. The newline is not included in the target.
-        /// </summary>
-        /// <param name="target">An asynchronous stream buffer supporting write operations.</param>
-        /// <returns>A <c>task</c> that holds the number of characters read. This number is 0 if the end of the stream is reached.</returns>
+            /// Read until reaching a newline character. The newline is not included in the target.
+            /// <param name="target">An asynchronous stream buffer supporting write operations.
+        /// Returns a <c>task</c> that holds the number of characters read. This number is 0 if the end of the stream is reached.
         pplx::task<size_t> read_line(streams::streambuf<CharType> target) const
         {
             pplx::task<size_t> result;
@@ -931,11 +853,9 @@ namespace Concurrency { namespace streams
             });
         }
 
-        /// <summary>
-        /// Read until reaching the end of the stream.
-        /// </summary>
-        /// <param name="target">An asynchronous stream buffer supporting write operations.</param>
-        /// <returns>The number of characters read.</returns>
+            /// Read until reaching the end of the stream.
+            /// <param name="target">An asynchronous stream buffer supporting write operations.
+        /// Returns the number of characters read.
         pplx::task<size_t> read_to_end(streams::streambuf<CharType> target) const
         {
             pplx::task<size_t> result;
@@ -981,80 +901,60 @@ namespace Concurrency { namespace streams
                 });
         }
 
-        /// <summary>
-        /// Seeks to the specified write position.
-        /// </summary>
-        /// <param name="pos">An offset relative to the beginning of the stream.</param>
-        /// <returns>The new position in the stream.</returns>
+            /// Seeks to the specified write position.
+            /// <param name="pos">An offset relative to the beginning of the stream.
+        /// Returns the new position in the stream.
         pos_type seek(pos_type pos) const
         {
             _verify_and_throw(details::_in_stream_msg);
             return helper()->m_buffer.seekpos(pos, std::ios_base::in);
         }
 
-        /// <summary>
-        /// Seeks to the specified write position.
-        /// </summary>
-        /// <param name="off">An offset relative to the beginning, current write position, or the end of the stream.</param>
-        /// <param name="way">The starting point (beginning, current, end) for the seek.</param>
-        /// <returns>The new position in the stream.</returns>
+            /// Seeks to the specified write position.
+            /// <param name="off">An offset relative to the beginning, current write position, or the end of the stream.
+        /// <param name="way">The starting point (beginning, current, end) for the seek.
+        /// Returns the new position in the stream.
         pos_type seek(off_type off, std::ios_base::seekdir way) const
         {
             _verify_and_throw(details::_in_stream_msg);
             return helper()->m_buffer.seekoff(off, way, std::ios_base::in);
         }
 
-        /// <summary>
-        /// Get the current write position, i.e. the offset from the beginning of the stream.
-        /// </summary>
-        /// <returns>The current write position.</returns>
+            /// Get the current write position, i.e. the offset from the beginning of the stream.
+            /// Returns the current write position.
         pos_type tell() const
         {
             _verify_and_throw(details::_in_stream_msg);
             return helper()->m_buffer.getpos(std::ios_base::in);
         }
 
-        /// <summary>
-        /// <c>can_seek<c/> is used to determine whether the stream supports seeking.
-        /// </summary>
-        /// <returns><c>true</c> if the stream supports seeking, <c>false</c> otherwise.</returns>
+            /// <c>can_seek<c/> is used to determine whether the stream supports seeking.
+            /// <returns><c>true</c> if the stream supports seeking, <c>false</c> otherwise.
         bool can_seek() const { return is_valid() && m_helper->m_buffer.can_seek(); }
 
-        /// <summary>
-        /// Test whether the stream has been initialized with a valid stream buffer.
-        /// </summary>
-        bool is_valid() const { return (m_helper != nullptr) && ((bool)m_helper->m_buffer); }
+            /// Test whether the stream has been initialized with a valid stream buffer.
+            bool is_valid() const { return (m_helper != nullptr) && ((bool)m_helper->m_buffer); }
 
-        /// <summary>
-        /// Test whether the stream has been initialized or not.
-        /// </summary>
-        operator bool() const { return is_valid(); }
+            /// Test whether the stream has been initialized or not.
+            operator bool() const { return is_valid(); }
 
-        /// <summary>
-        /// Test whether the stream is open for writing.
-        /// </summary>
-        /// <returns><c>true</c> if the stream is open for writing, <c>false</c> otherwise.</returns>
+            /// Test whether the stream is open for writing.
+            /// <returns><c>true</c> if the stream is open for writing, <c>false</c> otherwise.
         bool is_open() const { return is_valid() && m_helper->m_buffer.can_read(); }
 
-        /// <summary>
-        /// Get the underlying stream buffer.
-        /// </summary>
-        concurrency::streams::streambuf<CharType> streambuf() const
+            /// Get the underlying stream buffer.
+            concurrency::streams::streambuf<CharType> streambuf() const
         {
             return helper()->m_buffer;
         }
 
-        /// <summary>
-        /// Read a value of type <c>T</c> from the stream.
-        /// </summary>
-        /// <remarks>
-        /// Supports the C++ primitive types. Can be expanded to additional types
+            /// Read a value of type <c>T</c> from the stream.
+                    /// Supports the C++ primitive types. Can be expanded to additional types
         /// by adding template specializations for <c>type_parser</c>.
-        /// </remarks>
-        /// <typeparam name="T">
+                /// <typeparam name="T">
         /// The data type of the element to be read from the stream.
         /// </typeparam>
-        /// <returns>A <c>task</c> that holds the element read from the stream.</returns>
+        /// Returns a <c>task</c> that holds the element read from the stream.
         template<typename T>
         pplx::task<T> extract() const
         {

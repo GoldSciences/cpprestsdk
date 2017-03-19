@@ -38,9 +38,7 @@ namespace details
 class http_windows_server;
 struct windows_request_context;
 
-/// <summary>
 /// Class used to wrap OVERLAPPED I/O with any HTTP I/O.
-/// </summary>
 class http_overlapped : public OVERLAPPED
 {
 public:
@@ -50,9 +48,7 @@ public:
         m_http_io_completion = http_io_completion;
     }
 
-    /// <summary>
     /// Callback for all I/O completions.
-    /// </summary>
     static void CALLBACK io_completion_callback(
         PTP_CALLBACK_INSTANCE instance,
         PVOID context,
@@ -73,9 +69,7 @@ private:
     std::function<void(DWORD, DWORD)> m_http_io_completion;
 };
 
-/// <summary>
 /// Context for http request through Windows HTTP Server API.
-/// </summary>
 struct windows_request_context : http::details::_http_server_context
 {
     windows_request_context();
@@ -156,48 +150,32 @@ private:
     std::vector<unsigned char> m_body_data;
 };
 
-/// <summary>
 /// Class to implement HTTP server API on Windows.
-/// </summary>
 class http_windows_server : public http_server
 {
 public:
 
-    /// <summary>
     /// Constructs a http_windows_server.
-    /// </summary>
     http_windows_server();
 
-    /// <summary>
     /// Releases resources held.
-    /// </summary>
     ~http_windows_server();
 
-    /// <summary>
     /// Start listening for incoming requests.
-    /// </summary>
     virtual pplx::task<void> start();
 
-    /// <summary>
     /// Registers an http listener.
-    /// </summary>
     virtual pplx::task<void> register_listener(_In_ web::http::experimental::listener::details::http_listener_impl *pListener);
 
-    /// <summary>
     /// Unregisters an http listener.
-    /// </summary>
     virtual pplx::task<void> unregister_listener(_In_ web::http::experimental::listener::details::http_listener_impl *pListener);
 
-    /// <summary>
     /// Stop processing and listening for incoming requests.
-    /// </summary>
     virtual pplx::task<void> stop();
 
-    /// <summary>
     /// Asynchronously sends the specified http response.
-    /// </summary>
-    /// <param name="response">The http_response to send.</param>
-    /// <returns>A operation which is completed once the response has been sent.</returns>
+    /// <param name="response">The http_response to send.
+    /// Returns a operation which is completed once the response has been sent.
     virtual pplx::task<void> respond(http::http_response response);
 
 private:

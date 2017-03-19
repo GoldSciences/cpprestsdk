@@ -39,62 +39,46 @@
 namespace pplx
 {
 
-/// <summary>
 ///     An elementary abstraction for a task, defined as <c>void (__cdecl * TaskProc_t)(void *)</c>. A <c>TaskProc</c> is called to
 ///     invoke the body of a task.
-/// </summary>
 /**/
 typedef void (_pplx_cdecl * TaskProc_t)(void *);
 
-/// <summary>
 ///     Scheduler Interface
-/// </summary>
 struct __declspec(novtable) scheduler_interface
 {
     virtual void schedule( TaskProc_t, _In_ void* ) = 0;
 };
 
-/// <summary>
 ///     Represents a pointer to a scheduler. This class exists to allow the
 ///     the specification of a shared lifetime by using shared_ptr or just
 ///     a plain reference by using raw pointer.
-/// </summary>
 struct scheduler_ptr
 {
-    /// <summary>
     /// Creates a scheduler pointer from shared_ptr to scheduler
-    /// </summary>
     explicit scheduler_ptr(std::shared_ptr<scheduler_interface> scheduler) : m_sharedScheduler(std::move(scheduler))
     {
         m_scheduler = m_sharedScheduler.get();
     }
 
-    /// <summary>
     /// Creates a scheduler pointer from raw pointer to scheduler
-    /// </summary>
     explicit scheduler_ptr(_In_opt_ scheduler_interface * pScheduler) : m_scheduler(pScheduler)
     {
     }
 
-    /// <summary>
     /// Behave like a pointer
-    /// </summary>
     scheduler_interface *operator->() const
     {
         return get();
     }
 
-    /// <summary>
     ///  Returns the raw pointer to the scheduler
-    /// </summary>
     scheduler_interface * get() const
     {
         return m_scheduler;
     }
 
-    /// <summary>
     /// Test whether the scheduler pointer is non-null
-    /// </summary>
     operator bool() const { return get() != nullptr; }
 
 private:
@@ -104,10 +88,8 @@ private:
 };
 
 
-/// <summary>
 ///     Describes the execution status of a <c>task_group</c> or <c>structured_task_group</c> object.  A value of this type is returned
 ///     by numerous methods that wait on tasks scheduled to a task group to complete.
-/// </summary>
 /// <seealso cref="task_group Class"/>
 /// <seealso cref="task_group::wait Method"/>
 /// <seealso cref="task_group::run_and_wait Method"/>
@@ -117,31 +99,23 @@ private:
 /**/
 enum task_group_status
 {
-    /// <summary>
     ///     The tasks queued to the <c>task_group</c> object have not completed.  Note that this value is not presently returned by
     ///     the Concurrency Runtime.
-    /// </summary>
     /**/
     not_complete,
 
-    /// <summary>
     ///     The tasks queued to the <c>task_group</c> or <c>structured_task_group</c> object completed successfully.
-    /// </summary>
     /**/
     completed,
 
-    /// <summary>
     ///     The <c>task_group</c> or <c>structured_task_group</c> object was canceled.  One or more tasks may not have executed.
-    /// </summary>
     /**/
     canceled
 };
 
 namespace details
 {
-/// <summary>
 ///     Atomics
-/// </summary>
 #ifdef _USE_REAL_ATOMICS
 typedef std::atomic<long> atomic_long;
 typedef std::atomic<size_t> atomic_size_t;

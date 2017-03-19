@@ -96,11 +96,9 @@ bool verify_cert_chain_platform_specific(boost::asio::ssl::verify_context &verif
 #if defined(ANDROID) || defined(__ANDROID__)
 using namespace crossplat;
 
-/// <summary>
 /// Helper function to check return value and see if any exceptions
 /// occurred when calling a JNI function.
-/// <summary>
-/// <returns><c>true</c> if JNI call failed, <c>false</c> otherwise.</returns>
+/// <returns><c>true</c> if JNI call failed, <c>false</c> otherwise.
 static bool jni_failed(JNIEnv *env)
 {
     if(env->ExceptionOccurred())

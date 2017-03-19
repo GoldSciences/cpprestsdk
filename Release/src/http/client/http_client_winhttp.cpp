@@ -85,9 +85,7 @@ static utility::string_t parse_reason_phrase(HINTERNET request_handle)
     return phrase;
 }
 
-/// <summary>
 /// Parses a string containing HTTP headers.
-/// </summary>
 static void parse_winhttp_headers(HINTERNET request_handle, _In_z_ utf16char *headersStr, http_response &response)
 {
     //Clear the header map for each new response; otherwise, the header values will be combined.

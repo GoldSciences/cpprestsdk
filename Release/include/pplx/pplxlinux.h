@@ -47,28 +47,20 @@ namespace details
 {
 namespace platform
 {
-    /// <summary>
     /// Returns a unique identifier for the execution thread where this routine in invoked
-    /// </summary>
     _PPLXIMP long _pplx_cdecl GetCurrentThreadId();
 
-    /// <summary>
     /// Yields the execution of the current execution thread - typically when spin-waiting
-    /// </summary>
     _PPLXIMP void _pplx_cdecl YieldExecution();
 
-    /// <summary>
     /// Caputeres the callstack
-    /// </summary>
     __declspec(noinline) inline static size_t CaptureCallstack(void **, size_t, size_t)
     {
         return 0;
     }
 }
 
-    /// <summary>
     /// Manual reset event
-    /// </summary>
     class event_impl
      {
     private:
@@ -122,9 +114,7 @@ namespace platform
         }
     };
 
-    /// <summary>
     /// Reader writer lock
-    /// </summary>
     class reader_writer_lock_impl
     {
     private:
@@ -178,9 +168,7 @@ namespace platform
         }
     };
 
-    /// <summary>
     /// Recursive mutex
-    /// </summary>
     class recursive_lock_impl
     {
     public:
@@ -244,10 +232,8 @@ namespace platform
 
 } // namespace details
 
-/// <summary>
 ///  A generic RAII wrapper for locks that implements the critical_section interface
 ///  cpprest_synchronization::lock_guard
-/// </summary>
 template<class _Lock>
 class scoped_lock
 {
@@ -285,9 +271,7 @@ namespace extensibility
     typedef scoped_lock<recursive_lock_t> scoped_recursive_lock_t;
 }
 
-/// <summary>
 /// Default scheduler type
-/// </summary>
 #if defined(__APPLE__)
     typedef details::apple_scheduler default_scheduler_t;
 #else
@@ -296,9 +280,7 @@ namespace extensibility
     
 namespace details
 {
-    /// <summary>
     /// Terminate the process due to unhandled exception
-    /// </summary>
     #ifndef _REPORT_PPLTASK_UNOBSERVED_EXCEPTION
     #define _REPORT_PPLTASK_UNOBSERVED_EXCEPTION() do { \
         raise(SIGTRAP); \

@@ -25,32 +25,22 @@ namespace details
 {
     namespace platform
     {
-        /// <summary>
-        /// Returns a unique identifier for the execution thread where this routine in invoked
-        /// </summary>
-        _PPLXIMP long __cdecl GetCurrentThreadId();
+            /// Returns a unique identifier for the execution thread where this routine in invoked
+            _PPLXIMP long __cdecl GetCurrentThreadId();
 
-        /// <summary>
-        /// Yields the execution of the current execution thread - typically when spin-waiting
-        /// </summary>
-        _PPLXIMP void __cdecl YieldExecution();
+            /// Yields the execution of the current execution thread - typically when spin-waiting
+            _PPLXIMP void __cdecl YieldExecution();
 
-        /// <summary>
-        /// Captures the callstack
-        /// </summary>
-        __declspec(noinline) _PPLXIMP size_t __cdecl CaptureCallstack(void **, size_t, size_t);
+            /// Captures the callstack
+            __declspec(noinline) _PPLXIMP size_t __cdecl CaptureCallstack(void **, size_t, size_t);
 
 #if defined(__cplusplus_winrt)
-        /// <summary>
-        // Internal API which retrieves the next async id.
-        /// </summary>
-        _PPLXIMP unsigned int __cdecl GetNextAsyncId();
+            // Internal API which retrieves the next async id.
+            _PPLXIMP unsigned int __cdecl GetNextAsyncId();
 #endif
     }
 
-    /// <summary>
     /// Manual reset event
-    /// </summary>
     class event_impl
     {
     public:
@@ -80,9 +70,7 @@ namespace details
         event_impl const & operator=(const event_impl&); // no assignment operator
     };
 
-    /// <summary>
     /// Mutex - lock for mutual exclusion
-    /// </summary>
     class critical_section_impl
     {
     public:
@@ -107,9 +95,7 @@ namespace details
     };
 
 #if _WIN32_WINNT >= _WIN32_WINNT_VISTA 
-    /// <summary>
     /// Reader writer lock
-    /// </summary>
     class reader_writer_lock_impl
     {
     public:
@@ -154,9 +140,7 @@ namespace details
     };  
 #endif // _WIN32_WINNT >= _WIN32_WINNT_VISTA 
 
-    /// <summary>
     /// Recursive mutex
-    /// </summary>
     class recursive_lock_impl
     {
     public:
@@ -216,10 +200,8 @@ namespace details
 
 } // namespace details
 
-/// <summary>
 ///  A generic RAII wrapper for locks that implement the critical_section interface
 ///  std::lock_guard
-/// </summary>
 template<class _Lock>
 class scoped_lock
 {
@@ -260,16 +242,12 @@ namespace extensibility
     typedef scoped_lock<recursive_lock_t> scoped_recursive_lock_t;
 }
 
-/// <summary>
 /// Default scheduler type
-/// </summary>
 typedef details::windows_scheduler default_scheduler_t;
 
 namespace details
 {
-    /// <summary>
     /// Terminate the process due to unhandled exception
-    /// </summary>
 
     #ifndef _REPORT_PPLTASK_UNOBSERVED_EXCEPTION
     #define _REPORT_PPLTASK_UNOBSERVED_EXCEPTION() do { \

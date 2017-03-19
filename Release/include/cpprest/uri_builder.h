@@ -22,118 +22,88 @@
 
 namespace web
 {
-    /// <summary>
     /// Builder for constructing URIs incrementally.
-    /// </summary>
     class uri_builder
     {
     public:
 
-        /// <summary>
-        /// Creates a builder with an initially empty URI.
-        /// </summary>
-        uri_builder() {}
+            /// Creates a builder with an initially empty URI.
+            uri_builder() {}
 
-        /// <summary>
-        /// Creates a builder with a existing URI object.
-        /// </summary>
-        /// <param name="uri_str">Encoded string containing the URI.</param>
+            /// Creates a builder with a existing URI object.
+            /// <param name="uri_str">Encoded string containing the URI.
         uri_builder(const uri &uri_str): m_uri(uri_str.m_components) {}
 
-        /// <summary>
-        /// Get the scheme component of the URI as an encoded string.
-        /// </summary>
-        /// <returns>The URI scheme as a string.</returns>
+            /// Get the scheme component of the URI as an encoded string.
+            /// Returns the URI scheme as a string.
         const utility::string_t &scheme() const { return m_uri.m_scheme; }
 
-        /// <summary>
-        /// Get the user information component of the URI as an encoded string.
-        /// </summary>
-        /// <returns>The URI user information as a string.</returns>
+            /// Get the user information component of the URI as an encoded string.
+            /// Returns the URI user information as a string.
         const utility::string_t &user_info() const { return m_uri.m_user_info; }
 
-        /// <summary>
-        /// Get the host component of the URI as an encoded string.
-        /// </summary>
-        /// <returns>The URI host as a string.</returns>
+            /// Get the host component of the URI as an encoded string.
+            /// Returns the URI host as a string.
         const utility::string_t &host() const { return m_uri.m_host; }
 
-        /// <summary>
-        /// Get the port component of the URI. Returns -1 if no port is specified.
-        /// </summary>
-        /// <returns>The URI port as an integer.</returns>
+            /// Get the port component of the URI. Returns -1 if no port is specified.
+            /// Returns the URI port as an integer.
         int port() const { return m_uri.m_port; }
 
-        /// <summary>
-        /// Get the path component of the URI as an encoded string.
-        /// </summary>
-        /// <returns>The URI path as a string.</returns>
+            /// Get the path component of the URI as an encoded string.
+            /// Returns the URI path as a string.
         const utility::string_t &path() const { return m_uri.m_path; }
 
-        /// <summary>
-        /// Get the query component of the URI as an encoded string.
-        /// </summary>
-        /// <returns>The URI query as a string.</returns>
+            /// Get the query component of the URI as an encoded string.
+            /// Returns the URI query as a string.
         const utility::string_t &query() const { return m_uri.m_query; }
 
-        /// <summary>
-        /// Get the fragment component of the URI as an encoded string.
-        /// </summary>
-        /// <returns>The URI fragment as a string.</returns>
+            /// Get the fragment component of the URI as an encoded string.
+            /// Returns the URI fragment as a string.
         const utility::string_t &fragment() const { return m_uri.m_fragment; }
 
-        /// <summary>
-        /// Set the scheme of the URI.
-        /// </summary>
-        /// <param name="scheme">Uri scheme.</param>
-        /// <returns>A reference to this <c>uri_builder</c> to support chaining.</returns>
+            /// Set the scheme of the URI.
+            /// <param name="scheme">Uri scheme.
+        /// Returns a reference to this <c>uri_builder</c> to support chaining.
         uri_builder & set_scheme(const utility::string_t &scheme)
         {
             m_uri.m_scheme = scheme;
             return *this;
         }
 
-        /// <summary>
-        /// Set the user info component of the URI.
-        /// </summary>
-        /// <param name="user_info">User info as a decoded string.</param>
-        /// <param name="do_encoding">Specify whether to apply URI encoding to the given string.</param>
-        /// <returns>A reference to this <c>uri_builder</c> to support chaining.</returns>
+            /// Set the user info component of the URI.
+            /// <param name="user_info">User info as a decoded string.
+        /// <param name="do_encoding">Specify whether to apply URI encoding to the given string.
+        /// Returns a reference to this <c>uri_builder</c> to support chaining.
         uri_builder & set_user_info(const utility::string_t &user_info, bool do_encoding = false)
         {
             m_uri.m_user_info = do_encoding ? uri::encode_uri(user_info, uri::components::user_info) : user_info;
             return *this;
         }
 
-        /// <summary>
-        /// Set the host component of the URI.
-        /// </summary>
-        /// <param name="host">Host as a decoded string.</param>
-        /// <param name="do_encoding">Specify whether to apply URI encoding to the given string.</param>
-        /// <returns>A reference to this <c>uri_builder</c> to support chaining.</returns>
+            /// Set the host component of the URI.
+            /// <param name="host">Host as a decoded string.
+        /// <param name="do_encoding">Specify whether to apply URI encoding to the given string.
+        /// Returns a reference to this <c>uri_builder</c> to support chaining.
         uri_builder & set_host(const utility::string_t &host, bool do_encoding = false)
         {
             m_uri.m_host = do_encoding ? uri::encode_uri(host, uri::components::host) : host;
             return *this;
         }
 
-        /// <summary>
-        /// Set the port component of the URI.
-        /// </summary>
-        /// <param name="port">Port as an integer.</param>
-        /// <returns>A reference to this <c>uri_builder</c> to support chaining.</returns>
+            /// Set the port component of the URI.
+            /// <param name="port">Port as an integer.
+        /// Returns a reference to this <c>uri_builder</c> to support chaining.
         uri_builder & set_port(int port)
         {
             m_uri.m_port = port;
             return *this;
         }
 
-        /// <summary>
-        /// Set the port component of the URI.
-        /// </summary>
-        /// <param name="port">Port as a string.</param>
-        /// <returns>A reference to this <c>uri_builder</c> to support chaining.</returns>
-        /// <remarks>When string can't be converted to an integer the port is left unchanged.</remarks>
+            /// Set the port component of the URI.
+            /// <param name="port">Port as a string.
+        /// Returns a reference to this <c>uri_builder</c> to support chaining.
+        /// When string can't be converted to an integer the port is left unchanged.
         uri_builder & set_port(const utility::string_t &port)
         {
             utility::istringstream_t portStream(port);
@@ -147,12 +117,10 @@ namespace web
             return *this;
         }
 
-        /// <summary>
-        /// Set the path component of the URI.
-        /// </summary>
-        /// <param name="path">Path as a decoded string.</param>
-        /// <param name="do_encoding">Specify whether to apply URI encoding to the given string.</param>
-        /// <returns>A reference to this <c>uri_builder</c> to support chaining.</returns>
+            /// Set the path component of the URI.
+            /// <param name="path">Path as a decoded string.
+        /// <param name="do_encoding">Specify whether to apply URI encoding to the given string.
+        /// Returns a reference to this <c>uri_builder</c> to support chaining.
         uri_builder & set_path(const utility::string_t &path, bool do_encoding = false)
         {
             m_uri.m_path = do_encoding ? uri::encode_uri(path, uri::components::path) : path;
@@ -160,68 +128,54 @@ namespace web
         }
 
 
-        /// <summary>
-        /// Set the query component of the URI.
-        /// </summary>
-        /// <param name="query">Query as a decoded string.</param>
-        /// <param name="do_encoding">Specify whether apply URI encoding to the given string.</param>
-        /// <returns>A reference to this <c>uri_builder</c> to support chaining.</returns>
+            /// Set the query component of the URI.
+            /// <param name="query">Query as a decoded string.
+        /// <param name="do_encoding">Specify whether apply URI encoding to the given string.
+        /// Returns a reference to this <c>uri_builder</c> to support chaining.
         uri_builder & set_query(const utility::string_t &query, bool do_encoding = false)
         {
             m_uri.m_query = do_encoding ? uri::encode_uri(query, uri::components::query) : query;
             return *this;
         }
 
-        /// <summary>
-        /// Set the fragment component of the URI.
-        /// </summary>
-        /// <param name="fragment">Fragment as a decoded string.</param>
-        /// <param name="do_encoding">Specify whether to apply URI encoding to the given string.</param>
-        /// <returns>A reference to this <c>uri_builder</c> to support chaining.</returns>
+            /// Set the fragment component of the URI.
+            /// <param name="fragment">Fragment as a decoded string.
+        /// <param name="do_encoding">Specify whether to apply URI encoding to the given string.
+        /// Returns a reference to this <c>uri_builder</c> to support chaining.
         uri_builder & set_fragment(const utility::string_t &fragment, bool do_encoding = false)
         {
             m_uri.m_fragment = do_encoding ? uri::encode_uri(fragment, uri::components::fragment) : fragment;
             return *this;
         }
 
-        /// <summary>
-        /// Clears all components of the underlying URI in this uri_builder.
-        /// </summary>
-        void clear()
+            /// Clears all components of the underlying URI in this uri_builder.
+            void clear()
         {
             m_uri = details::uri_components();
         }
 
-        /// <summary>
-        /// Appends another path to the path of this uri_builder.
-        /// </summary>
-        /// <param name="path">Path to append as a already encoded string.</param>
-        /// <param name="do_encoding">Specify whether to apply URI encoding to the given string.</param>
-        /// <returns>A reference to this uri_builder to support chaining.</returns>
+            /// Appends another path to the path of this uri_builder.
+            /// <param name="path">Path to append as a already encoded string.
+        /// <param name="do_encoding">Specify whether to apply URI encoding to the given string.
+        /// Returns a reference to this uri_builder to support chaining.
         _ASYNCRTIMP uri_builder &append_path(const utility::string_t &path, bool do_encoding = false);
 
-        /// <summary>
-        /// Appends another query to the query of this uri_builder.
-        /// </summary>
-        /// <param name="query">Query to append as a decoded string.</param>
-        /// <param name="do_encoding">Specify whether to apply URI encoding to the given string.</param>
-        /// <returns>A reference to this uri_builder to support chaining.</returns>
+            /// Appends another query to the query of this uri_builder.
+            /// <param name="query">Query to append as a decoded string.
+        /// <param name="do_encoding">Specify whether to apply URI encoding to the given string.
+        /// Returns a reference to this uri_builder to support chaining.
         _ASYNCRTIMP uri_builder &append_query(const utility::string_t &query, bool do_encoding = false);
 
-        /// <summary>
-        /// Appends an relative uri (Path, Query and fragment) at the end of the current uri.
-        /// </summary>
-        /// <param name="relative_uri">The relative uri to append.</param>
-        /// <returns>A reference to this uri_builder to support chaining.</returns>
+            /// Appends an relative uri (Path, Query and fragment) at the end of the current uri.
+            /// <param name="relative_uri">The relative uri to append.
+        /// Returns a reference to this uri_builder to support chaining.
         _ASYNCRTIMP uri_builder &append(const uri &relative_uri);
 
-        /// <summary>
-        /// Appends another query to the query of this uri_builder, encoding it first. This overload is useful when building a query segment of
+            /// Appends another query to the query of this uri_builder, encoding it first. This overload is useful when building a query segment of
         /// the form "element=10", where the right hand side of the query is stored as a type other than a string, for instance, an integral type.
-        /// </summary>
-        /// <param name="name">The name portion of the query string</param>
-        /// <param name="value">The value portion of the query string</param>
-        /// <returns>A reference to this uri_builder to support chaining.</returns>
+            /// <param name="name">The name portion of the query string
+        /// <param name="value">The value portion of the query string
+        /// Returns a reference to this uri_builder to support chaining.
         template<typename T>
         uri_builder &append_query(const utility::string_t &name, const T &value, bool do_encoding = true)
         {
@@ -257,22 +211,16 @@ namespace web
             return append_query(encodedQuery, false);
         }
 
-        /// <summary>
-        /// Combine and validate the URI components into a encoded string. An exception will be thrown if the URI is invalid.
-        /// </summary>
-        /// <returns>The created URI as a string.</returns>
+            /// Combine and validate the URI components into a encoded string. An exception will be thrown if the URI is invalid.
+            /// Returns the created URI as a string.
         _ASYNCRTIMP utility::string_t to_string();
 
-        /// <summary>
-        /// Combine and validate the URI components into a URI class instance. An exception will be thrown if the URI is invalid.
-        /// </summary>
-        /// <returns>The create URI as a URI class instance.</returns>
+            /// Combine and validate the URI components into a URI class instance. An exception will be thrown if the URI is invalid.
+            /// Returns the create URI as a URI class instance.
         _ASYNCRTIMP uri to_uri();
 
-        /// <summary>
-        /// Validate the generated URI from all existing components of this uri_builder.
-        /// </summary>
-        /// <returns>Whether the URI is valid.</returns>
+            /// Validate the generated URI from all existing components of this uri_builder.
+            /// <returns>Whether the URI is valid.
         _ASYNCRTIMP bool is_valid();
 
     private:

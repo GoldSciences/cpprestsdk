@@ -32,10 +32,8 @@ namespace Concurrency { namespace streams {
 
     namespace details {
 
-    /// <summary>
     /// The basic_rawptr_buffer class serves as a memory-based steam buffer that supports both writing and reading
     /// sequences of characters to and from a fixed-size block.
-    /// </summary>
     template<typename _CharType>
     class basic_rawptr_buffer : public streams::details::streambuf_state_manager<_CharType>
     {
@@ -47,10 +45,8 @@ namespace Concurrency { namespace streams {
         typedef typename basic_streambuf<_CharType>::pos_type pos_type;
         typedef typename basic_streambuf<_CharType>::off_type off_type;
 
-        /// <summary>
-        /// Constructor
-        /// </summary>
-        basic_rawptr_buffer()
+            /// Constructor
+            basic_rawptr_buffer()
             : streambuf_state_manager<_CharType>(std::ios_base::in | std::ios_base::out),
               m_data(nullptr),
               m_current_position(0),
@@ -58,10 +54,8 @@ namespace Concurrency { namespace streams {
         {
         }
 
-        /// <summary>
-        /// Destructor
-        /// </summary>
-        virtual ~basic_rawptr_buffer()
+            /// Destructor
+            virtual ~basic_rawptr_buffer()
         {
             this->_close_read();
             this->_close_write();
@@ -69,53 +63,41 @@ namespace Concurrency { namespace streams {
 
     protected:
 
-        /// <summary>
-        /// can_seek is used to determine whether a stream buffer supports seeking.
-        /// </summary>
-        virtual bool can_seek() const { return this->is_open(); }
+            /// can_seek is used to determine whether a stream buffer supports seeking.
+            virtual bool can_seek() const { return this->is_open(); }
 
-        /// <summary>
-        /// <c>has_size<c/> is used to determine whether a stream buffer supports size().
-        /// </summary>
-        virtual bool has_size() const { return this->is_open(); }
+            /// <c>has_size<c/> is used to determine whether a stream buffer supports size().
+            virtual bool has_size() const { return this->is_open(); }
 
-        /// <summary>
-        /// Gets the size of the stream, if known. Calls to <c>has_size</c> will determine whether
+            /// Gets the size of the stream, if known. Calls to <c>has_size</c> will determine whether
         /// the result of <c>size</c> can be relied on.
-        /// </summary>
-        virtual utility::size64_t size() const
+            virtual utility::size64_t size() const
         {
             return utility::size64_t(m_size);
         }
 
-        /// <summary>
-        /// Get the stream buffer size, if one has been set.
-        /// </summary>
-        /// <param name="direction">The direction of buffering (in or out)</param>
-        /// <remarks>An implementation that does not support buffering will always return '0'.</remarks>
+            /// Get the stream buffer size, if one has been set.
+            /// <param name="direction">The direction of buffering (in or out)
+        /// An implementation that does not support buffering will always return '0'.
         virtual size_t buffer_size(std::ios_base::openmode = std::ios_base::in) const
         {
             return 0;
         }
 
-        /// <summary>
-        /// Set the stream buffer implementation to buffer or not buffer.
-        /// </summary>
-        /// <param name="size">The size to use for internal buffering, 0 if no buffering should be done.</param>
-        /// <param name="direction">The direction of buffering (in or out)</param>
-        /// <remarks>An implementation that does not support buffering will silently ignore calls to this function and it will not have
-        ///          any effect on what is returned by subsequent calls to buffer_size().</remarks>
+            /// Set the stream buffer implementation to buffer or not buffer.
+            /// <param name="size">The size to use for internal buffering, 0 if no buffering should be done.
+        /// <param name="direction">The direction of buffering (in or out)
+        /// An implementation that does not support buffering will silently ignore calls to this function and it will not have
+        ///          any effect on what is returned by subsequent calls to buffer_size().
         virtual void set_buffer_size(size_t , std::ios_base::openmode = std::ios_base::in)
         {
             return;
         }
 
-        /// <summary>
-        /// For any input stream, in_avail returns the number of characters that are immediately available
+            /// For any input stream, in_avail returns the number of characters that are immediately available
         /// to be consumed without blocking. May be used in conjunction with <cref="::sbumpc method"/> and sgetn() to
         /// read data without incurring the overhead of using tasks.
-        /// </summary>
-        virtual size_t in_avail() const
+            virtual size_t in_avail() const
         {
             // See the comment in seek around the restiction that we do not allow read head to
             // seek beyond the current size.
@@ -126,10 +108,8 @@ namespace Concurrency { namespace streams {
             return (size_t)(writeend - readhead);
         }
 
-        /// <summary>
-        /// Closes the stream buffer, preventing further read or write operations.
-        /// </summary>
-        /// <param name="mode">The I/O mode (in or out) to close for.</param>
+            /// Closes the stream buffer, preventing further read or write operations.
+            /// <param name="mode">The I/O mode (in or out) to close for.
         virtual pplx::task<void> close(std::ios_base::openmode mode)
         {
             if (mode & std::ios_base::in)
@@ -172,11 +152,9 @@ namespace Concurrency { namespace streams {
             return pplx::task_from_result<size_t>(this->write(ptr, count));
         }
 
-        /// <summary>
-        /// Allocates a contiguous memory block and returns it.
-        /// </summary>
-        /// <param name="count">The number of characters to allocate.</param>
-        /// <returns>A pointer to a block to write to, null if the stream buffer implementation does not support alloc/commit.</returns>
+            /// Allocates a contiguous memory block and returns it.
+            /// <param name="count">The number of characters to allocate.
+        /// Returns a pointer to a block to write to, null if the stream buffer implementation does not support alloc/commit.
         _CharType* _alloc(size_t count)
         {
             if (!this->can_write()) return nullptr;
@@ -191,30 +169,24 @@ namespace Concurrency { namespace streams {
             return (_CharType*)(m_data+m_current_position);
         }
 
-        /// <summary>
-        /// Submits a block already allocated by the stream buffer.
-        /// </summary>
-        /// <param name="count">The number of characters to be committed.</param>
+            /// Submits a block already allocated by the stream buffer.
+            /// <param name="count">The number of characters to be committed.
         void _commit(size_t actual)
         {
             // Update the write position and satisfy any pending reads
             update_current_position(m_current_position+actual);
         }
 
-        /// <summary>
-        /// Gets a pointer to the next already allocated contiguous block of data.
-        /// </summary>
-        /// <param name="ptr">A reference to a pointer variable that will hold the address of the block on success.</param>
-        /// <param name="count">The number of contiguous characters available at the address in 'ptr.'</param>
-        /// <returns><c>true</c> if the operation succeeded, <c>false</c> otherwise.</returns>
-        /// <remarks>
-        /// A return of false does not necessarily indicate that a subsequent read operation would fail, only that
+            /// Gets a pointer to the next already allocated contiguous block of data.
+            /// <param name="ptr">A reference to a pointer variable that will hold the address of the block on success.
+        /// <param name="count">The number of contiguous characters available at the address in 'ptr.'
+        /// <returns><c>true</c> if the operation succeeded, <c>false</c> otherwise.
+                /// A return of false does not necessarily indicate that a subsequent read operation would fail, only that
         /// there is no block to return immediately or that the stream buffer does not support the operation.
         /// The stream buffer may not de-allocate the block until <see cref="::release method" /> is called.
         /// If the end of the stream is reached, the function will return <c>true</c>, a null pointer, and a count of zero;
         /// a subsequent read will not succeed.
-        /// </remarks>
-        virtual bool acquire(_Out_ _CharType*& ptr, _Out_ size_t& count)
+                virtual bool acquire(_Out_ _CharType*& ptr, _Out_ size_t& count)
         {
             count = 0;
             ptr = nullptr;
@@ -238,12 +210,10 @@ namespace Concurrency { namespace streams {
             }
         }
 
-        /// <summary>
-        /// Releases a block of data acquired using <see cref="::acquire method"/>. This frees the stream buffer to de-allocate the
+            /// Releases a block of data acquired using <see cref="::acquire method"/>. This frees the stream buffer to de-allocate the
         /// memory, if it so desires. Move the read position ahead by the count.
-        /// </summary>
-        /// <param name="ptr">A pointer to the block of data to be released.</param>
-        /// <param name="count">The number of characters that were read.</param>
+            /// <param name="ptr">A pointer to the block of data to be released.
+        /// <param name="count">The number of characters that were read.
         virtual void release(_Out_writes_opt_ (count) _CharType *ptr, _In_ size_t count)
         {
             if (ptr != nullptr)
@@ -302,13 +272,11 @@ namespace Concurrency { namespace streams {
             return this->getc();
         }
 
-        /// <summary>
-        /// Gets the current read or write position in the stream.
-        /// </summary>
-        /// <param name="direction">The I/O direction to seek (see remarks)</param>
-        /// <returns>The current position. EOF if the operation fails.</returns>
-        /// <remarks>Some streams may have separate write and read cursors.
-        ///          For such streams, the direction parameter defines whether to move the read or the write cursor.</remarks>
+            /// Gets the current read or write position in the stream.
+            /// <param name="direction">The I/O direction to seek (see remarks)
+        /// Returns the current position. EOF if the operation fails.
+        /// Some streams may have separate write and read cursors.
+        ///          For such streams, the direction parameter defines whether to move the read or the write cursor.
         virtual pos_type getpos(std::ios_base::openmode mode) const
         {
             if ( ((mode & std::ios_base::in) && !this->can_read()) ||
@@ -323,13 +291,11 @@ namespace Concurrency { namespace streams {
                 return (pos_type)traits::eof();
         }
 
-        /// <summary>
-        /// Seeks to the given position.
-        /// </summary>
-        /// <param name="pos">The offset from the beginning of the stream.</param>
-        /// <param name="direction">The I/O direction to seek (see remarks).</param>
-        /// <returns>The position. EOF if the operation fails.</returns>
-        /// <remarks>Some streams may have separate write and read cursors. For such streams, the direction parameter defines whether to move the read or the write cursor.</remarks>
+            /// Seeks to the given position.
+            /// <param name="pos">The offset from the beginning of the stream.
+        /// <param name="direction">The I/O direction to seek (see remarks).
+        /// Returns the position. EOF if the operation fails.
+        /// Some streams may have separate write and read cursors. For such streams, the direction parameter defines whether to move the read or the write cursor.
         virtual pos_type seekpos(pos_type position, std::ios_base::openmode mode)
         {
             pos_type beg(0);
@@ -363,15 +329,13 @@ namespace Concurrency { namespace streams {
             return static_cast<pos_type>(traits::eof());
         }
 
-        /// <summary>
-        /// Seeks to a position given by a relative offset.
-        /// </summary>
-        /// <param name="offset">The relative position to seek to</param>
-        /// <param name="way">The starting point (beginning, end, current) for the seek.</param>
-        /// <param name="mode">The I/O direction to seek (see remarks)</param>
-        /// <returns>The position. EOF if the operation fails.</returns>
-        /// <remarks>Some streams may have separate write and read cursors.
-        ///          For such streams, the mode parameter defines whether to move the read or the write cursor.</remarks>
+            /// Seeks to a position given by a relative offset.
+            /// <param name="offset">The relative position to seek to
+        /// <param name="way">The starting point (beginning, end, current) for the seek.
+        /// <param name="mode">The I/O direction to seek (see remarks)
+        /// Returns the position. EOF if the operation fails.
+        /// Some streams may have separate write and read cursors.
+        ///          For such streams, the mode parameter defines whether to move the read or the write cursor.
         virtual pos_type seekoff(off_type offset, std::ios_base::seekdir way, std::ios_base::openmode mode)
         {
             pos_type beg = 0;
@@ -397,11 +361,9 @@ namespace Concurrency { namespace streams {
     private:
         template<typename _CharType1> friend class ::concurrency::streams::rawptr_buffer;
 
-        /// <summary>
-        /// Constructor
-        /// </summary>
-        /// <param name="data">The address (pointer to) the memory block.</param>
-        /// <param name="size">The memory block size, measured in number of characters.</param>
+            /// Constructor
+            /// <param name="data">The address (pointer to) the memory block.
+        /// <param name="size">The memory block size, measured in number of characters.
         basic_rawptr_buffer(const _CharType* data, size_t size)
             : streambuf_state_manager<_CharType>(std::ios_base::in),
               m_data(const_cast<_CharType*>(data)),
@@ -411,12 +373,10 @@ namespace Concurrency { namespace streams {
             validate_mode(std::ios_base::in);
         }
 
-        /// <summary>
-        /// Constructor
-        /// </summary>
-        /// <param name="data">The address (pointer to) the memory block.</param>
-        /// <param name="size">The memory block size, measured in number of characters.</param>
-        /// <param name="mode">The stream mode (in, out, etc.).</param>
+            /// Constructor
+            /// <param name="data">The address (pointer to) the memory block.
+        /// <param name="size">The memory block size, measured in number of characters.
+        /// <param name="mode">The stream mode (in, out, etc.).
         basic_rawptr_buffer(_CharType* data, size_t size, std::ios_base::openmode mode)
             : streambuf_state_manager<_CharType>(mode),
               m_data(data),
@@ -433,33 +393,27 @@ namespace Concurrency { namespace streams {
                 throw std::invalid_argument("this combination of modes on raw pointer stream not supported");
         }
 
-        /// <summary>
-        /// Determines if the request can be satisfied.
-        /// </summary>
-        bool can_satisfy(size_t) const
+            /// Determines if the request can be satisfied.
+            bool can_satisfy(size_t) const
         {
             // We can always satisfy a read, at least partially, unless the
             // read position is at the very end of the buffer.
             return (in_avail() > 0);
         }
 
-        /// <summary>
-        /// Reads a byte from the stream and returns it as int_type.
+            /// Reads a byte from the stream and returns it as int_type.
         /// Note: This routine must only be called if can_satisfy() returns true.
-        /// </summary>
-        int_type read_byte(bool advance = true)
+            int_type read_byte(bool advance = true)
         {
             _CharType value;
             auto read_size = this->read(&value, 1, advance);
             return read_size == 1 ? static_cast<int_type>(value) : traits::eof();
         }
 
-        /// <summary>
-        /// Reads up to count characters into ptr and returns the count of characters copied.
+            /// Reads up to count characters into ptr and returns the count of characters copied.
         /// The return value (actual characters copied) could be <= count.
         /// Note: This routine must only be called if can_satisfy() returns true.
-        /// </summary>
-        size_t read(_Out_writes_ (count) _CharType *ptr, _In_ size_t count, bool advance = true)
+            size_t read(_Out_writes_ (count) _CharType *ptr, _In_ size_t count, bool advance = true)
         {
             if (!can_satisfy(count))
                 return 0;
@@ -487,10 +441,8 @@ namespace Concurrency { namespace streams {
             return (size_t) read_size;
         }
 
-        /// <summary>
-        /// Write count characters from the ptr into the stream buffer
-        /// </summary>
-        size_t write(const _CharType *ptr, size_t count)
+            /// Write count characters from the ptr into the stream buffer
+            size_t write(const _CharType *ptr, size_t count)
         {
             if (!this->can_write() || (count == 0)) return 0;
 
@@ -513,10 +465,8 @@ namespace Concurrency { namespace streams {
             return count;
         }
 
-        /// <summary>
-        /// Updates the current read or write position
-        /// </summary>
-        void update_current_position(size_t newPos)
+            /// Updates the current read or write position
+            void update_current_position(size_t newPos)
         {
             // The new write head
             m_current_position = newPos;
@@ -536,10 +486,8 @@ namespace Concurrency { namespace streams {
 
     } // namespace details
 
-    /// <summary>
     /// The <c>rawptr_buffer</c> class serves as a memory-based stream buffer that supports reading
     /// sequences of characters to or from a fixed-size block. Note that it cannot be used simultaneously for reading as well as writing.
-    /// </summary>
     /// <typeparam name="_CharType">
     /// The data type of the basic element of the <c>rawptr_buffer</c>.
     /// </typeparam>
@@ -549,38 +497,30 @@ namespace Concurrency { namespace streams {
     public:
         typedef _CharType char_type;
 
-        /// <summary>
-        /// Create a rawptr_buffer given a pointer to a memory block and the size of the block.
-        /// </summary>
-        /// <param name="data">The address (pointer to) the memory block.</param>
-        /// <param name="size">The memory block size, measured in number of characters.</param>
+            /// Create a rawptr_buffer given a pointer to a memory block and the size of the block.
+            /// <param name="data">The address (pointer to) the memory block.
+        /// <param name="size">The memory block size, measured in number of characters.
         rawptr_buffer(const char_type* data, size_t size)
             : streambuf<char_type>(std::shared_ptr<details::basic_rawptr_buffer<char_type>>(new details::basic_rawptr_buffer<char_type>(data, size)))
         {
         }
 
-        /// <summary>
-        /// Create a rawptr_buffer given a pointer to a memory block and the size of the block.
-        /// </summary>
-        /// <param name="data">The address (pointer to) the memory block.</param>
-        /// <param name="size">The memory block size, measured in number of characters.</param>
+            /// Create a rawptr_buffer given a pointer to a memory block and the size of the block.
+            /// <param name="data">The address (pointer to) the memory block.
+        /// <param name="size">The memory block size, measured in number of characters.
         rawptr_buffer(char_type* data, size_t size, std::ios_base::openmode mode = std::ios::out)
             : streambuf<char_type>(std::shared_ptr<details::basic_rawptr_buffer<char_type>>(new details::basic_rawptr_buffer<char_type>(data, size, mode)))
         {
         }
 
-        /// <summary>
-        /// Default constructor.
-        /// </summary>
-        rawptr_buffer()
+            /// Default constructor.
+            rawptr_buffer()
         {
         }
     };
 
-    /// <summary>
     /// The rawptr_stream class is used to create memory-backed streams that support writing or reading
     /// sequences of characters to / from a fixed-size block.
-    /// </summary>
     /// <typeparam name="_CharType">
     /// The data type of the basic element of the <c>rawptr_stream</c>.
     /// </typeparam>
@@ -591,34 +531,28 @@ namespace Concurrency { namespace streams {
         typedef _CharType char_type;
         typedef rawptr_buffer<_CharType>  buffer_type;
 
-        /// <summary>
-        /// Create a rawptr-stream given a pointer to a read-only memory block and the size of the block.
-        /// </summary>
-        /// <param name="data">The address (pointer to) the memory block.</param>
-        /// <param name="size">The memory block size, measured in number of characters.</param>
-        /// <returns>An opened input stream.</returns>
+            /// Create a rawptr-stream given a pointer to a read-only memory block and the size of the block.
+            /// <param name="data">The address (pointer to) the memory block.
+        /// <param name="size">The memory block size, measured in number of characters.
+        /// Returns an opened input stream.
         static concurrency::streams::basic_istream<char_type> open_istream(const char_type* data, size_t size)
         {
             return concurrency::streams::basic_istream<char_type>(buffer_type(data, size));
         }
 
-        /// <summary>
-        /// Create a rawptr-stream given a pointer to a writable memory block and the size of the block.
-        /// </summary>
-        /// <param name="data">The address (pointer to) the memory block.</param>
-        /// <param name="size">The memory block size, measured in number of characters.</param>
-        /// <returns>An opened input stream.</returns>
+            /// Create a rawptr-stream given a pointer to a writable memory block and the size of the block.
+            /// <param name="data">The address (pointer to) the memory block.
+        /// <param name="size">The memory block size, measured in number of characters.
+        /// Returns an opened input stream.
         static concurrency::streams::basic_istream<char_type> open_istream(char_type* data, size_t size)
         {
             return concurrency::streams::basic_istream<char_type>(buffer_type(data, size, std::ios::in));
         }
 
-        /// <summary>
-        /// Create a rawptr-stream given a pointer to a writable memory block and the size of the block.
-        /// </summary>
-        /// <param name="data">The address (pointer to) the memory block.</param>
-        /// <param name="size">The memory block size, measured in number of characters.</param>
-        /// <returns>An opened output stream.</returns>
+            /// Create a rawptr-stream given a pointer to a writable memory block and the size of the block.
+            /// <param name="data">The address (pointer to) the memory block.
+        /// <param name="size">The memory block size, measured in number of characters.
+        /// Returns an opened output stream.
         static concurrency::streams::basic_ostream<char_type> open_ostream(char_type* data, size_t size)
         {
             return concurrency::streams::basic_ostream<char_type>(buffer_type(data, size, std::ios::out));

@@ -19,14 +19,12 @@
 
 namespace web { namespace http {
 
-/// <summary>
 /// Binds an individual reference to a string value.
-/// </summary>
 /// <typeparam name="key_type">The type of string value.</typeparam>
 /// <typeparam name="_t">The type of the value to bind to.</typeparam>
-/// <param name="text">The string value.</param>
-/// <param name="ref">The value to bind to.</param>
-/// <returns><c>true</c> if the binding succeeds, <c>false</c> otherwise.</returns>
+/// <param name="text">The string value.
+/// <param name="ref">The value to bind to.
+/// <returns><c>true</c> if the binding succeeds, <c>false</c> otherwise.
 template<typename key_type, typename _t>
 CASABLANCA_DEPRECATED("This API is deprecated and will be removed in a future release, std::istringstream instead.")
 bool bind(const key_type &text, _t &ref) // const
@@ -41,14 +39,12 @@ bool bind(const key_type &text, _t &ref) // const
     return true;
 }
 
-/// <summary>
 /// Binds an individual reference to a string value.
 /// This specialization is need because <c>istringstream::&gt;&gt;</c> delimits on whitespace.
-/// </summary>
 /// <typeparam name="key_type">The type of the string value.</typeparam>
-/// <param name="text">The string value.</param>
-/// <param name="ref">The value to bind to.</param>
-/// <returns><c>true</c> if the binding succeeds, <c>false</c> otherwise.</returns>
+/// <param name="text">The string value.
+/// <param name="ref">The value to bind to.
+/// <returns><c>true</c> if the binding succeeds, <c>false</c> otherwise.
 template <typename key_type>
 CASABLANCA_DEPRECATED("This API is deprecated and will be removed in a future release.")
 bool bind(const key_type &text, utility::string_t &ref) //const
@@ -57,9 +53,7 @@ bool bind(const key_type &text, utility::string_t &ref) //const
     return true;
 }
 
-/// <summary>
 /// Represents HTTP headers, acts like a map.
-/// </summary>
 class http_headers
 {
 public:
@@ -76,9 +70,7 @@ public:
         }
     };
 
-    /// <summary>
     /// STL-style typedefs
-    /// </summary>
     typedef std::map<utility::string_t, utility::string_t, _case_insensitive_cmp>::key_type key_type;
     typedef std::map<utility::string_t, utility::string_t, _case_insensitive_cmp>::key_compare key_compare;
     typedef std::map<utility::string_t, utility::string_t, _case_insensitive_cmp>::allocator_type allocator_type;
@@ -93,21 +85,15 @@ public:
     typedef std::map<utility::string_t, utility::string_t, _case_insensitive_cmp>::reverse_iterator reverse_iterator;
     typedef std::map<utility::string_t, utility::string_t, _case_insensitive_cmp>::const_reverse_iterator const_reverse_iterator;
 
-    /// <summary>
     /// Constructs an empty set of HTTP headers.
-    /// </summary>
     http_headers() {}
 
-    /// <summary>
     /// Copy constructor.
-    /// </summary>
-    /// <param name="other">An <c>http_headers</c> object to copy from.</param>
+    /// <param name="other">An <c>http_headers</c> object to copy from.
     http_headers(const http_headers &other) : m_headers(other.m_headers) {}
 
-    /// <summary>
     /// Assignment operator.
-    /// </summary>
-    /// <param name="other">An <c>http_headers</c> object to copy from.</param>
+    /// <param name="other">An <c>http_headers</c> object to copy from.
     http_headers &operator=(const http_headers &other)
     {
         if(this != &other)
@@ -117,16 +103,12 @@ public:
         return *this;
     }
 
-    /// <summary>
     /// Move constructor.
-    /// </summary>
-    /// <param name="other">An <c>http_headers</c> object to move.</param>
+    /// <param name="other">An <c>http_headers</c> object to move.
     http_headers(http_headers &&other) : m_headers(std::move(other.m_headers)) {}
 
-    /// <summary>
     /// Move assignment operator.
-    /// </summary>
-    /// <param name="other">An <c>http_headers</c> object to move.</param>
+    /// <param name="other">An <c>http_headers</c> object to move.
     http_headers &operator=(http_headers &&other)
     {
         if(this != &other)
@@ -136,12 +118,10 @@ public:
         return *this;
     }
 
-    /// <summary>
     /// Adds a header field using the '&lt;&lt;' operator.
-    /// </summary>
-    /// <param name="name">The name of the header field.</param>
-    /// <param name="value">The value of the header field.</param>
-    /// <remarks>If the header field exists, the value will be combined as comma separated string.</remarks>
+    /// <param name="name">The name of the header field.
+    /// <param name="value">The value of the header field.
+    /// If the header field exists, the value will be combined as comma separated string.
     template<typename _t1>
     void add(const key_type& name, const _t1& value)
     {
@@ -155,59 +135,43 @@ public:
         }
     }
 
-    /// <summary>
     /// Removes a header field.
-    /// </summary>
-    /// <param name="name">The name of the header field.</param>
+    /// <param name="name">The name of the header field.
     void remove(const key_type& name)
     {
         m_headers.erase(name);
     }
 
-    /// <summary>
     /// Removes all elements from the headers.
-    /// </summary>
     void clear() { m_headers.clear(); }
 
-    /// <summary>
     /// Checks if there is a header with the given key.
-    /// </summary>
-    /// <param name="name">The name of the header field.</param>
-    /// <returns><c>true</c> if there is a header with the given name, <c>false</c> otherwise.</returns>
+    /// <param name="name">The name of the header field.
+    /// <returns><c>true</c> if there is a header with the given name, <c>false</c> otherwise.
     bool has(const key_type& name) const { return m_headers.find(name) != m_headers.end(); }
 
-    /// <summary>
     /// Returns the number of header fields.
-    /// </summary>
-    /// <returns>Number of header fields.</returns>
+    /// <returns>Number of header fields.
     size_type size() const { return m_headers.size(); }
 
-    /// <summary>
     /// Tests to see if there are any header fields.
-    /// </summary>
-    /// <returns><c>true</c> if there are no headers, <c>false</c> otherwise.</returns>
+    /// <returns><c>true</c> if there are no headers, <c>false</c> otherwise.
     bool empty() const { return m_headers.empty(); }
 
-    /// <summary>
     /// Returns a reference to header field with given name, if there is no header field one is inserted.
-    /// </summary>
     utility::string_t & operator[](const key_type &name) { return m_headers[name]; }
 
-    /// <summary>
     /// Checks if a header field exists with given name and returns an iterator if found. Otherwise
     /// and iterator to end is returned.
-    /// </summary>
-    /// <param name="name">The name of the header field.</param>
-    /// <returns>An iterator to where the HTTP header is found.</returns>
+    /// <param name="name">The name of the header field.
+    /// Returns an iterator to where the HTTP header is found.
     iterator find(const key_type &name) { return m_headers.find(name); }
     const_iterator find(const key_type &name) const { return m_headers.find(name); }
 
-    /// <summary>
     /// Attempts to match a header field with the given name using the '>>' operator.
-    /// </summary>
-    /// <param name="name">The name of the header field.</param>
-    /// <param name="value">The value of the header field.</param>
-    /// <returns><c>true</c> if header field was found and successfully stored in value parameter.</returns>
+    /// <param name="name">The name of the header field.
+    /// <param name="value">The value of the header field.
+    /// <returns><c>true</c> if header field was found and successfully stored in value parameter.
     template<typename _t1>
     bool match(const key_type &name, _t1 &value) const
     {
@@ -228,66 +192,46 @@ public:
         }
     }
 
-    /// <summary>
     /// Returns an iterator referring to the first header field.
-    /// </summary>
-    /// <returns>An iterator to the beginning of the HTTP headers</returns>
+    /// Returns an iterator to the beginning of the HTTP headers
     iterator begin() { return m_headers.begin(); }
     const_iterator begin() const { return m_headers.begin(); }
 
-    /// <summary>
     /// Returns an iterator referring to the past-the-end header field.
-    /// </summary>
-    /// <returns>An iterator to the element past the end of the HTTP headers.</returns>
+    /// Returns an iterator to the element past the end of the HTTP headers.
     iterator end() { return m_headers.end(); }
     const_iterator end() const { return m_headers.end(); }
 
-    /// <summary>
     /// Gets the content length of the message.
-    /// </summary>
-    /// <returns>The length of the content.</returns>
+    /// Returns the length of the content.
     _ASYNCRTIMP utility::size64_t content_length() const;
 
-    /// <summary>
     /// Sets the content length of the message.
-    /// </summary>
-    /// <param name="length">The length of the content.</param>
+    /// <param name="length">The length of the content.
     _ASYNCRTIMP void set_content_length(utility::size64_t length);
 
-    /// <summary>
     /// Gets the content type of the message.
-    /// </summary>
-    /// <returns>The content type of the body.</returns>
+    /// Returns the content type of the body.
     _ASYNCRTIMP utility::string_t content_type() const;
 
-    /// <summary>
     /// Sets the content type of the message.
-    /// </summary>
-    /// <param name="type">The content type of the body.</param>
+    /// <param name="type">The content type of the body.
     _ASYNCRTIMP void set_content_type(utility::string_t type);
 
-    /// <summary>
     /// Gets the cache control header of the message.
-    /// </summary>
-    /// <returns>The cache control header value.</returns>
+    /// Returns the cache control header value.
     _ASYNCRTIMP utility::string_t cache_control() const;
 
-    /// <summary>
     /// Sets the cache control header of the message.
-    /// </summary>
-    /// <param name="control">The cache control header value.</param>
+    /// <param name="control">The cache control header value.
     _ASYNCRTIMP void set_cache_control(utility::string_t control);
 
-    /// <summary>
     /// Gets the date header of the message.
-    /// </summary>
-    /// <returns>The date header value.</returns>
+    /// Returns the date header value.
     _ASYNCRTIMP utility::string_t date() const;
 
-    /// <summary>
     /// Sets the date header of the message.
-    /// </summary>
-    /// <param name="date">The date header value.</param>
+    /// <param name="date">The date header value.
     _ASYNCRTIMP void set_date(const utility::datetime& date);
 
 private:

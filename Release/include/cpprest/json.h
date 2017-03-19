@@ -47,12 +47,10 @@ namespace json
         extern bool g_keep_json_object_unsorted;
     }
 
-    /// <summary>
     /// Preserve the order of the name/value pairs when parsing a JSON object.
     /// The default is false, which can yield better performance.
-    /// </summary>
-    /// <param name="keep_order"><c>true</c> if ordering should be preserved when parsing, <c>false</c> otherwise.</param>
-    /// <remarks>Note this is a global setting and affects all JSON parsing done.</remarks>
+    /// <param name="keep_order"><c>true</c> if ordering should be preserved when parsing, <c>false</c> otherwise.
+    /// Note this is a global setting and affects all JSON parsing done.
     void _ASYNCRTIMP __cdecl keep_object_element_order(bool keep_order);
 
 #ifdef _WIN32
@@ -65,16 +63,12 @@ namespace json
     class array;
     class object;
 
-    /// <summary>
     /// A JSON value represented as a C++ class.
-    /// </summary>
     class value
     {
     public:
-        /// <summary>
-        /// This enumeration represents the various kinds of JSON values.
-        /// </summary>
-        enum value_type
+            /// This enumeration represents the various kinds of JSON values.
+            enum value_type
         {
             /// Number value
             Number,
@@ -90,74 +84,49 @@ namespace json
             Null
         };
 
-        /// <summary>
-        /// Constructor creating a null value
-        /// </summary>
-        _ASYNCRTIMP value();
+            /// Constructor creating a null value
+            _ASYNCRTIMP value();
 
-        /// <summary>
-        /// Constructor creating a JSON number value
-        /// </summary>
-        /// <param name="value">The C++ value to create a JSON value from</param>
+            /// Constructor creating a JSON number value
+            /// <param name="value">The C++ value to create a JSON value from
         _ASYNCRTIMP value(int32_t value);
 
-        /// <summary>
-        /// Constructor creating a JSON number value
-        /// </summary>
-        /// <param name="value">The C++ value to create a JSON value from</param>
+            /// Constructor creating a JSON number value
+            /// <param name="value">The C++ value to create a JSON value from
         _ASYNCRTIMP value(uint32_t value);
 
-        /// <summary>
-        /// Constructor creating a JSON number value
-        /// </summary>
-        /// <param name="value">The C++ value to create a JSON value from</param>
+            /// Constructor creating a JSON number value
+            /// <param name="value">The C++ value to create a JSON value from
         _ASYNCRTIMP value(int64_t value);
 
-        /// <summary>
-        /// Constructor creating a JSON number value
-        /// </summary>
-        /// <param name="value">The C++ value to create a JSON value from</param>
+            /// Constructor creating a JSON number value
+            /// <param name="value">The C++ value to create a JSON value from
         _ASYNCRTIMP value(uint64_t value);
 
-        /// <summary>
-        /// Constructor creating a JSON number value
-        /// </summary>
-        /// <param name="value">The C++ value to create a JSON value from</param>
+            /// Constructor creating a JSON number value
+            /// <param name="value">The C++ value to create a JSON value from
         _ASYNCRTIMP value(double value);
 
-        /// <summary>
-        /// Constructor creating a JSON Boolean value
-        /// </summary>
-        /// <param name="value">The C++ value to create a JSON value from</param>
+            /// Constructor creating a JSON Boolean value
+            /// <param name="value">The C++ value to create a JSON value from
         _ASYNCRTIMP explicit value(bool value);
 
-        /// <summary>
-        /// Constructor creating a JSON string value
-        /// </summary>
-        /// <param name="value">The C++ value to create a JSON value from, a C++ STL string of the platform-native character width</param>
-        /// <remarks>
-        /// This constructor has O(n) performance because it tries to determine if
+            /// Constructor creating a JSON string value
+            /// <param name="value">The C++ value to create a JSON value from, a C++ STL string of the platform-native character width
+                /// This constructor has O(n) performance because it tries to determine if
         /// specified string has characters that should be properly escaped in JSON.
-        /// <remarks>
-        _ASYNCRTIMP explicit value(utility::string_t value);
+                _ASYNCRTIMP explicit value(utility::string_t value);
 
-        /// <summary>
-        /// Constructor creating a JSON string value specifying if the string contains characters to escape
-        /// </summary>
-        /// <param name="value">The C++ value to create a JSON value from, a C++ STL string of the platform-native character width</param>
+            /// Constructor creating a JSON string value specifying if the string contains characters to escape
+            /// <param name="value">The C++ value to create a JSON value from, a C++ STL string of the platform-native character width
         /// <param name="has_escape_chars">Whether <paramref name="value" /> contains characters
-        /// that should be escaped in JSON value</param>
-        /// <remarks>
-        /// This constructor has O(1) performance.
-        /// </remarks>
-        _ASYNCRTIMP explicit value(utility::string_t value, bool has_escape_chars);
+        /// that should be escaped in JSON value
+                /// This constructor has O(1) performance.
+                _ASYNCRTIMP explicit value(utility::string_t value, bool has_escape_chars);
 
-        /// <summary>
-        /// Constructor creating a JSON string value
-        /// </summary>
-        /// <param name="value">The C++ value to create a JSON value from, a C++ STL string of the platform-native character width</param>
-        /// <remarks>
-        /// <para>
+            /// Constructor creating a JSON string value
+            /// <param name="value">The C++ value to create a JSON value from, a C++ STL string of the platform-native character width
+                /// <para>
         /// This constructor has O(n) performance because it tries to determine if
         /// specified string has characters that should be properly escaped in JSON.
         /// </para>
@@ -166,16 +135,12 @@ namespace json
         /// as is very likely. For example, conversion to bool does not require a user-defined conversion,
         /// and will therefore match first, which means that the JSON value turns up as a boolean.
         /// </para>
-        /// </remarks>
-        _ASYNCRTIMP explicit value(const utility::char_t* value);
+                _ASYNCRTIMP explicit value(const utility::char_t* value);
 
-        /// <summary>
-        /// Constructor creating a JSON string value
-        /// </summary>
-        /// <param name="value">The C++ value to create a JSON value from, a C++ STL string of the platform-native character width</param>
+            /// Constructor creating a JSON string value
+            /// <param name="value">The C++ value to create a JSON value from, a C++ STL string of the platform-native character width
         /// <param name="has_escape_chars">Whether <paramref name="value" /> contains characters
-        /// <remarks>
-        /// <para>
+                /// <para>
         /// This overload has O(1) performance.
         /// </para>
         /// <para>
@@ -183,103 +148,72 @@ namespace json
         /// as is very likely. For example, conversion to bool does not require a user-defined conversion,
         /// and will therefore match first, which means that the JSON value turns up as a boolean.
         /// </para>
-        /// </remarks>
-        _ASYNCRTIMP explicit value(const utility::char_t* value, bool has_escape_chars);
+                _ASYNCRTIMP explicit value(const utility::char_t* value, bool has_escape_chars);
 
-        /// <summary>
-        /// Copy constructor
-        /// </summary>
-        _ASYNCRTIMP value(const value &);
+            /// Copy constructor
+            _ASYNCRTIMP value(const value &);
 
-        /// <summary>
-        /// Move constructor
-        /// </summary>
-        _ASYNCRTIMP value(value &&) CPPREST_NOEXCEPT ;
+            /// Move constructor
+            _ASYNCRTIMP value(value &&) CPPREST_NOEXCEPT ;
 
-        /// <summary>
-        /// Assignment operator.
-        /// </summary>
-        /// <returns>The JSON value object that contains the result of the assignment.</returns>
+            /// Assignment operator.
+            /// Returns the JSON value object that contains the result of the assignment.
         _ASYNCRTIMP value &operator=(const value &);
 
-        /// <summary>
-        /// Move assignment operator.
-        /// </summary>
-        /// <returns>The JSON value object that contains the result of the assignment.</returns>
+            /// Move assignment operator.
+            /// Returns the JSON value object that contains the result of the assignment.
         _ASYNCRTIMP value &operator=(value &&) CPPREST_NOEXCEPT ;
 
         // Static factories
 
-        /// <summary>
-        /// Creates a null value
-        /// </summary>
-        /// <returns>A JSON null value</returns>
+            /// Creates a null value
+            /// Returns a JSON null value
         static _ASYNCRTIMP value __cdecl null();
 
-        /// <summary>
-        /// Creates a number value
-        /// </summary>
-        /// <param name="value">The C++ value to create a JSON value from</param>
-        /// <returns>A JSON number value</returns>
+            /// Creates a number value
+            /// <param name="value">The C++ value to create a JSON value from
+        /// Returns a JSON number value
         static _ASYNCRTIMP value __cdecl number(double value);
 
-        /// <summary>
-        /// Creates a number value
-        /// </summary>
-        /// <param name="value">The C++ value to create a JSON value from</param>
-        /// <returns>A JSON number value</returns>
+            /// Creates a number value
+            /// <param name="value">The C++ value to create a JSON value from
+        /// Returns a JSON number value
         static _ASYNCRTIMP value __cdecl number(int32_t value);
 
-        /// <summary>
-        /// Creates a number value
-        /// </summary>
-        /// <param name="value">The C++ value to create a JSON value from</param>
-        /// <returns>A JSON number value</returns>
+            /// Creates a number value
+            /// <param name="value">The C++ value to create a JSON value from
+        /// Returns a JSON number value
         static _ASYNCRTIMP value __cdecl number(uint32_t value);
 
-        /// <summary>
-        /// Creates a number value
-        /// </summary>
-        /// <param name="value">The C++ value to create a JSON value from</param>
-        /// <returns>A JSON number value</returns>
+            /// Creates a number value
+            /// <param name="value">The C++ value to create a JSON value from
+        /// Returns a JSON number value
         static _ASYNCRTIMP value __cdecl number(int64_t value);
 
-        /// <summary>
-        /// Creates a number value
-        /// </summary>
-        /// <param name="value">The C++ value to create a JSON value from</param>
-        /// <returns>A JSON number value</returns>
+            /// Creates a number value
+            /// <param name="value">The C++ value to create a JSON value from
+        /// Returns a JSON number value
         static _ASYNCRTIMP value __cdecl number(uint64_t value);
 
-        /// <summary>
-        /// Creates a Boolean value
-        /// </summary>
-        /// <param name="value">The C++ value to create a JSON value from</param>
-        /// <returns>A JSON Boolean value</returns>
+            /// Creates a Boolean value
+            /// <param name="value">The C++ value to create a JSON value from
+        /// Returns a JSON Boolean value
         static _ASYNCRTIMP value __cdecl boolean(bool value);
 
-        /// <summary>
-        /// Creates a string value
-        /// </summary>
-        /// <param name="value">The C++ value to create a JSON value from</param>
-        /// <returns>A JSON string value</returns>
-        /// <remarks>
-        /// This overload has O(n) performance because it tries to determine if
+            /// Creates a string value
+            /// <param name="value">The C++ value to create a JSON value from
+        /// Returns a JSON string value
+                /// This overload has O(n) performance because it tries to determine if
         /// specified string has characters that should be properly escaped in JSON.
-        /// <remarks>
-        static _ASYNCRTIMP value __cdecl string(utility::string_t value);
+                static _ASYNCRTIMP value __cdecl string(utility::string_t value);
 
-        /// <summary>
-        /// Creates a string value specifying if the string contains characters to escape
-        /// </summary>
-        /// <param name="value">The C++ value to create a JSON value from</param>
+            /// Creates a string value specifying if the string contains characters to escape
+            /// <param name="value">The C++ value to create a JSON value from
         /// <param name="has_escape_chars">Whether <paramref name="value" /> contains characters
-        /// that should be escaped in JSON value</param>
-        /// <returns>A JSON string value</returns>
-        /// <remarks>
-        /// This overload has O(1) performance.
-        /// </remarks>
-        static _ASYNCRTIMP value __cdecl string(utility::string_t value, bool has_escape_chars);
+        /// that should be escaped in JSON value
+        /// Returns a JSON string value
+                /// This overload has O(1) performance.
+                static _ASYNCRTIMP value __cdecl string(utility::string_t value, bool has_escape_chars);
 
 #ifdef _WIN32
 private:
@@ -288,315 +222,221 @@ private:
 public:
 #endif
 
-        /// <summary>
-        /// Creates an object value
-        /// </summary>
-        /// <param name="keep_order">Whether to preserve the original order of the fields</param>
-        /// <returns>An empty JSON object value</returns>
+            /// Creates an object value
+            /// <param name="keep_order">Whether to preserve the original order of the fields
+        /// Returns an empty JSON object value
         static _ASYNCRTIMP json::value __cdecl object(bool keep_order = false);
 
-        /// <summary>
-        /// Creates an object value from a collection of field/values
-        /// </summary>
-        /// <param name="fields">Field names associated with JSON values</param>
-        /// <param name="keep_order">Whether to preserve the original order of the fields</param>
-        /// <returns>A non-empty JSON object value</returns>
+            /// Creates an object value from a collection of field/values
+            /// <param name="fields">Field names associated with JSON values
+        /// <param name="keep_order">Whether to preserve the original order of the fields
+        /// Returns a non-empty JSON object value
         static _ASYNCRTIMP json::value __cdecl object(std::vector<std::pair<::utility::string_t, value>> fields, bool keep_order = false);
 
-        /// <summary>
-        /// Creates an empty JSON array
-        /// </summary>
-        /// <returns>An empty JSON array value</returns>
+            /// Creates an empty JSON array
+            /// Returns an empty JSON array value
         static _ASYNCRTIMP json::value __cdecl array();
 
-        /// <summary>
-        /// Creates a JSON array
-        /// </summary>
-        /// <param name="size">The initial number of elements of the JSON value</param>
-        /// <returns>A JSON array value</returns>
+            /// Creates a JSON array
+            /// <param name="size">The initial number of elements of the JSON value
+        /// Returns a JSON array value
         static _ASYNCRTIMP json::value __cdecl array(size_t size);
 
-        /// <summary>
-        /// Creates a JSON array
-        /// </summary>
-        /// <param name="elements">A vector of JSON values</param>
-        /// <returns>A JSON array value</returns>
+            /// Creates a JSON array
+            /// <param name="elements">A vector of JSON values
+        /// Returns a JSON array value
         static _ASYNCRTIMP json::value __cdecl array(std::vector<value> elements);
 
-        /// <summary>
-        /// Accesses the type of JSON value the current value instance is
-        /// </summary>
-        /// <returns>The value's type</returns>
+            /// Accesses the type of JSON value the current value instance is
+            /// Returns the value's type
         _ASYNCRTIMP json::value::value_type type() const;
 
-        /// <summary>
-        /// Is the current value a null value?
-        /// </summary>
-        /// <returns><c>true</c> if the value is a null value, <c>false</c> otherwise</returns>
+            /// Is the current value a null value?
+            /// <returns><c>true</c> if the value is a null value, <c>false</c> otherwise
         bool is_null() const { return type() == Null; };
 
-        /// <summary>
-        /// Is the current value a number value?
-        /// </summary>
-        /// <returns><c>true</c> if the value is a number value, <c>false</c> otherwise</returns>
+            /// Is the current value a number value?
+            /// <returns><c>true</c> if the value is a number value, <c>false</c> otherwise
         bool is_number() const { return type() == Number; }
 
-        /// <summary>
-        /// Is the current value represented as an integer number value?
-        /// </summary>
-        /// <remarks>
-        /// Note that if a json value is a number but represented as a double it can still
+            /// Is the current value represented as an integer number value?
+                    /// Note that if a json value is a number but represented as a double it can still
         /// be retrieved as a integer using as_integer(), however the value will be truncated.
-        /// </remarks>
-        /// <returns><c>true</c> if the value is an integer value, <c>false</c> otherwise.</returns>
+                /// <returns><c>true</c> if the value is an integer value, <c>false</c> otherwise.
         _ASYNCRTIMP bool is_integer() const;
 
-        /// <summary>
-        /// Is the current value represented as an double number value?
-        /// </summary>
-        /// <remarks>
-        /// Note that if a json value is a number but represented as a int it can still
+            /// Is the current value represented as an double number value?
+                    /// Note that if a json value is a number but represented as a int it can still
         /// be retrieved as a double using as_double().
-        /// </remarks>
-        /// <returns><c>true</c> if the value is an double value, <c>false</c> otherwise.</returns>
+                /// <returns><c>true</c> if the value is an double value, <c>false</c> otherwise.
         _ASYNCRTIMP bool is_double() const;
 
-        /// <summary>
-        /// Is the current value a Boolean value?
-        /// </summary>
-        /// <returns><c>true</c> if the value is a Boolean value, <c>false</c> otherwise</returns>
+            /// Is the current value a Boolean value?
+            /// <returns><c>true</c> if the value is a Boolean value, <c>false</c> otherwise
         bool is_boolean() const { return type() == Boolean; }
 
-        /// <summary>
-        /// Is the current value a string value?
-        /// </summary>
-        /// <returns><c>true</c> if the value is a string value, <c>false</c> otherwise</returns>
+            /// Is the current value a string value?
+            /// <returns><c>true</c> if the value is a string value, <c>false</c> otherwise
         bool is_string() const { return type() == String; }
 
-        /// <summary>
-        /// Is the current value an array?
-        /// </summary>
-        /// <returns><c>true</c> if the value is an array, <c>false</c> otherwise</returns>
+            /// Is the current value an array?
+            /// <returns><c>true</c> if the value is an array, <c>false</c> otherwise
         bool is_array() const { return type() == Array; }
 
-        /// <summary>
-        /// Is the current value an object?
-        /// </summary>
-        /// <returns><c>true</c> if the value is an object, <c>false</c> otherwise</returns>
+            /// Is the current value an object?
+            /// <returns><c>true</c> if the value is an object, <c>false</c> otherwise
         bool is_object() const { return type() == Object; }
 
-        /// <summary>
-        /// Gets the number of children of the value.
-        /// </summary>
-        /// <returns>The number of children. 0 for all non-composites.</returns>
+            /// Gets the number of children of the value.
+            /// Returns the number of children. 0 for all non-composites.
         size_t size() const;
 
-        /// <summary>
-        /// Parses a string and construct a JSON value.
-        /// </summary>
-        /// <param name="value">The C++ value to create a JSON value from, a C++ STL double-byte string</param>
+            /// Parses a string and construct a JSON value.
+            /// <param name="value">The C++ value to create a JSON value from, a C++ STL double-byte string
         _ASYNCRTIMP static value __cdecl parse(const utility::string_t &value);
 
-        /// <summary>
-        /// Attempts to parse a string and construct a JSON value.
-        /// </summary>
-        /// <param name="value">The C++ value to create a JSON value from, a C++ STL double-byte string</param>
-        /// <param name="errorCode">If parsing fails, the error code is greater than 0</param>
-        /// <returns>The parsed object. Returns web::json::value::null if failed</returns>
+            /// Attempts to parse a string and construct a JSON value.
+            /// <param name="value">The C++ value to create a JSON value from, a C++ STL double-byte string
+        /// <param name="errorCode">If parsing fails, the error code is greater than 0
+        /// Returns the parsed object. Returns web::json::value::null if failed
         _ASYNCRTIMP static value __cdecl parse(const utility::string_t &value, std::error_code &errorCode);
 
-        /// <summary>
-        /// Serializes the current JSON value to a C++ string.
-        /// </summary>
-        /// <returns>A string representation of the value</returns>
+            /// Serializes the current JSON value to a C++ string.
+            /// Returns a string representation of the value
         _ASYNCRTIMP utility::string_t serialize() const;
 
-        /// <summary>
-        /// Serializes the current JSON value to a C++ string.
-        /// </summary>
-        /// <returns>A string representation of the value</returns>
+            /// Serializes the current JSON value to a C++ string.
+            /// Returns a string representation of the value
         CASABLANCA_DEPRECATED("This API is deprecated and has been renamed to avoid confusion with as_string(), use ::web::json::value::serialize() instead.")
         _ASYNCRTIMP utility::string_t to_string() const;
 
-        /// <summary>
-        /// Parses a JSON value from the contents of an input stream using the native platform character width.
-        /// </summary>
-        /// <param name="input">The stream to read the JSON value from</param>
-        /// <returns>The JSON value object created from the input stream.</returns>
+            /// Parses a JSON value from the contents of an input stream using the native platform character width.
+            /// <param name="input">The stream to read the JSON value from
+        /// Returns the JSON value object created from the input stream.
         _ASYNCRTIMP static value __cdecl parse(utility::istream_t &input);
 
-        /// <summary>
-        /// Parses a JSON value from the contents of an input stream using the native platform character width.
-        /// </summary>
-        /// <param name="input">The stream to read the JSON value from</param>
-        /// <param name="errorCode">If parsing fails, the error code is greater than 0</param>
-        /// <returns>The parsed object. Returns web::json::value::null if failed</returns>
+            /// Parses a JSON value from the contents of an input stream using the native platform character width.
+            /// <param name="input">The stream to read the JSON value from
+        /// <param name="errorCode">If parsing fails, the error code is greater than 0
+        /// Returns the parsed object. Returns web::json::value::null if failed
         _ASYNCRTIMP static value __cdecl parse(utility::istream_t &input, std::error_code &errorCode);
 
-        /// <summary>
-        /// Writes the current JSON value to a stream with the native platform character width.
-        /// </summary>
-        /// <param name="stream">The stream that the JSON string representation should be written to.</param>
+            /// Writes the current JSON value to a stream with the native platform character width.
+            /// <param name="stream">The stream that the JSON string representation should be written to.
         _ASYNCRTIMP void serialize(utility::ostream_t &stream) const;
 
 #ifdef _WIN32
-        /// <summary>
-        /// Parses a JSON value from the contents of a single-byte (UTF8) stream.
-        /// </summary>
-        /// <param name="stream">The stream to read the JSON value from</param>
+            /// Parses a JSON value from the contents of a single-byte (UTF8) stream.
+            /// <param name="stream">The stream to read the JSON value from
         _ASYNCRTIMP static value __cdecl parse(std::istream& stream);
 
-        /// <summary>
-        /// Parses a JSON value from the contents of a single-byte (UTF8) stream.
-        /// </summary>
-        /// <param name="stream">The stream to read the JSON value from</param>
-        /// <param name="errorCode">If parsing fails, the error code is greater than 0</param>
-        /// <returns>The parsed object. Returns web::json::value::null if failed</returns>
+            /// Parses a JSON value from the contents of a single-byte (UTF8) stream.
+            /// <param name="stream">The stream to read the JSON value from
+        /// <param name="errorCode">If parsing fails, the error code is greater than 0
+        /// Returns the parsed object. Returns web::json::value::null if failed
         _ASYNCRTIMP static value __cdecl parse(std::istream& stream, std::error_code& error);
 
-        /// <summary>
-        /// Serializes the content of the value into a single-byte (UTF8) stream.
-        /// </summary>
-        /// <param name="stream">The stream that the JSON string representation should be written to.</param>
+            /// Serializes the content of the value into a single-byte (UTF8) stream.
+            /// <param name="stream">The stream that the JSON string representation should be written to.
         _ASYNCRTIMP void serialize(std::ostream& stream) const;
 #endif
 
-        /// <summary>
-        /// Converts the JSON value to a C++ double, if and only if it is a number value.
+            /// Converts the JSON value to a C++ double, if and only if it is a number value.
         /// Throws <see cref="json_exception"/>  if the value is not a number
-        /// </summary>
-        /// <returns>A double representation of the value</returns>
+            /// Returns a double representation of the value
         _ASYNCRTIMP double as_double() const;
 
-        /// <summary>
-        /// Converts the JSON value to a C++ integer, if and only if it is a number value.
+            /// Converts the JSON value to a C++ integer, if and only if it is a number value.
         /// Throws <see cref="json_exception"/> if the value is not a number
-        /// </summary>
-        /// <returns>An integer representation of the value</returns>
+            /// Returns an integer representation of the value
         _ASYNCRTIMP int as_integer() const;
 
-        /// <summary>
-        /// Converts the JSON value to a number class, if and only if it is a number value.
+            /// Converts the JSON value to a number class, if and only if it is a number value.
         /// Throws <see cref="json_exception"/>  if the value is not a number
-        /// </summary>
-        /// <returns>An instance of number class</returns>
+            /// Returns an instance of number class
         _ASYNCRTIMP const json::number& as_number() const;
 
-        /// <summary>
-        /// Converts the JSON value to a C++ bool, if and only if it is a Boolean value.
-        /// </summary>
-        /// <returns>A C++ bool representation of the value</returns>
+            /// Converts the JSON value to a C++ bool, if and only if it is a Boolean value.
+            /// Returns a C++ bool representation of the value
         _ASYNCRTIMP bool as_bool() const;
 
-        /// <summary>
-        /// Converts the JSON value to a json array, if and only if it is an array value.
-        /// </summary>
-        /// <remarks>The returned <c>json::array</c> should have the same or shorter lifetime as <c>this</c></remarks>
-        /// <returns>An array representation of the value</returns>
+            /// Converts the JSON value to a json array, if and only if it is an array value.
+            /// The returned <c>json::array</c> should have the same or shorter lifetime as <c>this</c>
+        /// Returns an array representation of the value
         _ASYNCRTIMP json::array& as_array();
 
-        /// <summary>
-        /// Converts the JSON value to a json array, if and only if it is an array value.
-        /// </summary>
-        /// <remarks>The returned <c>json::array</c> should have the same or shorter lifetime as <c>this</c></remarks>
-        /// <returns>An array representation of the value</returns>
+            /// Converts the JSON value to a json array, if and only if it is an array value.
+            /// The returned <c>json::array</c> should have the same or shorter lifetime as <c>this</c>
+        /// Returns an array representation of the value
         _ASYNCRTIMP const json::array& as_array() const;
 
-        /// <summary>
-        /// Converts the JSON value to a json object, if and only if it is an object value.
-        /// </summary>
-        /// <returns>An object representation of the value</returns>
+            /// Converts the JSON value to a json object, if and only if it is an object value.
+            /// Returns an object representation of the value
         _ASYNCRTIMP json::object& as_object();
 
-        /// <summary>
-        /// Converts the JSON value to a json object, if and only if it is an object value.
-        /// </summary>
-        /// <returns>An object representation of the value</returns>
+            /// Converts the JSON value to a json object, if and only if it is an object value.
+            /// Returns an object representation of the value
         _ASYNCRTIMP const json::object& as_object() const;
 
-        /// <summary>
-        /// Converts the JSON value to a C++ STL string, if and only if it is a string value.
-        /// </summary>
-        /// <returns>A C++ STL string representation of the value</returns>
+            /// Converts the JSON value to a C++ STL string, if and only if it is a string value.
+            /// Returns a C++ STL string representation of the value
         _ASYNCRTIMP const utility::string_t& as_string() const;
 
-        /// <summary>
-        /// Compares two JSON values for equality.
-        /// </summary>
-        /// <param name="other">The JSON value to compare with.</param>
-        /// <returns>True iff the values are equal.</returns>
+            /// Compares two JSON values for equality.
+            /// <param name="other">The JSON value to compare with.
+        /// Returns true iff the values are equal.
         _ASYNCRTIMP bool operator==(const value& other) const;
 
-        /// <summary>
-        /// Compares two JSON values for inequality.
-        /// </summary>
-        /// <param name="other">The JSON value to compare with.</param>
-        /// <returns>True iff the values are unequal.</returns>
+            /// Compares two JSON values for inequality.
+            /// <param name="other">The JSON value to compare with.
+        /// Returns true iff the values are unequal.
         bool operator!=(const value& other) const
         {
             return !((*this) == other);
         }
 
-        /// <summary>
-        /// Tests for the presence of a field.
-        /// </summary>
-        /// <param name="key">The name of the field</param>
-        /// <returns>True if the field exists, false otherwise.</returns>
+            /// Tests for the presence of a field.
+            /// <param name="key">The name of the field
+        /// Returns true if the field exists, false otherwise.
         bool has_field(const utility::string_t &key) const;
 
-        /// <summary>
-        /// Accesses a field of a JSON object.
-        /// </summary>
-        /// <param name="key">The name of the field</param>
-        /// <returns>The value kept in the field; null if the field does not exist</returns>
+            /// Accesses a field of a JSON object.
+            /// <param name="key">The name of the field
+        /// Returns the value kept in the field; null if the field does not exist
         CASABLANCA_DEPRECATED("This API is deprecated and will be removed in a future release, use json::value::at() instead.")
         value get(const utility::string_t &key) const;
 
-        /// <summary>
-        /// Erases an element of a JSON array. Throws if index is out of bounds.
-        /// </summary>
-        /// <param name="index">The index of the element to erase in the JSON array.</param>
+            /// Erases an element of a JSON array. Throws if index is out of bounds.
+            /// <param name="index">The index of the element to erase in the JSON array.
         _ASYNCRTIMP void erase(size_t index);
 
-        /// <summary>
-        /// Erases an element of a JSON object. Throws if the key doesn't exist.
-        /// </summary>
-        /// <param name="key">The key of the element to erase in the JSON object.</param>
+            /// Erases an element of a JSON object. Throws if the key doesn't exist.
+            /// <param name="key">The key of the element to erase in the JSON object.
         _ASYNCRTIMP void erase(const utility::string_t &key);
 
-        /// <summary>
-        /// Accesses an element of a JSON array. Throws when index out of bounds.
-        /// </summary>
-        /// <param name="index">The index of an element in the JSON array.</param>
-        /// <returns>A reference to the value.</returns>
+            /// Accesses an element of a JSON array. Throws when index out of bounds.
+            /// <param name="index">The index of an element in the JSON array.
+        /// Returns a reference to the value.
         _ASYNCRTIMP json::value& at(size_t index);
 
-        /// <summary>
-        /// Accesses an element of a JSON array. Throws when index out of bounds.
-        /// </summary>
-        /// <param name="index">The index of an element in the JSON array.</param>
-        /// <returns>A reference to the value.</returns>
+            /// Accesses an element of a JSON array. Throws when index out of bounds.
+            /// <param name="index">The index of an element in the JSON array.
+        /// Returns a reference to the value.
         _ASYNCRTIMP const json::value& at(size_t index) const;
 
-        /// <summary>
-        /// Accesses an element of a JSON object. If the key doesn't exist, this method throws.
-        /// </summary>
-        /// <param name="key">The key of an element in the JSON object.</param>
-        /// <returns>If the key exists, a reference to the value.</returns>
+            /// Accesses an element of a JSON object. If the key doesn't exist, this method throws.
+            /// <param name="key">The key of an element in the JSON object.
+        /// <returns>If the key exists, a reference to the value.
         _ASYNCRTIMP json::value& at(const utility::string_t& key);
 
-        /// <summary>
-        /// Accesses an element of a JSON object. If the key doesn't exist, this method throws.
-        /// </summary>
-        /// <param name="key">The key of an element in the JSON object.</param>
-        /// <returns>If the key exists, a reference to the value.</returns>
+            /// Accesses an element of a JSON object. If the key doesn't exist, this method throws.
+            /// <param name="key">The key of an element in the JSON object.
+        /// <returns>If the key exists, a reference to the value.
         _ASYNCRTIMP const json::value& at(const utility::string_t& key) const;
 
-        /// <summary>
-        /// Accesses a field of a JSON object.
-        /// </summary>
-        /// <param name="key">The name of the field</param>
-        /// <returns>A reference to the value kept in the field.</returns>
+            /// Accesses a field of a JSON object.
+            /// <param name="key">The name of the field
+        /// Returns a reference to the value kept in the field.
         _ASYNCRTIMP value & operator [] (const utility::string_t &key);
 
 #ifdef _WIN32
@@ -610,19 +450,15 @@ private:
 public:
 #endif
 
-        /// <summary>
-        /// Accesses an element of a JSON array.
-        /// </summary>
-        /// <param name="index">The index of an element in the JSON array</param>
-        /// <returns>The value kept at the array index; null if outside the boundaries of the array</returns>
+            /// Accesses an element of a JSON array.
+            /// <param name="index">The index of an element in the JSON array
+        /// Returns the value kept at the array index; null if outside the boundaries of the array
         CASABLANCA_DEPRECATED("This API is deprecated and will be removed in a future release, use json::value::at() instead.")
         value get(size_t index) const;
 
-        /// <summary>
-        /// Accesses an element of a JSON array.
-        /// </summary>
-        /// <param name="index">The index of an element in the JSON array.</param>
-        /// <returns>A reference to the value kept in the field.</returns>
+            /// Accesses an element of a JSON array.
+            /// <param name="index">The index of an element in the JSON array.
+        /// Returns a reference to the value kept in the field.
         _ASYNCRTIMP value & operator [] (size_t index);
 
     private:
@@ -631,16 +467,12 @@ public:
         template<typename CharType> friend class web::json::details::JSON_Parser;
 
 #ifdef _WIN32
-        /// <summary>
-        /// Writes the current JSON value as a double-byte string to a string instance.
-        /// </summary>
-        /// <param name="string">The string that the JSON representation should be written to.</param>
+            /// Writes the current JSON value as a double-byte string to a string instance.
+            /// <param name="string">The string that the JSON representation should be written to.
         _ASYNCRTIMP void format(std::basic_string<utf16char> &string) const;
 #endif
-        /// <summary>
-        /// Serializes the content of the value into a string instance in UTF8 format
-        /// </summary>
-        /// <param name="string">The string that the JSON representation should be written to</param>
+            /// Serializes the content of the value into a string instance in UTF8 format
+            /// <param name="string">The string that the JSON representation should be written to
         _ASYNCRTIMP void format(std::basic_string<char>& string) const;
 
 #ifdef ENABLE_JSON_VALUE_VISUALIZER
@@ -656,10 +488,8 @@ public:
 #endif
     };
 
-    /// <summary>
     /// A single exception type to represent errors in parsing, converting, and accessing
     /// elements of JSON values.
-    /// </summary>
     class json_exception : public std::exception
     {
     private:
@@ -734,9 +564,7 @@ public:
         const json_error_category_impl& json_error_category();
     }
 
-    /// <summary>
     /// A JSON array represented as a C++ class.
-    /// </summary>
     class array
     {
         typedef std::vector<json::value> storage_type;
@@ -754,129 +582,101 @@ public:
         array(storage_type elements) : m_elements(std::move(elements)) { }
 
     public:
-        /// <summary>
-        /// Gets the beginning iterator element of the array
-        /// </summary>
-        /// <returns>An <c>iterator</c> to the beginning of the JSON array.</returns>
+            /// Gets the beginning iterator element of the array
+            /// Returns an <c>iterator</c> to the beginning of the JSON array.
         iterator begin()
         {
             return m_elements.begin();
         }
 
-        /// <summary>
-        /// Gets the beginning const iterator element of the array.
-        /// </summary>
-        /// <returns>A <c>const_iterator</c> to the beginning of the JSON array.</returns>
+            /// Gets the beginning const iterator element of the array.
+            /// Returns a <c>const_iterator</c> to the beginning of the JSON array.
         const_iterator begin() const
         {
             return m_elements.cbegin();
         }
 
-        /// <summary>
-        /// Gets the end iterator element of the array
-        /// </summary>
-        /// <returns>An <c>iterator</c> to the end of the JSON array.</returns>
+            /// Gets the end iterator element of the array
+            /// Returns an <c>iterator</c> to the end of the JSON array.
         iterator end()
         {
             return m_elements.end();
         }
 
-        /// <summary>
-        /// Gets the end const iterator element of the array.
-        /// </summary>
-        /// <returns>A <c>const_iterator</c> to the end of the JSON array.</returns>
+            /// Gets the end const iterator element of the array.
+            /// Returns a <c>const_iterator</c> to the end of the JSON array.
         const_iterator end() const
         {
             return m_elements.cend();
         }
 
-        /// <summary>
-        /// Gets the beginning reverse iterator element of the array
-        /// </summary>
-        /// <returns>An <c>reverse_iterator</c> to the beginning of the JSON array.</returns>
+            /// Gets the beginning reverse iterator element of the array
+            /// Returns an <c>reverse_iterator</c> to the beginning of the JSON array.
         reverse_iterator rbegin()
         {
             return m_elements.rbegin();
         }
 
-        /// <summary>
-        /// Gets the beginning const reverse iterator element of the array
-        /// </summary>
-        /// <returns>An <c>const_reverse_iterator</c> to the beginning of the JSON array.</returns>
+            /// Gets the beginning const reverse iterator element of the array
+            /// Returns an <c>const_reverse_iterator</c> to the beginning of the JSON array.
         const_reverse_iterator rbegin() const
         {
             return m_elements.rbegin();
         }
 
-        /// <summary>
-        /// Gets the end reverse iterator element of the array
-        /// </summary>
-        /// <returns>An <c>reverse_iterator</c> to the end of the JSON array.</returns>
+            /// Gets the end reverse iterator element of the array
+            /// Returns an <c>reverse_iterator</c> to the end of the JSON array.
         reverse_iterator rend()
         {
             return m_elements.rend();
         }
 
-        /// <summary>
-        /// Gets the end const reverse iterator element of the array
-        /// </summary>
-        /// <returns>An <c>const_reverse_iterator</c> to the end of the JSON array.</returns>
+            /// Gets the end const reverse iterator element of the array
+            /// Returns an <c>const_reverse_iterator</c> to the end of the JSON array.
         const_reverse_iterator rend() const
         {
             return m_elements.crend();
         }
 
-        /// <summary>
-        /// Gets the beginning const iterator element of the array.
-        /// </summary>
-        /// <returns>A <c>const_iterator</c> to the beginning of the JSON array.</returns>
+            /// Gets the beginning const iterator element of the array.
+            /// Returns a <c>const_iterator</c> to the beginning of the JSON array.
         const_iterator cbegin() const
         {
             return m_elements.cbegin();
         }
 
-        /// <summary>
-        /// Gets the end const iterator element of the array.
-        /// </summary>
-        /// <returns>A <c>const_iterator</c> to the end of the JSON array.</returns>
+            /// Gets the end const iterator element of the array.
+            /// Returns a <c>const_iterator</c> to the end of the JSON array.
         const_iterator cend() const
         {
             return m_elements.cend();
         }
 
-        /// <summary>
-        /// Gets the beginning const reverse iterator element of the array.
-        /// </summary>
-        /// <returns>A <c>const_reverse_iterator</c> to the beginning of the JSON array.</returns>
+            /// Gets the beginning const reverse iterator element of the array.
+            /// Returns a <c>const_reverse_iterator</c> to the beginning of the JSON array.
         const_reverse_iterator crbegin() const
         {
             return m_elements.crbegin();
         }
 
-        /// <summary>
-        /// Gets the end const reverse iterator element of the array.
-        /// </summary>
-        /// <returns>A <c>const_reverse_iterator</c> to the end of the JSON array.</returns>
+            /// Gets the end const reverse iterator element of the array.
+            /// Returns a <c>const_reverse_iterator</c> to the end of the JSON array.
         const_reverse_iterator crend() const
         {
             return m_elements.crend();
         }
 
-        /// <summary>
-        /// Deletes an element of the JSON array.
-        /// </summary>
-        /// <param name="position">A const_iterator to the element to delete.</param>
-        /// <returns>Iterator to the new location of the element following the erased element.</returns>
-        /// <remarks>GCC doesn't support erase with const_iterator on vector yet. In the future this should be changed.</remarks>
+            /// Deletes an element of the JSON array.
+            /// <param name="position">A const_iterator to the element to delete.
+        /// <returns>Iterator to the new location of the element following the erased element.
+        /// GCC doesn't support erase with const_iterator on vector yet. In the future this should be changed.
         iterator erase(iterator position)
         {
             return m_elements.erase(position);
         }
 
-        /// <summary>
-        /// Deletes the element at an index of the JSON array.
-        /// </summary>
-        /// <param name="index">The index of the element to delete.</param>
+            /// Deletes the element at an index of the JSON array.
+            /// <param name="index">The index of the element to delete.
         void erase(size_type index)
         {
             if (index >= m_elements.size())
@@ -886,11 +686,9 @@ public:
             m_elements.erase(m_elements.begin() + index);
         }
 
-        /// <summary>
-        /// Accesses an element of a JSON array. Throws when index out of bounds.
-        /// </summary>
-        /// <param name="index">The index of an element in the JSON array.</param>
-        /// <returns>A reference to the value kept in the field.</returns>
+            /// Accesses an element of a JSON array. Throws when index out of bounds.
+            /// <param name="index">The index of an element in the JSON array.
+        /// Returns a reference to the value kept in the field.
         json::value& at(size_type index)
         {
             if (index >= m_elements.size())
@@ -899,11 +697,9 @@ public:
             return m_elements[index];
         }
 
-        /// <summary>
-        /// Accesses an element of a JSON array. Throws when index out of bounds.
-        /// </summary>
-        /// <param name="index">The index of an element in the JSON array.</param>
-        /// <returns>A reference to the value kept in the field.</returns>
+            /// Accesses an element of a JSON array. Throws when index out of bounds.
+            /// <param name="index">The index of an element in the JSON array.
+        /// Returns a reference to the value kept in the field.
         const json::value& at(size_type index) const
         {
             if (index >= m_elements.size())
@@ -912,11 +708,9 @@ public:
             return m_elements[index];
         }
 
-        /// <summary>
-        /// Accesses an element of a JSON array.
-        /// </summary>
-        /// <param name="index">The index of an element in the JSON array.</param>
-        /// <returns>A reference to the value kept in the field.</returns>
+            /// Accesses an element of a JSON array.
+            /// <param name="index">The index of an element in the JSON array.
+        /// Returns a reference to the value kept in the field.
         json::value& operator[](size_type index)
         {
             msl::safeint3::SafeInt<size_type> nMinSize(index);
@@ -928,10 +722,8 @@ public:
             return m_elements[index];
         }
 
-        /// <summary>
-        /// Gets the number of elements of the array.
-        /// </summary>
-        /// <returns>The number of elements.</returns>
+            /// Gets the number of elements of the array.
+            /// Returns the number of elements.
         size_type size() const
         {
             return m_elements.size();
@@ -944,9 +736,7 @@ public:
         template<typename CharType> friend class json::details::JSON_Parser;
     };
 
-    /// <summary>
     /// A JSON object represented as a C++ class.
-    /// </summary>
     class object
     {
         typedef std::vector<std::pair<utility::string_t, json::value>> storage_type;
@@ -968,129 +758,101 @@ public:
         }
 
     public:
-        /// <summary>
-        /// Gets the beginning iterator element of the object
-        /// </summary>
-        /// <returns>An <c>iterator</c> to the beginning of the JSON object.</returns>
+            /// Gets the beginning iterator element of the object
+            /// Returns an <c>iterator</c> to the beginning of the JSON object.
         iterator begin()
         {
             return m_elements.begin();
         }
 
-        /// <summary>
-        /// Gets the beginning const iterator element of the object.
-        /// </summary>
-        /// <returns>A <c>const_iterator</c> to the beginning of the JSON object.</returns>
+            /// Gets the beginning const iterator element of the object.
+            /// Returns a <c>const_iterator</c> to the beginning of the JSON object.
         const_iterator begin() const
         {
             return m_elements.cbegin();
         }
 
-        /// <summary>
-        /// Gets the end iterator element of the object
-        /// </summary>
-        /// <returns>An <c>iterator</c> to the end of the JSON object.</returns>
+            /// Gets the end iterator element of the object
+            /// Returns an <c>iterator</c> to the end of the JSON object.
         iterator end()
         {
             return m_elements.end();
         }
 
-        /// <summary>
-        /// Gets the end const iterator element of the object.
-        /// </summary>
-        /// <returns>A <c>const_iterator</c> to the end of the JSON object.</returns>
+            /// Gets the end const iterator element of the object.
+            /// Returns a <c>const_iterator</c> to the end of the JSON object.
         const_iterator end() const
         {
             return m_elements.cend();
         }
 
-        /// <summary>
-        /// Gets the beginning reverse iterator element of the object
-        /// </summary>
-        /// <returns>An <c>reverse_iterator</c> to the beginning of the JSON object.</returns>
+            /// Gets the beginning reverse iterator element of the object
+            /// Returns an <c>reverse_iterator</c> to the beginning of the JSON object.
         reverse_iterator rbegin()
         {
             return m_elements.rbegin();
         }
 
-        /// <summary>
-        /// Gets the beginning const reverse iterator element of the object
-        /// </summary>
-        /// <returns>An <c>const_reverse_iterator</c> to the beginning of the JSON object.</returns>
+            /// Gets the beginning const reverse iterator element of the object
+            /// Returns an <c>const_reverse_iterator</c> to the beginning of the JSON object.
         const_reverse_iterator rbegin() const
         {
             return m_elements.rbegin();
         }
 
-        /// <summary>
-        /// Gets the end reverse iterator element of the object
-        /// </summary>
-        /// <returns>An <c>reverse_iterator</c> to the end of the JSON object.</returns>
+            /// Gets the end reverse iterator element of the object
+            /// Returns an <c>reverse_iterator</c> to the end of the JSON object.
         reverse_iterator rend()
         {
             return m_elements.rend();
         }
 
-        /// <summary>
-        /// Gets the end const reverse iterator element of the object
-        /// </summary>
-        /// <returns>An <c>const_reverse_iterator</c> to the end of the JSON object.</returns>
+            /// Gets the end const reverse iterator element of the object
+            /// Returns an <c>const_reverse_iterator</c> to the end of the JSON object.
         const_reverse_iterator rend() const
         {
             return m_elements.crend();
         }
 
-        /// <summary>
-        /// Gets the beginning const iterator element of the object.
-        /// </summary>
-        /// <returns>A <c>const_iterator</c> to the beginning of the JSON object.</returns>
+            /// Gets the beginning const iterator element of the object.
+            /// Returns a <c>const_iterator</c> to the beginning of the JSON object.
         const_iterator cbegin() const
         {
             return m_elements.cbegin();
         }
 
-        /// <summary>
-        /// Gets the end const iterator element of the object.
-        /// </summary>
-        /// <returns>A <c>const_iterator</c> to the end of the JSON object.</returns>
+            /// Gets the end const iterator element of the object.
+            /// Returns a <c>const_iterator</c> to the end of the JSON object.
         const_iterator cend() const
         {
             return m_elements.cend();
         }
 
-        /// <summary>
-        /// Gets the beginning const reverse iterator element of the object.
-        /// </summary>
-        /// <returns>A <c>const_reverse_iterator</c> to the beginning of the JSON object.</returns>
+            /// Gets the beginning const reverse iterator element of the object.
+            /// Returns a <c>const_reverse_iterator</c> to the beginning of the JSON object.
         const_reverse_iterator crbegin() const
         {
             return m_elements.crbegin();
         }
 
-        /// <summary>
-        /// Gets the end const reverse iterator element of the object.
-        /// </summary>
-        /// <returns>A <c>const_reverse_iterator</c> to the end of the JSON object.</returns>
+            /// Gets the end const reverse iterator element of the object.
+            /// Returns a <c>const_reverse_iterator</c> to the end of the JSON object.
         const_reverse_iterator crend() const
         {
             return m_elements.crend();
         }
 
-        /// <summary>
-        /// Deletes an element of the JSON object.
-        /// </summary>
-        /// <param name="position">A const_iterator to the element to delete.</param>
-        /// <returns>Iterator to the new location of the element following the erased element.</returns>
-        /// <remarks>GCC doesn't support erase with const_iterator on vector yet. In the future this should be changed.</remarks>
+            /// Deletes an element of the JSON object.
+            /// <param name="position">A const_iterator to the element to delete.
+        /// <returns>Iterator to the new location of the element following the erased element.
+        /// GCC doesn't support erase with const_iterator on vector yet. In the future this should be changed.
         iterator erase(iterator position)
         {
             return m_elements.erase(position);
         }
 
-        /// <summary>
-        /// Deletes an element of the JSON object. If the key doesn't exist, this method throws.
-        /// </summary>
-        /// <param name="key">The key of an element in the JSON object.</param>
+            /// Deletes an element of the JSON object. If the key doesn't exist, this method throws.
+            /// <param name="key">The key of an element in the JSON object.
         void erase(const utility::string_t &key)
         {
             auto iter = find_by_key(key);
@@ -1102,11 +864,9 @@ public:
             m_elements.erase(iter);
         }
 
-        /// <summary>
-        /// Accesses an element of a JSON object. If the key doesn't exist, this method throws.
-        /// </summary>
-        /// <param name="key">The key of an element in the JSON object.</param>
-        /// <returns>If the key exists, a reference to the value kept in the field.</returns>
+            /// Accesses an element of a JSON object. If the key doesn't exist, this method throws.
+            /// <param name="key">The key of an element in the JSON object.
+        /// <returns>If the key exists, a reference to the value kept in the field.
         json::value& at(const utility::string_t& key)
         {
             auto iter = find_by_key(key);
@@ -1118,11 +878,9 @@ public:
             return iter->second;
         }
 
-        /// <summary>
-        /// Accesses an element of a JSON object. If the key doesn't exist, this method throws.
-        /// </summary>
-        /// <param name="key">The key of an element in the JSON object.</param>
-        /// <returns>If the key exists, a reference to the value kept in the field.</returns>
+            /// Accesses an element of a JSON object. If the key doesn't exist, this method throws.
+            /// <param name="key">The key of an element in the JSON object.
+        /// <returns>If the key exists, a reference to the value kept in the field.
         const json::value& at(const utility::string_t& key) const
         {
             auto iter = find_by_key(key);
@@ -1134,11 +892,9 @@ public:
             return iter->second;
         }
 
-        /// <summary>
-        /// Accesses an element of a JSON object.
-        /// </summary>
-        /// <param name="key">The key of an element in the JSON object.</param>
-        /// <returns>If the key exists, a reference to the value kept in the field, otherwise a newly created null value that will be stored for the given key.</returns>
+            /// Accesses an element of a JSON object.
+            /// <param name="key">The key of an element in the JSON object.
+        /// <returns>If the key exists, a reference to the value kept in the field, otherwise a newly created null value that will be stored for the given key.
         json::value& operator[](const utility::string_t& key)
         {
             auto iter = find_insert_location(key);
@@ -1151,29 +907,23 @@ public:
             return iter->second;
         }
 
-        /// <summary>
-        /// Gets an iterator to an element of a JSON object.
-        /// </summary>
-        /// <param name="key">The key of an element in the JSON object.</param>
-        /// <returns>A const iterator to the value kept in the field.</returns>
+            /// Gets an iterator to an element of a JSON object.
+            /// <param name="key">The key of an element in the JSON object.
+        /// Returns a const iterator to the value kept in the field.
         const_iterator find(const utility::string_t& key) const
         {
             return find_by_key(key);
         }
 
-        /// <summary>
-        /// Gets the number of elements of the object.
-        /// </summary>
-        /// <returns>The number of elements.</returns>
+            /// Gets the number of elements of the object.
+            /// Returns the number of elements.
         size_type size() const
         {
             return m_elements.size();
         }
 
-        /// <summary>
-        /// Checks if there are any elements in the JSON object.
-        /// </summary>
-        /// <returns>True iff empty.</returns>
+            /// Checks if there are any elements in the JSON object.
+            /// Returns true iff empty.
         bool empty() const
         {
             return m_elements.empty();
@@ -1241,9 +991,7 @@ public:
         template<typename CharType> friend class json::details::JSON_Parser;
    };
 
-    /// <summary>
     /// A JSON number represented as a C++ class.
-    /// </summary>
     class number
     {
         // Note that these constructors make sure that only negative integers are stored as signed int64 (while others convert to unsigned int64).
@@ -1257,28 +1005,20 @@ public:
 
     public:
 
-        /// <summary>
-        /// Does the number fit into int32?
-        /// </summary>
-        /// <returns><c>true</c> if the number fits into int32, <c>false</c> otherwise</returns>
+            /// Does the number fit into int32?
+            /// <returns><c>true</c> if the number fits into int32, <c>false</c> otherwise
         _ASYNCRTIMP bool is_int32() const;
 
-        /// <summary>
-        /// Does the number fit into unsigned int32?
-        /// </summary>
-        /// <returns><c>true</c> if the number fits into unsigned int32, <c>false</c> otherwise</returns>
+            /// Does the number fit into unsigned int32?
+            /// <returns><c>true</c> if the number fits into unsigned int32, <c>false</c> otherwise
         _ASYNCRTIMP bool is_uint32() const;
 
-        /// <summary>
-        /// Does the number fit into int64?
-        /// </summary>
-        /// <returns><c>true</c> if the number fits into int64, <c>false</c> otherwise</returns>
+            /// Does the number fit into int64?
+            /// <returns><c>true</c> if the number fits into int64, <c>false</c> otherwise
         _ASYNCRTIMP bool is_int64() const;
 
-        /// <summary>
-        /// Does the number fit into unsigned int64?
-        /// </summary>
-        /// <returns><c>true</c> if the number fits into unsigned int64, <c>false</c> otherwise</returns>
+            /// Does the number fit into unsigned int64?
+            /// <returns><c>true</c> if the number fits into unsigned int64, <c>false</c> otherwise
         bool is_uint64() const
         {
             switch (m_type)
@@ -1291,10 +1031,8 @@ public:
             }
         }
 
-        /// <summary>
-        /// Converts the JSON number to a C++ double.
-        /// </summary>
-        /// <returns>A double representation of the number</returns>
+            /// Converts the JSON number to a C++ double.
+            /// Returns a double representation of the number
         double to_double() const
         {
             switch (m_type)
@@ -1306,10 +1044,8 @@ public:
             }
         }
 
-        /// <summary>
-        /// Converts the JSON number to int32.
-        /// </summary>
-        /// <returns>An int32 representation of the number</returns>
+            /// Converts the JSON number to int32.
+            /// Returns an int32 representation of the number
         int32_t to_int32() const
         {
             if (m_type == double_type)
@@ -1318,10 +1054,8 @@ public:
                 return static_cast<int32_t>(m_intval);
         }
 
-        /// <summary>
-        /// Converts the JSON number to unsigned int32.
-        /// </summary>
-        /// <returns>An usigned int32 representation of the number</returns>
+            /// Converts the JSON number to unsigned int32.
+            /// Returns an usigned int32 representation of the number
         uint32_t to_uint32() const
         {
             if (m_type == double_type)
@@ -1330,10 +1064,8 @@ public:
                 return static_cast<uint32_t>(m_intval);
         }
 
-        /// <summary>
-        /// Converts the JSON number to int64.
-        /// </summary>
-        /// <returns>An int64 representation of the number</returns>
+            /// Converts the JSON number to int64.
+            /// Returns an int64 representation of the number
         int64_t to_int64() const
         {
             if (m_type == double_type)
@@ -1342,10 +1074,8 @@ public:
                 return static_cast<int64_t>(m_intval);
         }
 
-        /// <summary>
-        /// Converts the JSON number to unsigned int64.
-        /// </summary>
-        /// <returns>An unsigned int64 representation of the number</returns>
+            /// Converts the JSON number to unsigned int64.
+            /// Returns an unsigned int64 representation of the number
         uint64_t to_uint64() const
         {
             if (m_type == double_type)
@@ -1354,20 +1084,16 @@ public:
                 return static_cast<uint64_t>(m_intval);
         }
 
-        /// <summary>
-        /// Is the number represented internally as an integral type?
-        /// </summary>
-        /// <returns><c>true</c> if the number is represented as an integral type, <c>false</c> otherwise</returns>
+            /// Is the number represented internally as an integral type?
+            /// <returns><c>true</c> if the number is represented as an integral type, <c>false</c> otherwise
         bool is_integral() const
         {
             return m_type != double_type;
         }
 
-        /// <summary>
-        /// Compares two JSON numbers for equality.
-        /// </summary>
-        /// <param name="other">The JSON number to compare with.</param>
-        /// <returns>True iff the numbers are equal.</returns>
+            /// Compares two JSON numbers for equality.
+            /// <param name="other">The JSON number to compare with.
+        /// Returns true iff the numbers are equal.
         bool operator==(const number &other) const
         {
             if (m_type != other.m_type)
@@ -1865,59 +1591,47 @@ public:
         };
     } // namespace details
 
-    /// <summary>
     /// Gets the number of children of the value.
-    /// </summary>
-    /// <returns>The number of children. 0 for all non-composites.</returns>
+    /// Returns the number of children. 0 for all non-composites.
     inline size_t json::value::size() const
     {
         return m_value->size();
     }
 
-    /// <summary>
     /// Test for the presence of a field.
-    /// </summary>
-    /// <param name="key">The name of the field</param>
-    /// <returns>True if the field exists, false otherwise.</returns>
+    /// <param name="key">The name of the field
+    /// Returns true if the field exists, false otherwise.
     inline bool json::value::has_field(const utility::string_t& key) const
     {
         return m_value->has_field(key);
     }
 
-    /// <summary>
     /// Access a field of a JSON object.
-    /// </summary>
-    /// <param name="key">The name of the field</param>
-    /// <returns>The value kept in the field; null if the field does not exist</returns>
+    /// <param name="key">The name of the field
+    /// Returns the value kept in the field; null if the field does not exist
     inline json::value json::value::get(const utility::string_t& key) const
     {
         return m_value->get_field(key);
     }
 
-    /// <summary>
     /// Access an element of a JSON array.
-    /// </summary>
-    /// <param name="index">The index of an element in the JSON array</param>
-    /// <returns>The value kept at the array index; null if outside the boundaries of the array</returns>
+    /// <param name="index">The index of an element in the JSON array
+    /// Returns the value kept at the array index; null if outside the boundaries of the array
     inline json::value json::value::get(size_t index) const
     {
         return m_value->get_element(index);
     }
 
-    /// <summary>
     /// A standard <c>std::ostream</c> operator to facilitate writing JSON values to streams.
-    /// </summary>
-    /// <param name="os">The output stream to write the JSON value to.</param>
-    /// <param name="val">The JSON value to be written to the stream.</param>
-    /// <returns>The output stream object</returns>
+    /// <param name="os">The output stream to write the JSON value to.
+    /// <param name="val">The JSON value to be written to the stream.
+    /// Returns the output stream object
     _ASYNCRTIMP utility::ostream_t& __cdecl operator << (utility::ostream_t &os, const json::value &val);
 
-    /// <summary>
     /// A standard <c>std::istream</c> operator to facilitate reading JSON values from streams.
-    /// </summary>
-    /// <param name="is">The input stream to read the JSON value from.</param>
-    /// <param name="val">The JSON value object read from the stream.</param>
-    /// <returns>The input stream object.</returns>
+    /// <param name="is">The input stream to read the JSON value from.
+    /// <param name="val">The JSON value object read from the stream.
+    /// Returns the input stream object.
     _ASYNCRTIMP utility::istream_t& __cdecl operator >> (utility::istream_t &is, json::value &val);
 }}
 

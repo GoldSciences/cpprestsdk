@@ -61,139 +61,105 @@ enum class websocket_close_status
     server_terminate = 1011,
 };
 
-/// <summary>
 /// Websocket client configuration class, used to set the possible configuration options
 /// used to create an websocket_client instance.
-/// </summary>
 class websocket_client_config
 {
 public:
 
-    /// <summary>
     /// Creates a websocket client configuration with default settings.
-    /// </summary>
     websocket_client_config() :
         m_sni_enabled(true),
         m_validate_certificates(true)
 	{
 	}
 
-    /// <summary>
     /// Get the web proxy object
-    /// </summary>
-    /// <returns>A reference to the web proxy object.</returns>
+    /// Returns a reference to the web proxy object.
     const web_proxy& proxy() const
     {
         return m_proxy;
     }
 
-    /// <summary>
     /// Set the web proxy object
-    /// </summary>
-    /// <param name="proxy">The web proxy object.</param>
+    /// <param name="proxy">The web proxy object.
     void set_proxy(const web_proxy &proxy)
     {
         m_proxy = proxy;
     }
 
-    /// <summary>
     /// Get the client credentials
-    /// </summary>
-    /// <returns>A reference to the client credentials.</returns>
+    /// Returns a reference to the client credentials.
     const web::credentials& credentials() const
     {
         return m_credentials;
     }
 
-    /// <summary>
     /// Set the client credentials
-    /// </summary>
-    /// <param name="cred">The client credentials.</param>
+    /// <param name="cred">The client credentials.
     void set_credentials(const web::credentials &cred)
     {
         m_credentials = cred;
     }
 
-    /// <summary>
     /// Disables Server Name Indication (SNI). Default is on.
-    /// </summary>
     void disable_sni()
     {
         m_sni_enabled = false;
     }
 
-    /// <summary>
     /// Determines if Server Name Indication (SNI) is enabled.
-    /// </summary>
-    /// <returns>True if enabled, false otherwise.</returns>
+    /// Returns true if enabled, false otherwise.
     bool is_sni_enabled() const
     {
         return m_sni_enabled;
     }
 
-    /// <summary>
     /// Sets the server host name to use for TLS Server Name Indication (SNI).
-    /// </summary>
-    /// <remarks>By default the host name is set to the websocket URI host.</remarks>
-    /// <param name="name">The host name to use, as a string.</param>
+    /// By default the host name is set to the websocket URI host.
+    /// <param name="name">The host name to use, as a string.
     void set_server_name(const utf8string &name)
     {
         m_sni_hostname = name;
     }
 
-    /// <summary>
     /// Gets the server host name to usefor TLS Server Name Indication (SNI).
-    /// </summary>
-    /// <returns>Host name as a string.</returns>
+    /// <returns>Host name as a string.
     const utf8string & server_name() const
     {
         return m_sni_hostname;
     }
 
-    /// <summary>
     /// Gets the headers of the HTTP request message used in the WebSocket protocol handshake.
-    /// </summary>
-    /// <returns>HTTP headers for the WebSocket protocol handshake.</returns>
-    /// <remarks>
-    /// Use the <seealso cref="http_headers::add Method"/> to fill in desired headers.
-    /// </remarks>
-    web::http::http_headers &headers() { return m_headers; }
+    /// <returns>HTTP headers for the WebSocket protocol handshake.
+        /// Use the <seealso cref="http_headers::add Method"/> to fill in desired headers.
+        web::http::http_headers &headers() { return m_headers; }
 
-    /// <summary>
     /// Gets a const reference to the headers of the WebSocket protocol handshake HTTP message.
-    /// </summary>
-    /// <returns>HTTP headers.</returns>
+    /// <returns>HTTP headers.
     const web::http::http_headers &headers() const { return m_headers; }
 
-    /// <summary>
     /// Adds a subprotocol to the request headers.
-    /// </summary>
-    /// <param name="name">The name of the subprotocol.</param>
-    /// <remarks>If additional subprotocols have already been specified, the new one will just be added.</remarks>
+    /// <param name="name">The name of the subprotocol.
+    /// If additional subprotocols have already been specified, the new one will just be added.
     _ASYNCRTIMP void add_subprotocol(const ::utility::string_t &name);
 
-    /// <summary>
     /// Gets list of the specified subprotocols.
-    /// </summary>
-    /// <returns>Vector of all the subprotocols </returns>
-    /// <remarks>If you want all the subprotocols in a comma separated string
-    /// they can be directly looked up in the headers using 'Sec-WebSocket-Protocol'.</remarks>
+    /// <returns>Vector of all the subprotocols 
+    /// If you want all the subprotocols in a comma separated string
+    /// they can be directly looked up in the headers using 'Sec-WebSocket-Protocol'.
     _ASYNCRTIMP std::vector<::utility::string_t> subprotocols() const;
 	
-    /// <summary>
     /// Gets the server certificate validation property.
-    /// </summary>
-    /// <returns>True if certificates are to be verified, false otherwise.</returns>
+    /// Returns true if certificates are to be verified, false otherwise.
     bool validate_certificates() const
     {
         return m_validate_certificates;
     }
 	
-    /// <summary>
     /// Sets the server certificate validation property.
-    /// </summary>
-    /// <param name="validate_certs">False to turn ignore all server certificate validation errors, true otherwise.</param>
-    /// <remarks>Note ignoring certificate errors can be dangerous and should be done with caution.</remarks>
+    /// <param name="validate_certs">False to turn ignore all server certificate validation errors, true otherwise.
+    /// Note ignoring certificate errors can be dangerous and should be done with caution.
     void set_validate_certificates(bool validate_certs)
     {
         m_validate_certificates = validate_certs;
@@ -208,105 +174,83 @@ private:
     bool m_validate_certificates;
 };
 
-/// <summary>
 /// Represents a websocket error. This class holds an error message and an optional error code.
-/// </summary>
 class websocket_exception : public std::exception
 {
 public:
 
-    /// <summary>
     /// Creates an <c>websocket_exception</c> with just a string message and no error code.
-    /// </summary>
-    /// <param name="whatArg">Error message string.</param>
+    /// <param name="whatArg">Error message string.
     websocket_exception(const utility::string_t &whatArg)
         : m_msg(utility::conversions::to_utf8string(whatArg)) {}
 
 #ifdef _WIN32
-    /// <summary>
     /// Creates an <c>websocket_exception</c> with just a string message and no error code.
-    /// </summary>
-    /// <param name="whatArg">Error message string.</param>
+    /// <param name="whatArg">Error message string.
     websocket_exception(std::string whatArg) : m_msg(std::move(whatArg)) {}
 #endif
 
-    /// <summary>
     /// Creates a <c>websocket_exception</c> from a error code using the current platform error category.
     /// The message of the error code will be used as the what() string message.
-    /// </summary>
-    /// <param name="errorCode">Error code value.</param>
+    /// <param name="errorCode">Error code value.
     websocket_exception(int errorCode)
         : m_errorCode(utility::details::create_error_code(errorCode))
     {
         m_msg = m_errorCode.message();
     }
 
-    /// <summary>
     /// Creates a <c>websocket_exception</c> from a error code using the current platform error category.
-    /// </summary>
-    /// <param name="errorCode">Error code value.</param>
-    /// <param name="whatArg">Message to use in what() string.</param>
+    /// <param name="errorCode">Error code value.
+    /// <param name="whatArg">Message to use in what() string.
     websocket_exception(int errorCode, const utility::string_t &whatArg)
         : m_errorCode(utility::details::create_error_code(errorCode)),
           m_msg(utility::conversions::to_utf8string(whatArg))
     {}
 
 #ifdef _WIN32
-    /// <summary>
     /// Creates a <c>websocket_exception</c> from a error code and string message.
-    /// </summary>
-    /// <param name="errorCode">Error code value.</param>
-    /// <param name="whatArg">Message to use in what() string.</param>
+    /// <param name="errorCode">Error code value.
+    /// <param name="whatArg">Message to use in what() string.
     websocket_exception(int errorCode, std::string whatArg)
         : m_errorCode(utility::details::create_error_code(errorCode)),
         m_msg(std::move(whatArg))
     {}
 
-    /// <summary>
     /// Creates a <c>websocket_exception</c> from a error code and string message to use as the what() argument.
-    /// <param name="code">Error code.</param>
-    /// <param name="whatArg">Message to use in what() string.</param>
-    /// </summary>
+    /// <param name="code">Error code.
+    /// <param name="whatArg">Message to use in what() string.
     websocket_exception(std::error_code code, std::string whatArg) :
         m_errorCode(std::move(code)),
         m_msg(std::move(whatArg))
     {}
 #endif
 
-    /// <summary>
     /// Creates a <c>websocket_exception</c> from a error code and category. The message of the error code will be used
     /// as the <c>what</c> string message.
-    /// </summary>
-    /// <param name="errorCode">Error code value.</param>
-    /// <param name="cat">Error category for the code.</param>
+    /// <param name="errorCode">Error code value.
+    /// <param name="cat">Error category for the code.
     websocket_exception(int errorCode, const std::error_category &cat) : m_errorCode(std::error_code(errorCode, cat))
     {
         m_msg = m_errorCode.message();
     }
 
-    /// <summary>
     /// Creates a <c>websocket_exception</c> from a error code and string message to use as the what() argument.
-    /// <param name="code">Error code.</param>
-    /// <param name="whatArg">Message to use in what() string.</param>
-    /// </summary>
+    /// <param name="code">Error code.
+    /// <param name="whatArg">Message to use in what() string.
     websocket_exception(std::error_code code, const utility::string_t &whatArg) :
         m_errorCode(std::move(code)),
         m_msg(utility::conversions::to_utf8string(whatArg))
     {}
 
-    /// <summary>
     /// Gets a string identifying the cause of the exception.
-    /// </summary>
-    /// <returns>A null terminated character string.</returns>
+    /// Returns a null terminated character string.
     const char* what() const CPPREST_NOEXCEPT
     {
         return m_msg.c_str();
     }
 
-    /// <summary>
     /// Gets the underlying error code for the cause of the exception.
-    /// </summary>
-    /// <returns>The <c>error_code</c> object associated with the exception.</returns>
+    /// Returns the <c>error_code</c> object associated with the exception.
     const std::error_code & error_code() const CPPREST_NOEXCEPT
     {
         return m_errorCode;
@@ -419,33 +363,25 @@ private:
 };
 }
 
-/// <summary>
 /// Websocket client class, used to maintain a connection to a remote host for an extended session.
-/// </summary>
 class websocket_client
 {
 public:
-    /// <summary>
     ///  Creates a new websocket_client.
-    /// </summary>
     websocket_client() :
         m_client(std::make_shared<details::websocket_client_task_impl>(websocket_client_config()))
     {}
 
-    /// <summary>
     ///  Creates a new websocket_client.
-    /// </summary>
-    /// <param name="config">The client configuration object containing the possible configuration options to initialize the <c>websocket_client</c>. </param>
+    /// <param name="config">The client configuration object containing the possible configuration options to initialize the <c>websocket_client</c>. 
     websocket_client(websocket_client_config config) :
         m_client(std::make_shared<details::websocket_client_task_impl>(std::move(config)))
     {}
 
-    /// <summary>
     /// Connects to the remote network destination. The connect method initiates the websocket handshake with the
     /// remote network destination, takes care of the protocol upgrade request.
-    /// </summary>
-    /// <param name="uri">The uri address to connect. </param>
-    /// <returns>An asynchronous operation that is completed once the client has successfully connected to the websocket server.</returns>
+    /// <param name="uri">The uri address to connect. 
+    /// Returns an asynchronous operation that is completed once the client has successfully connected to the websocket server.
     pplx::task<void> connect(const web::uri &uri)
     {
         m_client->callback_client()->verify_uri(uri);
@@ -465,57 +401,45 @@ public:
         });
     }
 
-    /// <summary>
     /// Sends a websocket message to the server .
-    /// </summary>
-    /// <returns>An asynchronous operation that is completed once the message is sent.</returns>
+    /// Returns an asynchronous operation that is completed once the message is sent.
     pplx::task<void> send(websocket_outgoing_message msg)
     {
         return m_client->callback_client()->send(msg);
     }
 
-    /// <summary>
     /// Receive a websocket message.
-    /// </summary>
-    /// <returns>An asynchronous operation that is completed when a message has been received by the client endpoint.</returns>
+    /// Returns an asynchronous operation that is completed when a message has been received by the client endpoint.
     pplx::task<websocket_incoming_message> receive()
     {
         return m_client->receive();
     }
 
-    /// <summary>
     /// Closes a websocket client connection, sends a close frame to the server and waits for a close message from the server.
-    /// </summary>
-    /// <returns>An asynchronous operation that is completed the connection has been successfully closed.</returns>
+    /// Returns an asynchronous operation that is completed the connection has been successfully closed.
     pplx::task<void> close()
     {
         return m_client->callback_client()->close();
     }
 
-    /// <summary>
     /// Closes a websocket client connection, sends a close frame to the server and waits for a close message from the server.
-    /// </summary>
-    /// <param name="close_status">Endpoint MAY use the following pre-defined status codes when sending a Close frame.</param>
-    /// <param name="close_reason">While closing an established connection, an endpoint may indicate the reason for closure.</param>
-    /// <returns>An asynchronous operation that is completed the connection has been successfully closed.</returns>
+    /// <param name="close_status">Endpoint MAY use the following pre-defined status codes when sending a Close frame.
+    /// <param name="close_reason">While closing an established connection, an endpoint may indicate the reason for closure.
+    /// Returns an asynchronous operation that is completed the connection has been successfully closed.
     pplx::task<void> close(websocket_close_status close_status, const utility::string_t& close_reason=_XPLATSTR(""))
     {
         return m_client->callback_client()->close(close_status, close_reason);
     }
 
-    /// <summary>
     /// Gets the websocket client URI.
-    /// </summary>
-    /// <returns>URI connected to.</returns>
+    /// <returns>URI connected to.
     const web::uri& uri() const
     {
         return m_client->callback_client()->uri();
     }
 
-    /// <summary>
     /// Gets the websocket client config object.
-    /// </summary>
-    /// <returns>A reference to the client configuration object.</returns>
+    /// Returns a reference to the client configuration object.
     const websocket_client_config& config() const
     {
         return m_client->callback_client()->config();
@@ -525,30 +449,22 @@ private:
     std::shared_ptr<details::websocket_client_task_impl> m_client;
 };
 
-/// <summary>
 /// Websocket client class, used to maintain a connection to a remote host for an extended session, uses callback APIs for handling receive and close event instead of async task.
 /// For some scenarios would be a alternative for the websocket_client like if you want to special handling on close event.
-/// </summary>
 class websocket_callback_client
 {
 public:
-    /// <summary>
     ///  Creates a new websocket_callback_client.
-    /// </summary>
     _ASYNCRTIMP websocket_callback_client();
 
-    /// <summary>
     ///  Creates a new websocket_callback_client.
-    /// </summary>
-    /// <param name="client_config">The client configuration object containing the possible configuration options to initialize the <c>websocket_client</c>. </param>
+    /// <param name="client_config">The client configuration object containing the possible configuration options to initialize the <c>websocket_client</c>. 
     _ASYNCRTIMP websocket_callback_client(websocket_client_config client_config);
 
-    /// <summary>
     /// Connects to the remote network destination. The connect method initiates the websocket handshake with the
     /// remote network destination, takes care of the protocol upgrade request.
-    /// </summary>
-    /// <param name="uri">The uri address to connect. </param>
-    /// <returns>An asynchronous operation that is completed once the client has successfully connected to the websocket server.</returns>
+    /// <param name="uri">The uri address to connect. 
+    /// Returns an asynchronous operation that is completed once the client has successfully connected to the websocket server.
     pplx::task<void> connect(const web::uri &uri)
     {
         m_client->verify_uri(uri);
@@ -556,73 +472,59 @@ public:
         return m_client->connect();
     }
 
-    /// <summary>
     /// Sends a websocket message to the server .
-    /// </summary>
-    /// <returns>An asynchronous operation that is completed once the message is sent.</returns>
+    /// Returns an asynchronous operation that is completed once the message is sent.
     pplx::task<void> send(websocket_outgoing_message msg)
     {
         return m_client->send(msg);
     }
 
-    /// <summary>
     /// Set the received handler for notification of client websocket messages.
-    /// </summary>
     /// <param name="handler">A function representing the incoming websocket messages handler. It's parameters are:
     ///    msg:  a <c>websocket_incoming_message</c> value indicating the message received
-    /// </param>
-    /// <remarks>If this handler is not set before connecting incoming messages will be missed.</remarks>
+    /// 
+    /// If this handler is not set before connecting incoming messages will be missed.
     void set_message_handler(const std::function<void(const websocket_incoming_message& msg)>& handler)
     {
         m_client->set_message_handler(handler);
     }
 
-    /// <summary>
     /// Closes a websocket client connection, sends a close frame to the server and waits for a close message from the server.
-    /// </summary>
-    /// <returns>An asynchronous operation that is completed the connection has been successfully closed.</returns>
+    /// Returns an asynchronous operation that is completed the connection has been successfully closed.
     pplx::task<void> close()
     {
         return m_client->close();
     }
 
-    /// <summary>
     /// Closes a websocket client connection, sends a close frame to the server and waits for a close message from the server.
-    /// </summary>
-    /// <param name="close_status">Endpoint MAY use the following pre-defined status codes when sending a Close frame.</param>
-    /// <param name="close_reason">While closing an established connection, an endpoint may indicate the reason for closure.</param>
-    /// <returns>An asynchronous operation that is completed the connection has been successfully closed.</returns>
+    /// <param name="close_status">Endpoint MAY use the following pre-defined status codes when sending a Close frame.
+    /// <param name="close_reason">While closing an established connection, an endpoint may indicate the reason for closure.
+    /// Returns an asynchronous operation that is completed the connection has been successfully closed.
     pplx::task<void> close(websocket_close_status close_status, const utility::string_t& close_reason = _XPLATSTR(""))
     {
         return m_client->close(close_status, close_reason);
     }
 
-    /// <summary>
     /// Set the closed handler for notification of client websocket closing event.
-    /// </summary>
     /// <param name="handler">The handler for websocket closing event, It's parameters are:
     ///   close_status: The pre-defined status codes used by the endpoint when sending a Close frame.
     ///   reason: The reason string used by the endpoint when sending a Close frame.
     ///   error: The error code if the websocket is closed with abnormal error.
-    /// </param>
+    /// 
     void set_close_handler(const std::function<void(websocket_close_status close_status, const utility::string_t& reason, const std::error_code& error)>& handler)
     {
         m_client->set_close_handler(handler);
     }
 
-    /// <summary>
     /// Gets the websocket client URI.
-    /// </summary>
-    /// <returns>URI connected to.</returns>
+    /// <returns>URI connected to.
     const web::uri& uri() const
     {
         return m_client->uri();
     }
 
-    /// <summary>
     /// Gets the websocket client config object.
-    /// </summary>
-    /// <returns>A reference to the client configuration object.</returns>
+    /// Returns a reference to the client configuration object.
     const websocket_client_config& config() const
     {
         return m_client->config();

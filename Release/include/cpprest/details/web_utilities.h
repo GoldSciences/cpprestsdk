@@ -62,38 +62,28 @@ private:
 #endif
 }
 
-/// <summary>
 /// Represents a set of user credentials (user name and password) to be used
 /// for authentication.
-/// </summary>
 class credentials
 {
 public:
-    /// <summary>
     /// Constructs an empty set of credentials without a user name or password.
-    /// </summary>
     credentials() {}
 
-    /// <summary>
     /// Constructs credentials from given user name and password.
-    /// </summary>
-    /// <param name="username">User name as a string.</param>
-    /// <param name="password">Password as a string.</param>
+    /// <param name="username">User name as a string.
+    /// <param name="password">Password as a string.
     credentials(utility::string_t username, const utility::string_t & password) :
         m_username(std::move(username)),
         m_password(password)
     {}
 
-    /// <summary>
     /// The user name associated with the credentials.
-    /// </summary>
-    /// <returns>A string containing the user name.</returns>
+    /// Returns a string containing the user name.
     const utility::string_t &username() const { return m_username; }
 
-    /// <summary>
     /// The password for the user name associated with the credentials.
-    /// </summary>
-    /// <returns>A string containing the password.</returns>
+    /// Returns a string containing the password.
     CASABLANCA_DEPRECATED("This API is deprecated for security reasons to avoid unnecessary password copies stored in plaintext.")
         utility::string_t password() const
     {
@@ -104,10 +94,8 @@ public:
 #endif
     }
 
-    /// <summary>
     /// Checks if credentials have been set
-    /// </summary>
-    /// <returns><c>true</c> if user name and password is set, <c>false</c> otherwise.</returns>
+    /// <returns><c>true</c> if user name and password is set, <c>false</c> otherwise.
     bool is_set() const { return !m_username.empty(); }
 
     details::plaintext_string _internal_decrypt() const
@@ -134,49 +122,35 @@ private:
 #endif
 };
 
-/// <summary>
 /// web_proxy represents the concept of the web proxy, which can be auto-discovered,
 /// disabled, or specified explicitly by the user.
-/// </summary>
 class web_proxy
 {
     enum web_proxy_mode_internal{ use_default_, use_auto_discovery_, disabled_, user_provided_ };
 public:
     enum web_proxy_mode{ use_default = use_default_, use_auto_discovery = use_auto_discovery_, disabled  = disabled_};
 
-    /// <summary>
     /// Constructs a proxy with the default settings.
-    /// </summary>
     web_proxy() : m_address(_XPLATSTR("")), m_mode(use_default_) {}
 
-    /// <summary>
     /// Creates a proxy with specified mode.
-    /// </summary>
-    /// <param name="mode">Mode to use.</param>
+    /// <param name="mode">Mode to use.
     web_proxy( web_proxy_mode mode ) : m_address(_XPLATSTR("")), m_mode(static_cast<web_proxy_mode_internal>(mode)) {}
 
-    /// <summary>
     /// Creates a proxy explicitly with provided address.
-    /// </summary>
-    /// <param name="address">Proxy URI to use.</param>
+    /// <param name="address">Proxy URI to use.
     web_proxy( uri address ) : m_address(address), m_mode(user_provided_) {}
 
-    /// <summary>
     /// Gets this proxy's URI address. Returns an empty URI if not explicitly set by user.
-    /// </summary>
-    /// <returns>A reference to this proxy's URI.</returns>
+    /// Returns a reference to this proxy's URI.
     const uri& address() const { return m_address; }
 
-    /// <summary>
     /// Gets the credentials used for authentication with this proxy.
-    /// </summary>
-    /// <returns>Credentials to for this proxy.</returns>
+    /// <returns>Credentials to for this proxy.
     const web::credentials& credentials() const { return m_credentials; }
 
-    /// <summary>
     /// Sets the credentials to use for authentication with this proxy.
-    /// </summary>
-    /// <param name="cred">Credentials to use for this proxy.</param>
+    /// <param name="cred">Credentials to use for this proxy.
     void set_credentials(web::credentials cred) {
         if( m_mode == disabled_ )
         {
@@ -185,28 +159,20 @@ public:
         m_credentials = std::move(cred);
     }
 
-    /// <summary>
     /// Checks if this proxy was constructed with default settings.
-    /// </summary>
-    /// <returns>True if default, false otherwise.</param>
+    /// Returns true if default, false otherwise.
     bool is_default() const { return m_mode == use_default_; }
 
-    /// <summary>
     /// Checks if using a proxy is disabled.
-    /// </summary>
-    /// <returns>True if disabled, false otherwise.</returns>
+    /// Returns true if disabled, false otherwise.
     bool is_disabled() const { return m_mode == disabled_; }
 
-    /// <summary>
     /// Checks if the auto discovery protocol, WPAD, is to be used.
-    /// </summary>
-    /// <returns>True if auto discovery enabled, false otherwise.</returns>
+    /// Returns true if auto discovery enabled, false otherwise.
     bool is_auto_discovery() const { return m_mode == use_auto_discovery_; }
 
-    /// <summary>
     /// Checks if a proxy address is explicitly specified by the user.
-    /// </summary>
-    /// <returns>True if a proxy address was explicitly specified, false otherwise.</returns>
+    /// Returns true if a proxy address was explicitly specified, false otherwise.
     bool is_specified() const { return m_mode == user_provided_; }
 
 private:

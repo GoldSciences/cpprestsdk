@@ -34,11 +34,9 @@
 namespace pplx
 {
 
-/// <summary>
 ///     This class describes an exception thrown by the PPL tasks layer in order to force the current task
 ///     to cancel. It is also thrown by the <c>get()</c> method on <see cref="task Class">task</see>, for a
 ///     canceled task.
-/// </summary>
 /// <seealso cref="task::get Method"/>
 /// <seealso cref="cancel_current_task Method"/>
 /**/
@@ -48,21 +46,17 @@ private:
     std::string _message;
 
 public:
-    /// <summary>
     ///     Constructs a <c>task_canceled</c> object.
-    /// </summary>
     /// <param name="_Message">
     ///     A descriptive message of the error.
-    /// </param>
+    /// 
     /**/
     explicit task_canceled(_In_z_ const char * _Message) throw()
         : _message(_Message)
     {
     }
 
-    /// <summary>
     ///     Constructs a <c>task_canceled</c> object.
-    /// </summary>
     /**/
     task_canceled() throw()
         : exception()
@@ -77,13 +71,9 @@ public:
     }
 };
 
-/// <summary>
 ///     This class describes an exception thrown when an invalid operation is performed that is not more accurately
 ///     described by another exception type thrown by the Concurrency Runtime.
-/// </summary>
-/// <remarks>
 ///     The various methods which throw this exception will generally document under what circumstances they will throw it.
-/// </remarks>
 /**/
 class invalid_operation : public std::exception
 {
@@ -91,21 +81,17 @@ private:
     std::string _message;
 
 public:
-    /// <summary>
     ///     Constructs an <c>invalid_operation</c> object.
-    /// </summary>
     /// <param name="_Message">
     ///     A descriptive message of the error.
-    /// </param>
+    /// 
     /**/
     invalid_operation(_In_z_ const char * _Message) throw()
         : _message(_Message)
     {
     }
 
-    /// <summary>
     ///     Constructs an <c>invalid_operation</c> object.
-    /// </summary>
     /**/
     invalid_operation() throw()
         : exception()
@@ -596,12 +582,10 @@ class cancellation_token_source;
 class cancellation_token;
 
 
-/// <summary>
 ///     The <c>cancellation_token_registration</c> class represents a callback notification from a <c>cancellation_token</c>.  When the <c>register</c>
 ///     method on a <c>cancellation_token</c> is used to receive notification of when cancellation occurs, a <c>cancellation_token_registration</c>
 ///     object is returned as a handle to the callback so that the caller can request a specific callback no longer be made through use of
 ///     the <c>deregister</c> method. 
-/// </summary>
 class cancellation_token_registration
 {
 public:
@@ -693,23 +677,19 @@ private:
 };
 
 
-/// <summary>
 ///     The <c>cancellation_token</c> class represents the ability to determine whether some operation has been requested to cancel.  A given token can
 ///     be associated with a <c>task_group</c>, <c>structured_task_group</c>, or <c>task</c> to provide implicit cancellation.  It can also be polled for
 ///     cancellation or have a callback registered for if and when the associated <c>cancellation_token_source</c> is canceled.
-/// </summary>
 class cancellation_token
 {
 public:
 
     typedef details::_CancellationTokenState * _ImplType;
 
-    /// <summary>
     ///     Returns a cancellation token which can never be subject to cancellation.
-    /// </summary>
     /// <returns>
     ///     A cancellation token that cannot be canceled.
-    /// </returns>
+    /// 
     static cancellation_token none()
     {
         return cancellation_token();
@@ -760,44 +740,38 @@ public:
         _Clear();
     }
 
-    /// <summary>
     ///     Returns an indication of whether this token can be canceled or not.
-    /// </summary>
     /// <returns>
     ///     An indication of whether this token can be canceled or not.
-    /// </returns>
+    /// 
     bool is_cancelable() const
     {
         return (_M_Impl != NULL);
     }
 
-    /// <summary>
     /// Returns <c>true</c> if the token has been canceled.
-    /// </summary>
     /// <returns>
     /// The value <c>true</c> if the token has been canceled; otherwise, the value <c>false</c>.
-    /// </returns>
+    /// 
     bool is_canceled() const
     {
         return (_M_Impl != NULL && _M_Impl->_IsCanceled());
     }
 
-    /// <summary>
     ///     Registers a callback function with the token.  If and when the token is canceled, the callback will be made.  Note that if the token
     ///     is already canceled at the point where this method is called, the callback will be made immediately and synchronously.  
-    /// </summary>
     /// <typeparam name="_Function">
     ///     The type of the function object that will be called back when this <c>cancellation_token</c> is canceled.
     /// </typeparam>
     /// <param name="_Func">
     ///     The function object that will be called back when this <c>cancellation_token</c> is canceled.
-    /// </param>
+    /// 
     /// <returns>
     ///     A <c>cancellation_token_registration</c> object which can be utilized in the <c>deregister</c> method to deregister a previously registered
     ///     callback and prevent it from being made. The method will throw an <see cref="invalid_operation Class">invalid_operation </see> exception if
     ///     it is called on a <c>cancellation_token</c> object that was created using the <see cref="cancellation_token::none Method">cancellation_token::none </see>
     ///     method.
-    /// </returns>
+    /// 
     template<typename _Function>
     ::pplx::cancellation_token_registration register_callback(const _Function& _Func) const
     {
@@ -814,14 +788,12 @@ public:
         return cancellation_token_registration(_PCallback);
     }
 
-    /// <summary>
     ///     Removes a callback previously registered via the <c>register</c> method based on the <c>cancellation_token_registration</c> object returned
     ///     at the time of registration.
-    /// </summary>
     /// <param name="_Registration">
     ///     The <c>cancellation_token_registration</c> object corresponding to the callback to be deregistered.  This token must have been previously
     ///     returned from a call to the <c>register</c> method.
-    /// </param>
+    /// 
     void deregister_callback(const cancellation_token_registration& _Registration) const
     {
         _M_Impl->_DeregisterCallback(_Registration._M_pRegistration);
@@ -892,18 +864,14 @@ private:
     }
 };
 
-/// <summary>
 ///     The <c>cancellation_token_source</c> class represents the ability to cancel some cancelable operation.
-/// </summary>
 class cancellation_token_source
 {
 public:
 
     typedef ::pplx::details::_CancellationTokenState * _ImplType;
 
-    /// <summary>
     ///     Constructs a new <c>cancellation_token_source</c>.  The source can be used to flag cancellation of some cancelable operation.
-    /// </summary>
     cancellation_token_source()
     { 
         _M_Impl = new ::pplx::details::_CancellationTokenState;
@@ -957,28 +925,24 @@ public:
         }
     }
 
-    /// <summary>
     ///     Returns a cancellation token associated with this source.  The returned token can be polled for cancellation
     ///     or provide a callback if and when cancellation occurs.
-    /// </summary>
     /// <returns>
     ///     A cancellation token associated with this source.
-    /// </returns>
+    /// 
     cancellation_token get_token() const
     {
         return cancellation_token(_M_Impl);
     }
 
-    /// <summary>
     ///     Creates a <c>cancellation_token_source</c> which is canceled when the provided token is canceled.
-    /// </summary>
     /// <param name="_Src">
     ///     A token whose cancellation will cause cancellation of the returned token source.  Note that the returned token source can also be canceled
     ///     independently of the source contained in this parameter.
-    /// </param>
+    /// 
     /// <returns>
     ///     A <c>cancellation_token_source</c> which is canceled when the token provided by the <paramref name="_Src"/> parameter is canceled.
-    /// </returns>
+    /// 
     static cancellation_token_source create_linked_source(cancellation_token& _Src) 
     {
         cancellation_token_source newSource;
@@ -986,20 +950,18 @@ public:
         return newSource;
     }
 
-    /// <summary>
     ///     Creates a <c>cancellation_token_source</c> which is canceled when one of a series of tokens represented by an STL iterator
     ///     pair is canceled.
-    /// </summary>
     /// <param name="_Begin">
     ///     The STL iterator corresponding to the beginning of the range of tokens to listen for cancellation of.
-    /// </param>
+    /// 
     /// <param name="_End">
     ///     The STL iterator corresponding to the ending of the range of tokens to listen for cancellation of.
-    /// </param>
+    /// 
     /// <returns>
     ///     A <c>cancellation_token_source</c> which is canceled when any of the tokens provided by the range described by the STL iterators
     ///     contained in the <paramref name="_Begin"/> and <paramref name="_End"/> parameters is canceled.
-    /// </returns>
+    /// 
     template<typename _Iter>
     static cancellation_token_source create_linked_source(_Iter _Begin, _Iter _End)
     {
@@ -1011,10 +973,8 @@ public:
         return newSource;
     }
 
-    /// <summary>
     ///     Cancels the token.  Any <c>task_group</c>, <c>structured_task_group</c>, or <c>task</c> which utilizes the token will be 
     ///     canceled upon this call and throw an exception at the next interruption point.
-    /// </summary>
     void cancel() const
     {
         _M_Impl->_Cancel();

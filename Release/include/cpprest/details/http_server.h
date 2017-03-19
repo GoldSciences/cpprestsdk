@@ -23,43 +23,29 @@ namespace experimental {
 namespace details
 {
 
-/// <summary>
 /// Interface http listeners interact with for receiving and responding to http requests.
-/// </summary>
 class http_server
 {
 public:
 
-    /// <summary>
     /// Release any held resources.
-    /// </summary>
     virtual ~http_server() { };
 
-    /// <summary>
     /// Start listening for incoming requests.
-    /// </summary>
     virtual pplx::task<void> start() = 0;
 
-    /// <summary>
     /// Registers an http listener.
-    /// </summary>
     virtual pplx::task<void> register_listener(_In_ web::http::experimental::listener::details::http_listener_impl *pListener) = 0;
 
-    /// <summary>
     /// Unregisters an http listener.
-    /// </summary>
     virtual pplx::task<void> unregister_listener(_In_ web::http::experimental::listener::details::http_listener_impl *pListener) = 0;
 
-    /// <summary>
     /// Stop processing and listening for incoming requests.
-    /// </summary>
     virtual pplx::task<void> stop() = 0;
 
-    /// <summary>
     /// Asynchronously sends the specified http response.
-    /// </summary>
-    /// <param name="response">The http_response to send.</param>
-    /// <returns>A operation which is completed once the response has been sent.</returns>
+    /// <param name="response">The http_response to send.
+    /// Returns a operation which is completed once the response has been sent.
     virtual pplx::task<void> respond(http::http_response response) = 0;
 };
 

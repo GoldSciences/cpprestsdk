@@ -1,18 +1,9 @@
-/***
-* Copyright (C) Microsoft. All rights reserved.
-* Licensed under the MIT license. See LICENSE.txt file in the project root for full license information.
-*
-* =+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+
-*
-* HTTP Library: Client-side APIs.
-*
-* This file contains a cross platform implementation based on Boost.ASIO.
-*
-* For the latest on this and related APIs, please see: https://github.com/Microsoft/cpprestsdk
-*
-* =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
-****/
-
+// HTTP Library: Client-side APIs.
+// This file contains a cross platform implementation based on Boost.ASIO.
+// For the latest on this and related APIs, please see: https://github.com/Microsoft/cpprestsdk
+//
+// Copyright (C) Microsoft. All rights reserved.
+// Licensed under the MIT license. See LICENSE.txt file in the project root for full license information.
 #include "stdafx.h"
 
 #include "../common/internal_http_helpers.h"
@@ -231,7 +222,6 @@ private:
 };
 
 /// <summary>Implements a connection pool with adaptive connection removal</summary>
-/// <remarks>
 /// The timeout mechanism is based on the `uint64_t m_epoch` member. Every 30 seconds,
 /// the lambda in `start_epoch_interval` fires, triggering the cleanup of any
 /// connections that have resided in the pool since the last cleanup phase's epoch.
@@ -255,7 +245,6 @@ private:
 ///     pool.release(conn);
 ///   }
 /// </code>
-/// </remarks>
 class asio_connection_pool : public std::enable_shared_from_this<asio_connection_pool>
 {
 public:
