@@ -48,11 +48,7 @@ struct EXTENDED_OVERLAPPED : OVERLAPPED
 };
 
 #if _WIN32_WINNT < _WIN32_WINNT_VISTA
-void CALLBACK IoCompletionCallback(
-    DWORD dwErrorCode,
-    DWORD dwNumberOfBytesTransfered,
-    LPOVERLAPPED pOverlapped)
-{
+void CALLBACK IoCompletionCallback(DWORD dwErrorCode, DWORD dwNumberOfBytesTransfered, LPOVERLAPPED pOverlapped) {
     EXTENDED_OVERLAPPED *pExtOverlapped = static_cast<EXTENDED_OVERLAPPED *>(pOverlapped);
 
     if (dwErrorCode == 0xc0000011)	// If dwErrorCode is 0xc0000011, it means STATUS_END_OF_FILE. Map this error code to system error code:ERROR_HANDLE_EOF
@@ -119,7 +115,7 @@ void _finish_create(HANDLE fileHandle, _In_ _filestream_callback *callback, std:
     }
     void *io_ctxt = nullptr;
 #if _WIN32_WINNT < _WIN32_WINNT_VISTA
-    if (!BindIoCompletionCallback(fh, IoCompletionCallback, 0)) {
+    if (!BindIoCompletionCallback(fileHandle, IoCompletionCallback, 0)) {
         callback->on_error(std::make_exception_ptr(utility::details::create_system_error(GetLastError())));
         return;
     }
@@ -154,7 +150,7 @@ void _finish_create(HANDLE fileHandle, _In_ _filestream_callback *callback, std:
 /// <param name="filename">The name of the file to open
 /// <param name="mode">A creation mode for the stream buffer
 /// <param name="prot">A file protection mode to use for the file stream
-/// <returns><c>true</c> if the opening operation could be initiated, <c>false</c> otherwise.
+/// Returns true if the opening operation could be initiated, false otherwise.
 /// True does not signal that the file will eventually be successfully opened, just that the process was started.
 bool __cdecl _open_fsb_str(_In_ _filestream_callback *callback, const utility::char_t *filename, std::ios_base::openmode mode, int prot) {
     _ASSERTE(callback != nullptr);
@@ -177,7 +173,7 @@ bool __cdecl _open_fsb_str(_In_ _filestream_callback *callback, const utility::c
 /// Close a file stream buffer.
 /// <param name="info">The file info record of the file
 /// <param name="callback">A pointer to the callback interface to invoke when the file has been opened.
-/// <returns><c>true</c> if the closing operation could be initiated, <c>false</c> otherwise.
+/// Returns true if the closing operation could be initiated, false otherwise.
 /// True does not signal that the file will eventually be successfully closed, just that the process was started.
 bool __cdecl _close_fsb_nolock(_In_ _file_info **info, _In_ streams::details::_filestream_callback *callback) {
     _ASSERTE(nullptr != callback	);
@@ -449,20 +445,17 @@ size_t _fill_buffer_fsb(_In_ _file_info_impl *fInfo, _In_ _filestream_callback *
 
         auto read =  _read_file_async(fInfo, cb, reinterpret_cast<uint8_t *>(fInfo->m_buffer), fInfo->m_bufsize*char_size, fInfo->m_rdpos*char_size);
 
-		switch (read) {
-        case 0		:					return read;	// pending
-        case (-1)	:	delete cb;		return read;	// error
-        default		:
-            cb->on_completed(read);	// operation is complete. The pattern of returning synchronously
-									// has the expectation that we duplicate the callback code here...
-									// Do the expedient thing for now.
-            return 0;	// return pending
-		}
+        switch (read) {
+        case 0		:				return read;	// - pending
+        case (-1)	:	delete cb;	return read;	// - error
+        default		:								// - operation is complete. The pattern of returning synchronously has the expectation that we duplicate the callback code here...
+            cb->on_completed(read);					// Do the expedient thing for now.
+            return 0;								// - return pending
+        }
     }
 
     // First, we need to understand how far into the buffer we have already read
     // and how much remains.
-
     size_t bufpos = fInfo->m_rdpos - fInfo->m_bufoff;
     size_t bufrem = fInfo->m_buffill - bufpos;
 
@@ -471,13 +464,11 @@ size_t _fill_buffer_fsb(_In_ _file_info_impl *fInfo, _In_ _filestream_callback *
     //  2. The read position is in the middle of the buffer, and we need to read some more.
     //  3. The read position is beyond the end of the buffer. Do as in #1.
     //  4. We have everything we need.
-
     if ( (fInfo->m_rdpos < fInfo->m_bufoff) || (fInfo->m_rdpos >= (fInfo->m_bufoff+fInfo->m_buffill)) ) {
         // Reuse the existing buffer.
         fInfo->m_bufoff = fInfo->m_rdpos;
         auto cb = create_callback(fInfo,
-            [=] (size_t result)
-            {
+            [=] (size_t result) {
                 pplx::extensibility::scoped_recursive_lock_t lck(fInfo->m_lock);
                 fInfo->m_buffill = result/char_size;
                 callback->on_completed(bufrem*char_size+result);
@@ -488,10 +479,9 @@ size_t _fill_buffer_fsb(_In_ _file_info_impl *fInfo, _In_ _filestream_callback *
         switch (read) {
         case 0		:				return read;	// - pending
         case (-1)	:	delete cb;	return read;	// - error
-        default		:								// - operation is complete. The pattern of returning synchronously
-            cb->on_completed(read);					// has the expectation that we duplicate the callback code here...
-													// Do the expedient thing for now.
-            return 0;	// return pending
+        default		:								// - operation is complete. The pattern of returning synchronously has the expectation that we duplicate the callback code here...
+            cb->on_completed(read);					// Do the expedient thing for now.
+            return 0;								// - return pending
         }
     }
     else if ( bufrem < count ) {
@@ -520,20 +510,16 @@ size_t _fill_buffer_fsb(_In_ _file_info_impl *fInfo, _In_ _filestream_callback *
         auto read = _read_file_async(fInfo, cb, reinterpret_cast<uint8_t *>(fInfo->m_buffer) + bufrem*char_size, (fInfo->m_bufsize - bufrem)*char_size, (fInfo->m_rdpos + bufrem)*char_size);
 
         switch (read) {
-        case 0		:					return read;	// pending
-        case (-1)	:	delete cb;		return read;	// error
-        default		:
-            cb->on_completed(read);	// operation is complete. The pattern of returning synchronously
-									// has the expectation that we duplicate the callback code here...
-									// Do the expedient thing for now.
-            return 0;	// return pending
+        case 0		:				return read;	// - pending
+        case (-1)	:	delete cb;	return read;	// - error
+        default		:								// - operation is complete. The pattern of returning synchronously has the expectation that we duplicate the callback code here...
+            cb->on_completed(read);					// Do the expedient thing for now.
+            return 0;								// - return pending
         }
     }
     else 
         return count*char_size;	// If we are here, it means that we didn't need to read, we already have enough data in the buffer
 }
-
-
 
 // Read data from a file stream into a buffer
 // 
@@ -589,19 +575,16 @@ size_t __cdecl _getn_fsb(_In_ streams::details::_file_info *info, _In_ streams::
 /// <param name="ptr">A pointer to a buffer where the data should be placed
 /// <param name="count">The size (in characters) of the buffer
 /// Returns 0 if the read request is still outstanding, -1 if the request failed, otherwise the size of the data read into the buffer
-size_t __cdecl _putn_fsb(_In_ streams::details::_file_info *info, _In_ streams::details::_filestream_callback *callback, const void *ptr, size_t count, size_t char_size)
-{
+size_t __cdecl _putn_fsb(_In_ streams::details::_file_info *info, _In_ streams::details::_filestream_callback *callback, const void *ptr, size_t count, size_t char_size) {
     _ASSERTE(info != nullptr);
 
     _file_info_impl *fInfo = static_cast<_file_info_impl *>(info);
-
     pplx::extensibility::scoped_recursive_lock_t lck(fInfo->m_lock);
 
     if ( fInfo->m_handle == INVALID_HANDLE_VALUE ) {        
 		callback->on_error(std::make_exception_ptr(utility::details::create_system_error(ERROR_INVALID_HANDLE)));
         return static_cast<size_t>(-1);
     }
-
     // To preserve the async write order, we have to move the write head before read.
     auto lastPos = fInfo->m_wrpos;
     if (fInfo->m_wrpos != static_cast<size_t>(-1)) {
@@ -611,13 +594,12 @@ size_t __cdecl _putn_fsb(_In_ streams::details::_file_info *info, _In_ streams::
     return _write_file_async(fInfo, callback, ptr, count*char_size, lastPos);
 }
 
-/// Flush all buffered data to the underlying file.
+// Flush all buffered data to the underlying file.
 //
-/// <param name="info">The file info record of the file
-/// <param name="callback">A pointer to the callback interface to invoke when the write request is completed.
-/// <returns><c>true</c> if the request was initiated
-bool __cdecl _sync_fsb(_In_ streams::details::_file_info *, _In_ streams::details::_filestream_callback *callback)
-{
+// <param name="info">The file info record of the file
+// <param name="callback">A pointer to the callback interface to invoke when the write request is completed.
+// Returns true if the request was initiated
+bool __cdecl _sync_fsb(_In_ streams::details::_file_info *, _In_ streams::details::_filestream_callback *callback) {
     _ASSERTE(callback != nullptr);
 
     // Writes are not cached
@@ -626,10 +608,10 @@ bool __cdecl _sync_fsb(_In_ streams::details::_file_info *, _In_ streams::detail
     return true;
 }
 
-/// Adjust the internal buffers and pointers when the application seeks to a new read location in the stream.
-/// <param name="info">The file info record of the file
-/// <param name="pos">The new position (offset from the start) in the file stream
-/// <returns>New file position or -1 if error
+// Adjust the internal buffers and pointers when the application seeks to a new read location in the stream.
+// <param name="info">The file info record of the file
+// <param name="pos">The new position (offset from the start) in the file stream
+// <returns>New file position or -1 if error
 size_t __cdecl _seekrdpos_fsb(_In_ streams::details::_file_info *info, size_t pos, size_t)
 {
     _ASSERTE(info != nullptr);
@@ -646,17 +628,16 @@ size_t __cdecl _seekrdpos_fsb(_In_ streams::details::_file_info *info, size_t po
         fInfo->m_buffer = nullptr;
         fInfo->m_bufoff = fInfo->m_buffill = fInfo->m_bufsize = 0;
     }
-
     fInfo->m_rdpos = pos;
     return fInfo->m_rdpos;
 }
 
-/// Adjust the internal buffers and pointers when the application seeks to a new read location in the stream.
+// Adjust the internal buffers and pointers when the application seeks to a new read location in the stream.
 //
-/// <param name="info">The file info record of the file
-/// <param name="offset">The new position (offset from the end of the stream) in the file stream
-/// <param name="char_size">The size of the character type used for this stream
-/// <returns>New file position or -1 if error
+// <param name="info">The file info record of the file
+// <param name="offset">The new position (offset from the end of the stream) in the file stream
+// <param name="char_size">The size of the character type used for this stream
+// <returns>New file position or -1 if error
 size_t __cdecl _seekrdtoend_fsb(_In_ streams::details::_file_info *info, int64_t offset, size_t char_size)
 {
     _ASSERTE(info != nullptr);

@@ -49,7 +49,7 @@ namespace json
 
     /// Preserve the order of the name/value pairs when parsing a JSON object.
     /// The default is false, which can yield better performance.
-    /// <param name="keep_order"><c>true</c> if ordering should be preserved when parsing, <c>false</c> otherwise.
+    /// <param name="keep_order">true if ordering should be preserved when parsing, false otherwise.
     /// Note this is a global setting and affects all JSON parsing done.
     void _ASYNCRTIMP __cdecl keep_object_element_order(bool keep_order);
 
@@ -252,39 +252,39 @@ public:
         _ASYNCRTIMP json::value::value_type type() const;
 
             /// Is the current value a null value?
-            /// <returns><c>true</c> if the value is a null value, <c>false</c> otherwise
+            /// Returns true if the value is a null value, false otherwise
         bool is_null() const { return type() == Null; };
 
             /// Is the current value a number value?
-            /// <returns><c>true</c> if the value is a number value, <c>false</c> otherwise
+            /// Returns true if the value is a number value, false otherwise
         bool is_number() const { return type() == Number; }
 
             /// Is the current value represented as an integer number value?
                     /// Note that if a json value is a number but represented as a double it can still
         /// be retrieved as a integer using as_integer(), however the value will be truncated.
-                /// <returns><c>true</c> if the value is an integer value, <c>false</c> otherwise.
+                /// Returns true if the value is an integer value, false otherwise.
         _ASYNCRTIMP bool is_integer() const;
 
             /// Is the current value represented as an double number value?
                     /// Note that if a json value is a number but represented as a int it can still
         /// be retrieved as a double using as_double().
-                /// <returns><c>true</c> if the value is an double value, <c>false</c> otherwise.
+                /// Returns true if the value is an double value, false otherwise.
         _ASYNCRTIMP bool is_double() const;
 
             /// Is the current value a Boolean value?
-            /// <returns><c>true</c> if the value is a Boolean value, <c>false</c> otherwise
+            /// Returns true if the value is a Boolean value, false otherwise
         bool is_boolean() const { return type() == Boolean; }
 
             /// Is the current value a string value?
-            /// <returns><c>true</c> if the value is a string value, <c>false</c> otherwise
+            /// Returns true if the value is a string value, false otherwise
         bool is_string() const { return type() == String; }
 
             /// Is the current value an array?
-            /// <returns><c>true</c> if the value is an array, <c>false</c> otherwise
+            /// Returns true if the value is an array, false otherwise
         bool is_array() const { return type() == Array; }
 
             /// Is the current value an object?
-            /// <returns><c>true</c> if the value is an object, <c>false</c> otherwise
+            /// Returns true if the value is an object, false otherwise
         bool is_object() const { return type() == Object; }
 
             /// Gets the number of children of the value.
@@ -1006,19 +1006,19 @@ public:
     public:
 
             /// Does the number fit into int32?
-            /// <returns><c>true</c> if the number fits into int32, <c>false</c> otherwise
+            /// Returns true if the number fits into int32, false otherwise
         _ASYNCRTIMP bool is_int32() const;
 
             /// Does the number fit into unsigned int32?
-            /// <returns><c>true</c> if the number fits into unsigned int32, <c>false</c> otherwise
+            /// Returns true if the number fits into unsigned int32, false otherwise
         _ASYNCRTIMP bool is_uint32() const;
 
             /// Does the number fit into int64?
-            /// <returns><c>true</c> if the number fits into int64, <c>false</c> otherwise
+            /// Returns true if the number fits into int64, false otherwise
         _ASYNCRTIMP bool is_int64() const;
 
             /// Does the number fit into unsigned int64?
-            /// <returns><c>true</c> if the number fits into unsigned int64, <c>false</c> otherwise
+            /// Returns true if the number fits into unsigned int64, false otherwise
         bool is_uint64() const
         {
             switch (m_type)
@@ -1085,7 +1085,7 @@ public:
         }
 
             /// Is the number represented internally as an integral type?
-            /// <returns><c>true</c> if the number is represented as an integral type, <c>false</c> otherwise
+            /// Returns true if the number is represented as an integral type, false otherwise
         bool is_integral() const
         {
             return m_type != double_type;

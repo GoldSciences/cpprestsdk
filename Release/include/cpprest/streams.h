@@ -1,15 +1,8 @@
-/***
-* Copyright (C) Microsoft. All rights reserved.
-* Licensed under the MIT license. See LICENSE.txt file in the project root for full license information.
-*
-* =+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+
-*
-* Asynchronous I/O: streams API, used for formatted input and output, based on unformatted I/O using stream buffers
-*
-* For the latest on this and related APIs, please see: https://github.com/Microsoft/cpprestsdk
-*
-* =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
-****/
+// Asynchronous I/O: streams API, used for formatted input and output, based on unformatted I/O using stream buffers
+// For the latest on this and related APIs, please see: https://github.com/Microsoft/cpprestsdk
+//
+// Copyright (C) Microsoft. All rights reserved.
+// Licensed under the MIT license. See LICENSE.txt file in the project root for full license information.
 #pragma once
 
 #ifndef _CASA_STREAMS_H
@@ -214,9 +207,7 @@ namespace Concurrency { namespace streams
                 {
                     // Always have to release if acquire returned true.
                     if(acquired)
-                    {
                         source.release(data, 0);
-                    }
 
                     std::shared_ptr<CharType> buf(new CharType[count], [](CharType *buf) { delete [] buf; });
 
@@ -245,11 +236,8 @@ namespace Concurrency { namespace streams
             if ( !_verify_and_return_task(details::_out_stream_msg, result) ) return result;
 
             if (str.empty())
-            {
                 return pplx::task_from_result<size_t>(0);
-            }
-            else
-            {
+            else {
                 auto sharedStr = std::make_shared<std::basic_string<CharType>>(str);
                 return helper()->m_buffer.putn_nocopy(sharedStr->c_str(), sharedStr->size()).then([sharedStr](size_t size) { return size; });
             }
@@ -261,8 +249,7 @@ namespace Concurrency { namespace streams
         /// </typeparam>
         /// <param name="val">Input object.
         template<typename T>
-        pplx::task<size_t> print(const T& val) const
-        {
+        pplx::task<size_t> print(const T& val) const {
             pplx::task<size_t> result;
             if ( !_verify_and_return_task(details::_out_stream_msg, result) ) return result;
             // TODO in the future this could be improved to have Value2StringFormatter avoid another unnecessary copy
@@ -276,8 +263,7 @@ namespace Concurrency { namespace streams
         /// </typeparam>
         /// <param name="val">Input object.
         template<typename T>
-        pplx::task<size_t> print_line(const T& val) const
-        {
+        pplx::task<size_t> print_line(const T& val) const {
             pplx::task<size_t> result;
             if ( !_verify_and_return_task(details::_out_stream_msg, result) ) return result;
             auto str = details::Value2StringFormatter<CharType>::format(val);
@@ -286,8 +272,7 @@ namespace Concurrency { namespace streams
         }
 
             /// Flush any buffered output data.
-            pplx::task<void> flush() const
-        {
+            pplx::task<void> flush() const {
             pplx::task<void> result;
             if ( !_verify_and_return_task(details::_out_stream_msg, result) ) return result;
             return helper()->m_buffer.sync();
@@ -296,8 +281,7 @@ namespace Concurrency { namespace streams
             /// Seeks to the specified write position.
             /// <param name="pos">An offset relative to the beginning of the stream.
         /// Returns the new position in the stream.
-        pos_type seek(pos_type pos) const
-        {
+        pos_type seek(pos_type pos) const {
             _verify_and_throw(details::_out_stream_msg);
             return helper()->m_buffer.seekpos(pos, std::ios_base::out);
         }
@@ -306,33 +290,31 @@ namespace Concurrency { namespace streams
             /// <param name="off">An offset relative to the beginning, current write position, or the end of the stream.
         /// <param name="way">The starting point (beginning, current, end) for the seek.
         /// Returns the new position in the stream.
-        pos_type seek(off_type off, std::ios_base::seekdir way) const
-        {
+        pos_type seek(off_type off, std::ios_base::seekdir way) const {
             _verify_and_throw(details::_out_stream_msg);
             return helper()->m_buffer.seekoff(off, way, std::ios_base::out);
         }
 
             /// Get the current write position, i.e. the offset from the beginning of the stream.
             /// Returns the current write position.
-        pos_type tell() const
-        {
+        pos_type tell() const {
             _verify_and_throw(details::_out_stream_msg);
             return helper()->m_buffer.getpos(std::ios_base::out);
         }
 
             /// <c>can_seek<c/> is used to determine whether the stream supports seeking.
-            /// <returns><c>true</c> if the stream supports seeking, <c>false</c> otherwise.
+            /// Returns true if the stream supports seeking, false otherwise.
         bool can_seek() const { return is_valid() && m_helper->m_buffer.can_seek(); }
 
             /// Test whether the stream has been initialized with a valid stream buffer.
-            /// <returns><c>true</c> if the stream has been initialized with a valid stream buffer, <c>false</c> otherwise.
+            /// Returns true if the stream has been initialized with a valid stream buffer, false otherwise.
         bool is_valid() const { return (m_helper != nullptr) && ((bool)m_helper->m_buffer); }
 
             /// Test whether the stream has been initialized or not.
             operator bool() const { return is_valid(); }
 
             /// Test whether the stream is open for writing.
-            /// <returns><c>true</c> if the stream is open for writing, <c>false</c> otherwise.
+            /// Returns true if the stream is open for writing, false otherwise.
         bool is_open() const { return is_valid() && m_helper->m_buffer.can_write(); }
 
             /// Get the underlying stream buffer.
@@ -564,7 +546,7 @@ namespace Concurrency { namespace streams
         }
 
             /// Get the next character and return it as an int_type. Advance the read position.
-            /// Returns a <c>task</c> that holds the next character as an <c>int_type</c> on successful completion.
+            /// Returns a task that holds the next character as an <c>int_type</c> on successful completion.
         pplx::task<int_type> read() const
         {
             pplx::task<int_type> result;
@@ -600,7 +582,7 @@ namespace Concurrency { namespace streams
             /// Reads up to <c>count</c> characters and place into the provided buffer.
             /// <param name="target">An async stream buffer supporting write operations.
         /// <param name="count">The maximum number of characters to read
-        /// Returns a <c>task</c> that holds the number of characters read. This number is 0 if the end of the stream is reached.
+        /// Returns a task that holds the number of characters read. This number is 0 if the end of the stream is reached.
         pplx::task<size_t> read(streams::streambuf<CharType> target, size_t count) const
         {
             pplx::task<size_t> result;
@@ -668,7 +650,7 @@ namespace Concurrency { namespace streams
         }
 
             /// Get the next character and return it as an int_type. Do not advance the read position.
-            /// Returns a <c>task</c> that holds the character, widened to an integer. This character is EOF when the peek operation fails.
+            /// Returns a task that holds the character, widened to an integer. This character is EOF when the peek operation fails.
         pplx::task<int_type> peek() const
         {
             pplx::task<int_type> result;
@@ -680,7 +662,7 @@ namespace Concurrency { namespace streams
         /// Proceed past the delimiter, but don't include it in the target buffer.
             /// <param name="target">An async stream buffer supporting write operations.
         /// <param name="delim">The delimiting character to stop the read at.
-        /// Returns a <c>task</c> that holds the number of characters read.
+        /// Returns a task that holds the number of characters read.
         pplx::task<size_t> read_to_delim(streams::streambuf<CharType> target, int_type delim) const
         {
             pplx::task<size_t> result;
@@ -750,7 +732,7 @@ namespace Concurrency { namespace streams
 
             /// Read until reaching a newline character. The newline is not included in the target.
             /// <param name="target">An asynchronous stream buffer supporting write operations.
-        /// Returns a <c>task</c> that holds the number of characters read. This number is 0 if the end of the stream is reached.
+        /// Returns a task that holds the number of characters read. This number is 0 if the end of the stream is reached.
         pplx::task<size_t> read_line(streams::streambuf<CharType> target) const
         {
             pplx::task<size_t> result;
@@ -929,7 +911,7 @@ namespace Concurrency { namespace streams
         }
 
             /// <c>can_seek<c/> is used to determine whether the stream supports seeking.
-            /// <returns><c>true</c> if the stream supports seeking, <c>false</c> otherwise.
+            /// Returns true if the stream supports seeking, false otherwise.
         bool can_seek() const { return is_valid() && m_helper->m_buffer.can_seek(); }
 
             /// Test whether the stream has been initialized with a valid stream buffer.
@@ -939,7 +921,7 @@ namespace Concurrency { namespace streams
             operator bool() const { return is_valid(); }
 
             /// Test whether the stream is open for writing.
-            /// <returns><c>true</c> if the stream is open for writing, <c>false</c> otherwise.
+            /// Returns true if the stream is open for writing, false otherwise.
         bool is_open() const { return is_valid() && m_helper->m_buffer.can_read(); }
 
             /// Get the underlying stream buffer.
@@ -954,7 +936,7 @@ namespace Concurrency { namespace streams
                 /// <typeparam name="T">
         /// The data type of the element to be read from the stream.
         /// </typeparam>
-        /// Returns a <c>task</c> that holds the element read from the stream.
+        /// Returns a task that holds the element read from the stream.
         template<typename T>
         pplx::task<T> extract() const
         {

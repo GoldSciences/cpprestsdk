@@ -1,14 +1,7 @@
-/***
-* Copyright (C) Microsoft. All rights reserved.
-* Licensed under the MIT license. See LICENSE.txt file in the project root for full license information.
-*
-* =+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+
-*
-* Parallel Patterns Library : cancellation_token
-*
-* =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
-****/
-
+// Parallel Patterns Library : cancellation_token
+// 
+// Copyright (C) Microsoft. All rights reserved.
+// Licensed under the MIT license. See LICENSE.txt file in the project root for full license information.
 #pragma once
 
 #ifndef _PPLX_H
@@ -53,22 +46,17 @@ public:
     /**/
     explicit task_canceled(_In_z_ const char * _Message) throw()
         : _message(_Message)
-    {
-    }
+    {}
 
     ///     Constructs a <c>task_canceled</c> object.
     /**/
     task_canceled() throw()
         : exception()
-    {
-    }
+    {}
 
     ~task_canceled() throw () {}
 
-    const char* what() const CPPREST_NOEXCEPT
-    {
-        return _message.c_str();
-    }
+    const char* what() const CPPREST_NOEXCEPT { return _message.c_str(); }
 };
 
 ///     This class describes an exception thrown when an invalid operation is performed that is not more accurately
@@ -81,94 +69,46 @@ private:
     std::string _message;
 
 public:
-    ///     Constructs an <c>invalid_operation</c> object.
-    /// <param name="_Message">
-    ///     A descriptive message of the error.
-    /// 
-    /**/
-    invalid_operation(_In_z_ const char * _Message) throw()
-        : _message(_Message)
-    {
-    }
+				invalid_operation			(_In_z_ const char * _descriptiveErrorMessage)	throw()					: _message(_descriptiveErrorMessage)	{}
+				invalid_operation			()												throw()					: exception()							{}
+				~invalid_operation			()												throw()					{}
 
-    ///     Constructs an <c>invalid_operation</c> object.
-    /**/
-    invalid_operation() throw()
-        : exception()
-    {
-    }
-    
-    ~invalid_operation() throw () {}
-
-    const char* what() const CPPREST_NOEXCEPT
-    {
-        return _message.c_str();
-    }
+    const char* what						()												const CPPREST_NOEXCEPT	{ return _message.c_str();				}
 };
 
 namespace details
 {
-
     // Base class for all reference counted objects
-    class _RefCounter
-    {
+    class _RefCounter {
+    protected:
+        virtual void	_Destroy		()							{ delete this; }	// Allow derived classes to provide their own deleter
+        // Only allow instantiation through derived class
+						_RefCounter		(long _InitialCount = 1)	: _M_refCount(_InitialCount)	{ _ASSERTE(_M_refCount > 0); }
+        atomic_long		_M_refCount;	// Reference count
     public:
-
-        virtual ~_RefCounter()
-        {
-            _ASSERTE(_M_refCount == 0);
-        }
-
-        // Acquires a reference
-        // Returns the new reference count.
-        long _Reference()
-        {
+        virtual			~_RefCounter	() { _ASSERTE(_M_refCount == 0); }
+        // Acquires a reference. Returns the new reference count.
+        long			_Reference		() {
             long _Refcount = atomic_increment(_M_refCount);
-
-            // 0 - 1 transition is illegal
-            _ASSERTE(_Refcount > 1);
+            _ASSERTE(_Refcount > 1);	// 0 - 1 transition is illegal
             return _Refcount;
         }
-
-        // Releases the reference
-        // Returns the new reference count
-        long _Release()
-        {
+        // Releases the reference. Returns the new reference count
+        long _Release() {
             long _Refcount = atomic_decrement(_M_refCount);
             _ASSERTE(_Refcount >= 0);
 
             if (_Refcount == 0)
-            {
                 _Destroy();
-            }
 
             return _Refcount;
         }
-
-    protected:
-
-        // Allow derived classes to provide their own deleter
-        virtual void _Destroy()
-        {
-            delete this;
-        }
-
-        // Only allow instantiation through derived class
-        _RefCounter(long _InitialCount = 1) : _M_refCount(_InitialCount)
-        {
-            _ASSERTE(_M_refCount > 0);
-        }
-
-        // Reference count
-        atomic_long _M_refCount;
     };
 
     class _CancellationTokenState;
 
-    class _CancellationTokenRegistration : public _RefCounter
-    {
+    class _CancellationTokenRegistration : public _RefCounter {
     private:
-
         static const long _STATE_CLEAR = 0;
         static const long _STATE_DEFER_DELETE = 1;
         static const long _STATE_SYNCHRONIZE = 2;
@@ -180,29 +120,18 @@ namespace details
             _RefCounter(_InitialRefs),
             _M_state(_STATE_CALLED),
             _M_pTokenState(NULL)
-        {
-        }
+        {}
 
-        _CancellationTokenState *_GetToken() const
-        {
-            return _M_pTokenState;
-        }
-
+        _CancellationTokenState *_GetToken() const { return _M_pTokenState; }
     protected:
-
-        virtual ~_CancellationTokenRegistration()
-        {
-            _ASSERTE(_M_state != _STATE_CLEAR);
-        }
-
+        virtual ~_CancellationTokenRegistration() { _ASSERTE(_M_state != _STATE_CLEAR); }
         virtual void _Exec() = 0;
 
     private:
 
         friend class _CancellationTokenState;
 
-        void _Invoke()
-        {
+        void _Invoke() {
             long tid = ::pplx::details::platform::GetCurrentThreadId();
             _ASSERTE((tid & 0x3) == 0); // If this ever fires, we need a different encoding for this.
 
@@ -228,55 +157,32 @@ namespace details
     };
 
     template<typename _Function>
-    class _CancellationTokenCallback : public _CancellationTokenRegistration
-    {
+    class _CancellationTokenCallback : public _CancellationTokenRegistration {
+        _Function		_M_function;
     public:
-
-        _CancellationTokenCallback(const _Function& _Func) :
-            _M_function(_Func)
-        {
-        }
+						_CancellationTokenCallback	(const _Function& _Func)	: _M_function(_Func) {}
 
     protected:
-
-        virtual void _Exec()
-        {
-            _M_function();
-        }
-
-    private:
-
-        _Function _M_function;
+        virtual void	_Exec						()							{ _M_function(); }
     };
 
-    class CancellationTokenRegistration_TaskProc : public _CancellationTokenRegistration
-    {
+    class CancellationTokenRegistration_TaskProc : public _CancellationTokenRegistration {
+        TaskProc_t		m_proc;
+        void			* m_pData;
     public:
-
-        CancellationTokenRegistration_TaskProc(TaskProc_t proc, _In_ void *pData, int initialRefs) :
+        CancellationTokenRegistration_TaskProc		(TaskProc_t proc, _In_ void *pData, int initialRefs) :
             _CancellationTokenRegistration(initialRefs), m_proc(proc), m_pData(pData)
-        {
-        }
+        {}
 
     protected:
-
-        virtual void _Exec()
-        {
-            m_proc(m_pData);
-        }
-
-    private:
-
-        TaskProc_t m_proc;
-        void *m_pData;
-
+        virtual void	 _Exec						()							{ m_proc(m_pData); }
     };
 
     // The base implementation of a cancellation token.
     class _CancellationTokenState : public _RefCounter
     {
     protected:
-            class TokenRegistrationContainer
+		class TokenRegistrationContainer
         {
         private:
             typedef struct _Node {
@@ -285,19 +191,15 @@ namespace details
             } Node;
 
         public:
-            TokenRegistrationContainer() : _M_begin(nullptr), _M_last(nullptr)
-            {
-            }
+            TokenRegistrationContainer	()	: _M_begin(nullptr), _M_last(nullptr)	{}
 
-            ~TokenRegistrationContainer()
-            {
+            ~TokenRegistrationContainer	()	{
 #if defined(_MSC_VER)
 #pragma warning(push)
 #pragma warning(disable: 6001)
 #endif
                 auto node = _M_begin;
-                while (node != nullptr) 
-                {
+                while (node != nullptr) {
                     Node* tmp = node;
                     node = node->_M_next;
                     ::free(tmp);
@@ -307,34 +209,26 @@ namespace details
 #endif
             }
 
-            void swap(TokenRegistrationContainer& list)
-            {
+            void swap(TokenRegistrationContainer& list) {
                 std::swap(list._M_begin, _M_begin);
                 std::swap(list._M_last, _M_last);
             }
 
-            bool empty()
-            {
-                return _M_begin == nullptr;
-            }
+            bool empty() { return _M_begin == nullptr; }
 
             template<typename T>
-            void for_each(T lambda)
-            {
+            void for_each(T lambda) {
                 Node* node = _M_begin;
 
-                while (node != nullptr) 
-                {
+                while (node != nullptr) {
                     lambda(node->_M_token);
                     node = node->_M_next;
                 }
             }
 
-            void push_back(_CancellationTokenRegistration* token)
-            {
+            void push_back(_CancellationTokenRegistration* token) {
                 Node* node = reinterpret_cast<Node*>(::malloc(sizeof(Node)));
-                if (node == nullptr)
-                {
+                if (node == nullptr) {
                     throw ::std::bad_alloc();
                 }
 
@@ -342,13 +236,9 @@ namespace details
                 node->_M_next = nullptr;
 
                 if (_M_begin == nullptr) 
-                {
                     _M_begin = node;
-                }
                 else
-                {
                     _M_last->_M_next = node;
-                }
 
                 _M_last = node;
             }
@@ -358,22 +248,15 @@ namespace details
                 Node* node = _M_begin;
                 Node* prev = nullptr;
 
-                while (node != nullptr) 
-                {
+                while (node != nullptr)  {
                     if (node->_M_token == token) {
                         if (prev == nullptr)
-                        {
                             _M_begin = node->_M_next;
-                        }
                         else
-                        {
                             prev->_M_next = node->_M_next;
-                        }
 
                         if (node->_M_next == nullptr)
-                        {
                             _M_last = prev;
-                        }
 
                         ::free(node);
                         break;
@@ -391,28 +274,12 @@ namespace details
 
     public:
 
-        static _CancellationTokenState * _NewTokenState()
-        {
-            return new _CancellationTokenState();
-        }
- 
-        static _CancellationTokenState *_None()
-        {
-            return reinterpret_cast<_CancellationTokenState *>(2);
-        }
+        static _CancellationTokenState *	_NewTokenState				()											{ return new _CancellationTokenState();						}
+        static _CancellationTokenState *	_None						()											{ return reinterpret_cast<_CancellationTokenState *>(2);	}
+        static bool							_IsValid					(_In_opt_ _CancellationTokenState *_PToken)	{ return (_PToken != NULL && _PToken != _None());			}
+											_CancellationTokenState		()											: _M_stateFlag(0)											{}
 
-        static bool _IsValid(_In_opt_ _CancellationTokenState *_PToken)
-        {
-            return (_PToken != NULL && _PToken != _None());
-        }
-        
-        _CancellationTokenState() :
-            _M_stateFlag(0)
-        {
-        }
-
-        ~_CancellationTokenState()
-        {
+											~_CancellationTokenState	()											{
             TokenRegistrationContainer rundownList;
             {
                 extensibility::scoped_critical_section_t _Lock(_M_listLock);
@@ -426,23 +293,16 @@ namespace details
             });
         }
 
-        bool _IsCanceled() const
-        {
-            return (_M_stateFlag != 0);
-        }
-
-        void _Cancel()
-        {
-            if (atomic_compare_exchange(_M_stateFlag, 1l, 0l) == 0)
-            {
+        bool _IsCanceled		()		const	{ return (_M_stateFlag != 0); }
+        void _Cancel			()				{
+            if (atomic_compare_exchange(_M_stateFlag, 1l, 0l) == 0) {
                 TokenRegistrationContainer rundownList;
                 {
                     extensibility::scoped_critical_section_t _Lock(_M_listLock);
                     _M_registrations.swap(rundownList);
                 }
 
-                rundownList.for_each([](_CancellationTokenRegistration * pRegistration)
-                {
+                rundownList.for_each([](_CancellationTokenRegistration * pRegistration) {
                     pRegistration->_Invoke();
                 });
 
@@ -451,36 +311,30 @@ namespace details
             }
         }
 
-        _CancellationTokenRegistration *_RegisterCallback(TaskProc_t _PCallback, _In_ void *_PData, int _InitialRefs = 1)
-        {
+        _CancellationTokenRegistration *	_RegisterCallback	(TaskProc_t _PCallback, _In_ void *_PData, int _InitialRefs = 1)			{
             _CancellationTokenRegistration *pRegistration = new CancellationTokenRegistration_TaskProc(_PCallback, _PData, _InitialRefs);
             _RegisterCallback(pRegistration);
             return pRegistration;
         }
 
-        void _RegisterCallback(_In_ _CancellationTokenRegistration *_PRegistration)
-        {
+        void								_RegisterCallback	(_In_ _CancellationTokenRegistration *_PRegistration)						{
             _PRegistration->_M_state = _CancellationTokenRegistration::_STATE_CLEAR;
             _PRegistration->_Reference();
             _PRegistration->_M_pTokenState = this;
 
             bool invoke = true;
 
-            if (!_IsCanceled())
-            {
+            if (!_IsCanceled()) {
                 extensibility::scoped_critical_section_t _Lock(_M_listLock);
 
-                if (!_IsCanceled())
-                {
+                if (!_IsCanceled()) {
                     invoke = false;
                     _M_registrations.push_back(_PRegistration);
                 }
             }
 
             if (invoke)
-            {
                 _PRegistration->_Invoke();
-            }
         }
 
         void _DeregisterCallback(_In_ _CancellationTokenRegistration *_PRegistration)
@@ -490,11 +344,8 @@ namespace details
             {
                 extensibility::scoped_critical_section_t _Lock(_M_listLock);
 
-                //
-                // If a cancellation has occurred, the registration list is guaranteed to be empty if we've observed it under the auspices of the
-                // lock.  In this case, we must synchronize with the cancelling thread to guarantee that the cancellation is finished by the time
-                // we return from this method.
-                //
+                // If a cancellation has occurred, the registration list is guaranteed to be empty if we've observed it under the auspices of the lock.  
+				// In this case, we must synchronize with the cancelling thread to guarantee that the cancellation is finished by the time we return from this method.
                 if (!_M_registrations.empty())
                 {
                     _M_registrations.remove(_PRegistration);
@@ -502,29 +353,23 @@ namespace details
                     _PRegistration->_Release();
                 }
                 else
-                {
                     synchronize = true;
-                }
             }
 
-            // 
             // If the list is empty, we are in one of several situations:
             //
             // - The callback has already been made         --> do nothing
             // - The callback is about to be made           --> flag it so it doesn't happen and return
             // - The callback is in progress elsewhere      --> synchronize with it
             // - The callback is in progress on this thread --> do nothing
-            //
-            if (synchronize)
-            {
+            if (synchronize) {
                 long result = atomic_compare_exchange(
                     _PRegistration->_M_state, 
                     _CancellationTokenRegistration::_STATE_DEFER_DELETE, 
                     _CancellationTokenRegistration::_STATE_CLEAR
                     );
 
-                switch(result)
-                {
+                switch(result) {
                     case _CancellationTokenRegistration::_STATE_CLEAR:
                     case _CancellationTokenRegistration::_STATE_CALLED:
                         break;
@@ -535,15 +380,8 @@ namespace details
                     default:
                     {
                         long tid = result;
-                        if (tid == ::pplx::details::platform::GetCurrentThreadId())
-                        {
-                            //
-                            // It is entirely legal for a caller to Deregister during a callback instead of having to provide their own synchronization
-                            // mechanism between the two.  In this case, we do *NOT* need to explicitly synchronize with the callback as doing so would
-                            // deadlock.  If the call happens during, skip any extra synchronization.
-                            //
-                            break;
-                        }
+                        if (tid == ::pplx::details::platform::GetCurrentThreadId())	// It is entirely legal for a caller to Deregister during a callback instead of having to provide their own synchronization mechanism between the two.  
+                            break;													// In this case, we do *NOT* need to explicitly synchronize with the callback as doing so would deadlock. If the call happens during, skip any extra synchronization.
 
                         extensibility::event_t ev;
                         _PRegistration->_M_pSyncBlock = &ev;
@@ -551,9 +389,7 @@ namespace details
                         long result_1 = atomic_exchange(_PRegistration->_M_state, _CancellationTokenRegistration::_STATE_SYNCHRONIZE);
 
                         if (result_1 != _CancellationTokenRegistration::_STATE_CALLED)
-                        {
                             _PRegistration->_M_pSyncBlock->wait(::pplx::extensibility::event_t::timeout_infinite);
-                        }
 
                         break;
                     }
@@ -595,76 +431,48 @@ public:
     {
     }
 
-    ~cancellation_token_registration()
-    {
-        _Clear();
-    }
+    ~cancellation_token_registration() { _Clear(); }
 
-    cancellation_token_registration(const cancellation_token_registration& _Src)
-    {
-        _Assign(_Src._M_pRegistration);
-    }
+    cancellation_token_registration(const cancellation_token_registration& _Src) { _Assign(_Src._M_pRegistration); }
 
-    cancellation_token_registration(cancellation_token_registration&& _Src)
-    {
-        _Move(_Src._M_pRegistration);
-    }
+    cancellation_token_registration(cancellation_token_registration&& _Src) { _Move(_Src._M_pRegistration); }
 
-    cancellation_token_registration& operator=(const cancellation_token_registration& _Src)
-    {
-        if (this != &_Src)
-        {
+    cancellation_token_registration& operator=(const cancellation_token_registration& _Src) {
+        if (this != &_Src) {
             _Clear();
             _Assign(_Src._M_pRegistration);
         }
         return *this;
     }
 
-    cancellation_token_registration& operator=(cancellation_token_registration&& _Src)
-    {
-        if (this != &_Src)
-        {
+    cancellation_token_registration& operator=(cancellation_token_registration&& _Src) {
+        if (this != &_Src) {
             _Clear();
             _Move(_Src._M_pRegistration);
         }
         return *this;
     }
 
-    bool operator==(const cancellation_token_registration& _Rhs) const
-    {
-        return _M_pRegistration == _Rhs._M_pRegistration;
-    }
-
-    bool operator!=(const cancellation_token_registration& _Rhs) const
-    {
-        return !(operator==(_Rhs));
-    }
+    bool operator==(const cancellation_token_registration& _Rhs) const { return _M_pRegistration == _Rhs._M_pRegistration; }
+    bool operator!=(const cancellation_token_registration& _Rhs) const { return !(operator==(_Rhs)); }
 
 private:
 
     friend class cancellation_token;
     
-    cancellation_token_registration(_In_ details::_CancellationTokenRegistration *_PRegistration) :
-        _M_pRegistration(_PRegistration)
-    {
-    }
+    cancellation_token_registration(_In_ details::_CancellationTokenRegistration *_PRegistration)	: _M_pRegistration(_PRegistration)		{}
 
-    void _Clear()
-    {
+    void _Clear() {
         if (_M_pRegistration != NULL)
-        {
             _M_pRegistration->_Release();
-        }
         _M_pRegistration = NULL;
     }
 
-    void _Assign(_In_ details::_CancellationTokenRegistration *_PRegistration)
-    {
+    void _Assign(_In_ details::_CancellationTokenRegistration *_PRegistration) {
         if (_PRegistration != NULL)
-        {
             _PRegistration->_Reference();
-        }
-        _M_pRegistration = _PRegistration;
+
+		_M_pRegistration = _PRegistration;
     }
 
     void _Move(_In_ details::_CancellationTokenRegistration *&_PRegistration)
@@ -678,85 +486,43 @@ private:
 
 
 ///     The <c>cancellation_token</c> class represents the ability to determine whether some operation has been requested to cancel.  A given token can
-///     be associated with a <c>task_group</c>, <c>structured_task_group</c>, or <c>task</c> to provide implicit cancellation.  It can also be polled for
+///     be associated with a <c>task_group</c>, <c>structured_task_group</c>, or task to provide implicit cancellation.  It can also be polled for
 ///     cancellation or have a callback registered for if and when the associated <c>cancellation_token_source</c> is canceled.
 class cancellation_token
 {
 public:
 
-    typedef details::_CancellationTokenState * _ImplType;
+    typedef details::_CancellationTokenState	* _ImplType;
 
-    ///     Returns a cancellation token which can never be subject to cancellation.
-    /// <returns>
-    ///     A cancellation token that cannot be canceled.
-    /// 
-    static cancellation_token none()
-    {
-        return cancellation_token();
-    }
+    static	cancellation_token					none					()											{ return cancellation_token(); }
+												cancellation_token		(const cancellation_token& _Src)			{ _Assign(_Src._M_Impl); }
+												cancellation_token		(cancellation_token&& _Src)					{ _Move(_Src._M_Impl); }
 
-    cancellation_token(const cancellation_token& _Src)
-    {
-        _Assign(_Src._M_Impl);
-    }
-
-    cancellation_token(cancellation_token&& _Src)
-    {
-        _Move(_Src._M_Impl);
-    }
-
-    cancellation_token& operator=(const cancellation_token& _Src)
-    {
-        if (this != &_Src)
-        {
+			cancellation_token&					operator=				(const cancellation_token& _Src)			{
+        if (this != &_Src) {
             _Clear();
             _Assign(_Src._M_Impl);
         }
         return *this;
     }
 
-    cancellation_token& operator=(cancellation_token&& _Src)
-    {
-        if (this != &_Src)
-        {
+			cancellation_token&					operator=				(cancellation_token&& _Src)					{
+        if (this != &_Src) {
             _Clear();
             _Move(_Src._M_Impl);
         }
         return *this;
     }
 
-    bool operator==(const cancellation_token& _Src) const
-    {
-        return _M_Impl == _Src._M_Impl;
-    }
+			bool								operator==				(const cancellation_token& _Src)	const	{ return _M_Impl == _Src._M_Impl;	}
+			bool								operator!=				(const cancellation_token& _Src)	const	{ return !(operator==(_Src));		}
+												~cancellation_token		()											{ _Clear(); }
 
-    bool operator!=(const cancellation_token& _Src) const
-    {
-        return !(operator==(_Src));
-    }
+    
+			bool								is_cancelable			()									const	{ return (_M_Impl != NULL); }	// Returns an indication of whether this token can be canceled or not.
 
-    ~cancellation_token()
-    {
-        _Clear();
-    }
-
-    ///     Returns an indication of whether this token can be canceled or not.
-    /// <returns>
-    ///     An indication of whether this token can be canceled or not.
-    /// 
-    bool is_cancelable() const
-    {
-        return (_M_Impl != NULL);
-    }
-
-    /// Returns <c>true</c> if the token has been canceled.
-    /// <returns>
-    /// The value <c>true</c> if the token has been canceled; otherwise, the value <c>false</c>.
-    /// 
-    bool is_canceled() const
-    {
-        return (_M_Impl != NULL && _M_Impl->_IsCanceled());
-    }
+    // Returns true if the token has been canceled.
+			bool								is_canceled				()									const	{ return (_M_Impl != NULL && _M_Impl->_IsCanceled()); }
 
     ///     Registers a callback function with the token.  If and when the token is canceled, the callback will be made.  Note that if the token
     ///     is already canceled at the point where this method is called, the callback will be made immediately and synchronously.  
@@ -773,10 +539,8 @@ public:
     ///     method.
     /// 
     template<typename _Function>
-    ::pplx::cancellation_token_registration register_callback(const _Function& _Func) const
-    {
-        if (_M_Impl == NULL)
-        {
+    ::pplx::cancellation_token_registration register_callback(const _Function& _Func) const {
+        if (_M_Impl == NULL) {
             // A callback cannot be registered if the token does not have an associated source.
             throw invalid_operation();
         }
@@ -794,25 +558,13 @@ public:
     ///     The <c>cancellation_token_registration</c> object corresponding to the callback to be deregistered.  This token must have been previously
     ///     returned from a call to the <c>register</c> method.
     /// 
-    void deregister_callback(const cancellation_token_registration& _Registration) const
-    {
+    void deregister_callback(const cancellation_token_registration& _Registration) const {
         _M_Impl->_DeregisterCallback(_Registration._M_pRegistration);
     }
 
-    _ImplType _GetImpl() const
-    {
-        return _M_Impl;
-    }
-
-    _ImplType _GetImplValue() const
-    {
-        return (_M_Impl == NULL) ? ::pplx::details::_CancellationTokenState::_None() : _M_Impl;
-    }
-
-    static cancellation_token _FromImpl(_ImplType _Impl)
-    {
-        return cancellation_token(_Impl);
-    }
+    _ImplType _GetImpl() const { return _M_Impl; }
+    _ImplType _GetImplValue() const { return (_M_Impl == NULL) ? ::pplx::details::_CancellationTokenState::_None() : _M_Impl; }
+    static cancellation_token _FromImpl(_ImplType _Impl) { return cancellation_token(_Impl); }
 
 private:
 
@@ -823,18 +575,14 @@ private:
     void _Clear()
     {
         if (_M_Impl != NULL)
-        {
             _M_Impl->_Release();
-        }
         _M_Impl = NULL;
     }
 
     void _Assign(_ImplType _Impl)
     {
         if (_Impl != NULL)
-        {
             _Impl->_Reference();
-        }
         _M_Impl = _Impl;
     }
 
@@ -846,21 +594,16 @@ private:
 
     cancellation_token() :
         _M_Impl(NULL)
-    {
-    }
+    {}
 
     cancellation_token(_ImplType _Impl) :
         _M_Impl(_Impl)
     {
         if (_M_Impl == ::pplx::details::_CancellationTokenState::_None())
-        {
             _M_Impl = NULL;
-        }
 
         if (_M_Impl != NULL)
-        {
             _M_Impl->_Reference();
-        }
     }
 };
 
@@ -872,79 +615,43 @@ public:
     typedef ::pplx::details::_CancellationTokenState * _ImplType;
 
     ///     Constructs a new <c>cancellation_token_source</c>.  The source can be used to flag cancellation of some cancelable operation.
-    cancellation_token_source()
-    { 
-        _M_Impl = new ::pplx::details::_CancellationTokenState;
-    }
+								cancellation_token_source	()													{ _M_Impl = new ::pplx::details::_CancellationTokenState; }
 
-    cancellation_token_source(const cancellation_token_source& _Src)
-    {
-        _Assign(_Src._M_Impl);
-    }
-
-    cancellation_token_source(cancellation_token_source&& _Src)
-    {
-        _Move(_Src._M_Impl);
-    }
-
-    cancellation_token_source& operator=(const cancellation_token_source& _Src)
-    {
-        if (this != &_Src)
-        {
+								cancellation_token_source	(const cancellation_token_source& _Src)				{ _Assign	(_Src._M_Impl); }
+								cancellation_token_source	(cancellation_token_source&& _Src)					{ _Move		(_Src._M_Impl);	}
+    cancellation_token_source&	operator=					(const cancellation_token_source& _Src)				{
+        if (this != &_Src) {
             _Clear();
             _Assign(_Src._M_Impl);
         }
         return *this;
     }
 
-    cancellation_token_source& operator=(cancellation_token_source&& _Src)
-    {
-        if (this != &_Src)
-        {
+    cancellation_token_source& operator=(cancellation_token_source&& _Src) {
+        if (this != &_Src) {
             _Clear();
             _Move(_Src._M_Impl);
         }
         return *this;
     }
 
-    bool operator==(const cancellation_token_source& _Src) const
-    {
-        return _M_Impl == _Src._M_Impl;
-    }
-
-    bool operator!=(const cancellation_token_source& _Src) const
-    {
-        return !(operator==(_Src));
-    }
-
-    ~cancellation_token_source()
-    {
+    bool						operator==					(const cancellation_token_source& _Src)		const	{ return _M_Impl == _Src._M_Impl; }
+    bool						operator!=					(const cancellation_token_source& _Src)		const	{ return !(operator==(_Src)); }
+								~cancellation_token_source	() {
         if (_M_Impl != NULL)
-        {
             _M_Impl->_Release();
-        }
     }
 
-    ///     Returns a cancellation token associated with this source.  The returned token can be polled for cancellation
-    ///     or provide a callback if and when cancellation occurs.
-    /// <returns>
-    ///     A cancellation token associated with this source.
-    /// 
-    cancellation_token get_token() const
-    {
-        return cancellation_token(_M_Impl);
-    }
+    // Returns a cancellation token associated with this source.  The returned token can be polled for cancellation or provide a callback if and when cancellation occurs.
+    cancellation_token get_token() const { return cancellation_token(_M_Impl); }
 
     ///     Creates a <c>cancellation_token_source</c> which is canceled when the provided token is canceled.
     /// <param name="_Src">
     ///     A token whose cancellation will cause cancellation of the returned token source.  Note that the returned token source can also be canceled
     ///     independently of the source contained in this parameter.
     /// 
-    /// <returns>
-    ///     A <c>cancellation_token_source</c> which is canceled when the token provided by the <paramref name="_Src"/> parameter is canceled.
-    /// 
-    static cancellation_token_source create_linked_source(cancellation_token& _Src) 
-    {
+    // Returns a cancellation_token_source which is canceled when the token provided by the _Src parameter is canceled.
+    static cancellation_token_source create_linked_source(cancellation_token& _Src)  {
         cancellation_token_source newSource;
         _Src.register_callback( [newSource](){ newSource.cancel(); } );
         return newSource;
@@ -967,28 +674,14 @@ public:
     {
         cancellation_token_source newSource;
         for (_Iter _It = _Begin; _It != _End; ++_It)
-        {
             _It->register_callback( [newSource](){ newSource.cancel(); } );
-        }
         return newSource;
     }
 
-    ///     Cancels the token.  Any <c>task_group</c>, <c>structured_task_group</c>, or <c>task</c> which utilizes the token will be 
-    ///     canceled upon this call and throw an exception at the next interruption point.
-    void cancel() const
-    {
-        _M_Impl->_Cancel();
-    }
-
-    _ImplType _GetImpl() const
-    {
-        return _M_Impl;
-    }
-
-    static cancellation_token_source _FromImpl(_ImplType _Impl)
-    {
-        return cancellation_token_source(_Impl);
-    }
+    // Cancels the token.  Any task_group, structured_task_group, or task which utilizes the token will be  canceled upon this call and throw an exception at the next interruption point.
+    void cancel() const { _M_Impl->_Cancel(); }
+    _ImplType _GetImpl() const { return _M_Impl; }
+    static cancellation_token_source _FromImpl(_ImplType _Impl) { return cancellation_token_source(_Impl); }
 
 private:
 

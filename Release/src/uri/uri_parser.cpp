@@ -1,15 +1,8 @@
-/***
-* Copyright (C) Microsoft. All rights reserved.
-* Licensed under the MIT license. See LICENSE.txt file in the project root for full license information.
-*
-* =+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+
-*
-* URI parsing implementation
-*
-* For the latest on this and related APIs, please see: https://github.com/Microsoft/cpprestsdk
-*
-* =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
-****/
+// URI parsing implementation
+// For the latest on this and related APIs, please see: https://github.com/Microsoft/cpprestsdk
+//
+// Copyright (C) Microsoft. All rights reserved.
+// Licensed under the MIT license. See LICENSE.txt file in the project root for full license information.
 #include "stdafx.h"
 #include <locale>
 
@@ -92,17 +85,12 @@ bool parse(const utility::string_t &encoded_string, uri_components &components)
             });
         }
         else
-        {
             components.m_scheme.clear();
-        }
 
         if (uinfo_begin)
-        {
             components.m_user_info.assign(uinfo_begin, uinfo_end);
-        }
 
-        if (host_begin)
-        {
+        if (host_begin) {
             components.m_host.assign(host_begin, host_end);
 
             // convert host to lowercase
@@ -111,53 +99,32 @@ bool parse(const utility::string_t &encoded_string, uri_components &components)
             });
         }
         else
-        {
             components.m_host.clear();
-        }
 
         if (port_ptr)
-        {
             components.m_port = port_ptr;
-        }
         else
-        {
             components.m_port = 0;
-        }
 
         if (path_begin)
-        {
             components.m_path.assign(path_begin, path_end);
-        }
-        else
-        {
-            // default path to begin with a slash for easy comparison
+        else	// default path to begin with a slash for easy comparison
             components.m_path = _XPLATSTR("/");
-        }
 
         if (query_begin)
-        {
             components.m_query.assign(query_begin, query_end);
-        }
         else
-        {
             components.m_query.clear();
-        }
 
         if (fragment_begin)
-        {
             components.m_fragment.assign(fragment_begin, fragment_end);
-        }
         else
-        {
             components.m_fragment.clear();
-        }
 
         return true;
     }
     else
-    {
         return false;
-    }
 }
 
 bool inner_parse(
@@ -193,33 +160,22 @@ bool inner_parse(
 
     bool is_relative_reference = true;
     const utility::char_t *p2 = p;
-    for (;*p2 != _XPLATSTR('/') && *p2 != _XPLATSTR('\0'); p2++)
-    {
-        if (*p2 == _XPLATSTR(':'))
-        {
-            // found a colon, the first portion is a scheme
+    for (;*p2 != _XPLATSTR('/') && *p2 != _XPLATSTR('\0'); p2++) {
+        if (*p2 == _XPLATSTR(':')) {	// found a colon, the first portion is a scheme
             is_relative_reference = false;
             break;
         }
     }
 
-    if (!is_relative_reference)
-    {
-        // the first character of a scheme must be a letter
-        if (!isalpha(*p))
-        {
+    if (!is_relative_reference) {
+        if (!isalpha(*p))	// the first character of a scheme must be a letter
             return false;
-        }
 
         // start parsing the scheme, it's always delimited by a colon (must be present)
         *scheme_begin = p++;
         for (;*p != ':'; p++)
-        {
             if (!is_scheme_character(*p))
-            {
                 return false;
-            }
-        }
         *scheme_end = p;
 
         // skip over the colon
@@ -230,35 +186,26 @@ bool inner_parse(
     // later on we'll break up the authority into the port and host
     const utility::char_t *authority_begin = nullptr;
     const utility::char_t *authority_end = nullptr;
-    if (*p == _XPLATSTR('/') && p[1] == _XPLATSTR('/'))
-    {
+    if (*p == _XPLATSTR('/') && p[1] == _XPLATSTR('/')) {
         // skip over the slashes
         p += 2;
         authority_begin = p;
 
         // the authority is delimited by a slash (resource), question-mark (query) or octothorpe (fragment)
         // or by EOS. The authority could be empty ('file:///C:\file_name.txt')
-        for (;*p != _XPLATSTR('/') && *p != _XPLATSTR('?') && *p != _XPLATSTR('#') && *p != _XPLATSTR('\0'); p++)
-        {
-            // We're NOT currently supporting IPvFuture or username/password in authority
-            // IPv6 as the host (i.e. http://[:::::::]) is allowed as valid URI and passed to subsystem for support.
-            if (!is_authority_character(*p))
-            {
-                return false;
-            }
-        }
+        for (;*p != _XPLATSTR('/') && *p != _XPLATSTR('?') && *p != _XPLATSTR('#') && *p != _XPLATSTR('\0'); p++)	
+            if (!is_authority_character(*p))	// We're NOT currently supporting IPvFuture or username/password in authority																	
+                return false;					// IPv6 as the host (i.e. http://[:::::::]) is allowed as valid URI and passed to subsystem for support.
         authority_end = p;
 
         // now lets see if we have a port specified -- by working back from the end
-        if (authority_begin != authority_end)
-        {
+        if (authority_begin != authority_end) {
             // the port is made up of all digits
             const utility::char_t *port_begin = authority_end - 1;
             for (;isdigit(*port_begin) && port_begin != authority_begin; port_begin--)
             { }
 
-            if (*port_begin == _XPLATSTR(':'))
-            {
+            if (*port_begin == _XPLATSTR(':')) {
                 // has a port
                 *host_begin = authority_begin;
                 *host_end = port_begin;
@@ -268,9 +215,7 @@ bool inner_parse(
 
                 *port = utility::conversions::details::scan_string<int>(utility::string_t(port_begin, authority_end));
             }
-            else
-            {
-                // no port
+            else {	// no port
                 *host_begin = authority_begin;
                 *host_end = authority_end;
             }
@@ -280,70 +225,53 @@ bool inner_parse(
             for (;is_user_info_character(*u_end) && u_end != *host_end; u_end++)
             { }
 
-            if (*u_end == _XPLATSTR('@'))
-            {
+            if (*u_end == _XPLATSTR('@')) {
                 *host_begin = u_end+1;
                 *uinfo_begin = authority_begin;
                 *uinfo_end = u_end;
             }
             else
-            {
                 uinfo_end = uinfo_begin = nullptr;
-            }
         }
     }
 
     // if we see a path character or a slash, then the
     // if we see a slash, or any other legal path character, parse the path next
-    if (*p == _XPLATSTR('/') || is_path_character(*p))
-    {
+    if (*p == _XPLATSTR('/') || is_path_character(*p)) {
         *path_begin = p;
 
         // the path is delimited by a question-mark (query) or octothorpe (fragment) or by EOS
         for (;*p != _XPLATSTR('?') && *p != _XPLATSTR('#') && *p != _XPLATSTR('\0'); p++)
-        {
             if (!is_path_character(*p))
-            {
                 return false;
-            }
-        }
         *path_end = p;
     }
 
     // if we see a ?, then the query is next
-    if (*p == _XPLATSTR('?'))
-    {
+    if (*p == _XPLATSTR('?')) {
         // skip over the question mark
         p++;
         *query_begin = p;
 
         // the query is delimited by a '#' (fragment) or EOS
         for (;*p != _XPLATSTR('#') && *p != _XPLATSTR('\0'); p++)
-        {
             if (!is_query_character(*p))
-            {
                 return false;
-            }
-        }
         *query_end = p;
     }
 
     // if we see a #, then the fragment is next
-    if (*p == _XPLATSTR('#'))
-    {
+    if (*p == _XPLATSTR('#')) {
         // skip over the hash mark
         p++;
         *fragment_begin = p;
 
         // the fragment is delimited by EOS
         for (;*p != _XPLATSTR('\0'); p++)
-        {
             if (!is_fragment_character(*p))
-            {
                 return false;
-            }
-        }
-        *fragment_end = p;
+
+		*fragment_end = p;
     }
 
     return true;

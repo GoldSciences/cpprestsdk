@@ -1,5 +1,4 @@
 // HTTP Library: Client-side APIs.
-//
 // This file contains shared code across all http_client implementations.
 // For the latest on this and related APIs, please see: https://github.com/Microsoft/cpprestsdk
 //
@@ -60,9 +59,8 @@ void request_context::report_exception(std::exception_ptr exceptionPtr)
         exceptionPtr = std::make_exception_ptr(http_exception((int)std::errc::operation_canceled, std::generic_category()));
 
     // First try to complete the headers with an exception.
-    if (m_request_completion.set_exception(exceptionPtr)) {
+    if (m_request_completion.set_exception(exceptionPtr)) 
         response_impl->_complete(0);	// Complete the request with no msg body. The exception should only be propagated to one of the tce.
-    }
     else 
         response_impl->_complete(0, exceptionPtr);	// Complete the request with an exception
 
@@ -101,9 +99,8 @@ concurrency::streams::streambuf<uint8_t>	request_context::_get_writebuffer() {
 }
 
 void _http_client_communicator::async_send_request(const std::shared_ptr<request_context> &request) {
-    if (m_client_config.guarantee_order()) {
+    if (m_client_config.guarantee_order())
         push_request(request);	// Send to call block to be processed.
-    }
     else {
         pplx::create_task([this, request] {	// Schedule a task to start sending.
             open_and_send_request(request);
@@ -275,16 +272,16 @@ http_client::http_client(const uri &base_uri, const http_client_config &client_c
         std::make_shared<oauth2::details::oauth2_handler>(client_config.oauth2())));
 }
 
-							http_client::~http_client() CPPREST_NOEXCEPT {}
-const http_client_config &	http_client::client_config	() const { return m_pipeline->m_last_stage->client_config(); }
-const uri &					http_client::base_uri		() const { return m_pipeline->m_last_stage->base_uri(); }
+							http_client::~http_client	() CPPREST_NOEXCEPT														{}
+const http_client_config &	http_client::client_config	()																const	{ return m_pipeline->m_last_stage->client_config(); }
+const uri &					http_client::base_uri		()																const	{ return m_pipeline->m_last_stage->base_uri(); }
 
 // Macros to help build string at compile time and avoid overhead.
 #define STRINGIFY(x) _XPLATSTR(#x)
 #define TOSTRING(x) STRINGIFY(x)
 #define USERAGENT _XPLATSTR("cpprestsdk/") TOSTRING(CPPREST_VERSION_MAJOR) _XPLATSTR(".") TOSTRING(CPPREST_VERSION_MINOR) _XPLATSTR(".") TOSTRING(CPPREST_VERSION_REVISION)
 
-pplx::task<http_response>	http_client::request		(http_request request, const pplx::cancellation_token &token)	{
+pplx::task<http_response>	http_client::request		(http_request request, const pplx::cancellation_token &token)			{
     if (!request.headers().has(header_names::user_agent))
         request.headers().add(header_names::user_agent, USERAGENT);
 

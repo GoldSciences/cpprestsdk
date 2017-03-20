@@ -190,9 +190,9 @@ template <> class task<void>;
 ///     execution. Cancellation is requested on a task if the task was created with a cancellation token, and
 ///     the token source associated with that token is canceled.
 /// <returns>
-///     <c>true</c> if the currently executing task has received a request for cancellation, <c>false</c> otherwise.
+///     true if the currently executing task has received a request for cancellation, false otherwise.
 /// 
-///     If you call this method in the body of a task and it returns <c>true</c>, you must respond with a call to
+///     If you call this method in the body of a task and it returns true, you must respond with a call to
 ///     <see cref="cancel_current_task Function">cancel_current_task</see> to acknowledge the cancellation request,
 ///     after performing any cleanup you need. This will abort the execution of the task and cause it to enter into
 ///     the <c>canceled</c> state. If you do not respond and continue execution, or return instead of calling
@@ -213,7 +213,7 @@ inline bool _pplx_cdecl is_task_cancellation_requested()
 ///     task's execution and cause it to enter the <c>canceled</c> state. While it may be used in response to
 ///     the <see cref="is_task_cancellation_requested Function">is_task_cancellation_requested</see> function, you may
 ///     also use it by itself, to initiate cancellation of the task that is currently executing.
-///     <para>It is not a supported scenario to call this function if you are not within the body of a <c>task</c>.
+///     <para>It is not a supported scenario to call this function if you are not within the body of a task.
 ///     Doing so will result in undefined behavior such as a crash or a hang in your application.</para>
 /// <seealso cref="task Class"/>
 /**/
@@ -2583,7 +2583,7 @@ public:
     ///     The result to set this event with.
     /// 
     /// <returns>
-    ///     The method returns <c>true</c> if it was successful in setting the event. It returns <c>false</c> if the event is already set.
+    ///     The method returns true if it was successful in setting the event. It returns false if the event is already set.
     /// 
         ///     In the presence of multiple or concurrent calls to <c>set</c>, only the first call will succeed and its result (if any) will be stored in the
     ///     task completion event. The remaining sets are ignored and the method will return false. When you set a task completion event, all the
@@ -2809,7 +2809,7 @@ class task_completion_event<void>
 public:
     ///     Sets the task completion event.
     /// <returns>
-    ///     The method returns <c>true</c> if it was successful in setting the event. It returns <c>false</c> if the event is already set.
+    ///     The method returns true if it was successful in setting the event. It returns false if the event is already set.
     /// 
         ///     In the presence of multiple or concurrent calls to <c>set</c>, only the first call will succeed and its result (if any) will be stored in the
     ///     task completion event. The remaining sets are ignored and the method will return false. When you set a task completion event, all the
@@ -3054,7 +3054,7 @@ public:
     }
 };
 
-///     The Parallel Patterns Library (PPL) <c>task</c> class. A <c>task</c> object represents work that can be executed asynchronously,
+///     The Parallel Patterns Library (PPL) task class. A task object represents work that can be executed asynchronously,
 ///     and concurrently with other tasks and parallel work produced by parallel algorithms in the Concurrency Runtime. It produces
 ///     a result of type <typeparamref name="_ResultType"/> on successful completion. Tasks of type <c>task&lt;void&gt;</c> produce no result.
 ///     A task can be waited upon and canceled independently of other tasks. It can also be composed with other tasks using
@@ -3072,8 +3072,8 @@ public:
     /**/
     typedef _ReturnType result_type;
 
-    ///     Constructs a <c>task</c> object.
-        ///     The default constructor for a <c>task</c> is only present in order to allow tasks to be used within containers.
+    ///     Constructs a task object.
+        ///     The default constructor for a task is only present in order to allow tasks to be used within containers.
     ///     A default constructed task cannot be used until you assign a valid task to it. Methods such as <c>get</c>, <c>wait</c> or <c>then</c>
     ///     will throw an <see cref="invalid_argument Class">invalid_argument</see> exception when called on a default constructed task.
     ///     <para>A task that is created from a <c>task_completion_event</c> will complete (and have its continuations scheduled) when the task
@@ -3084,7 +3084,7 @@ public:
     ///     reach their terminal state when the enclosed Windows Runtime asynchronous operation or action completes. Similarly, tasks created
     ///     from a lamda that returns a <c>task&lt;result_type&gt;</c> reach their terminal state when the inner task reaches its terminal state,
     ///     and not when the lamda returns.</para>
-    ///     <para><c>task</c> behaves like a smart pointer and is safe to pass around by value. It can be accessed by multiple threads
+    ///     <para>task behaves like a smart pointer and is safe to pass around by value. It can be accessed by multiple threads
     ///     without the need for locks.</para>
     ///     <para>The constructor overloads that take a Windows::Foundation::IAsyncInfo interface or a lambda returning such an interface, are only available
     ///     to Windows Store apps.</para>
@@ -3096,7 +3096,7 @@ public:
         // task is not usable and should throw if any wait(), get() or then() APIs are used.
     }
 
-    ///     Constructs a <c>task</c> object.
+    ///     Constructs a task object.
     /// <typeparam name="_Ty">
     ///     The type of the parameter from which the task is to be constructed.
     /// </typeparam>
@@ -3110,7 +3110,7 @@ public:
     ///     The cancellation token to associate with this task. A task created without a cancellation token cannot be canceled. It implicitly receives
     ///     the token <c>cancellation_token::none()</c>.
     /// 
-        ///     The default constructor for a <c>task</c> is only present in order to allow tasks to be used within containers.
+        ///     The default constructor for a task is only present in order to allow tasks to be used within containers.
     ///     A default constructed task cannot be used until you assign a valid task to it. Methods such as <c>get</c>, <c>wait</c> or <c>then</c>
     ///     will throw an <see cref="invalid_argument Class">invalid_argument</see> exception when called on a default constructed task.
     ///     <para>A task that is created from a <c>task_completion_event</c> will complete (and have its continuations scheduled) when the task
@@ -3121,7 +3121,7 @@ public:
     ///     reach their terminal state when the enclosed Windows Runtime asynchronous operation or action completes. Similarly, tasks created
     ///     from a lamda that returns a <c>task&lt;result_type&gt;</c> reach their terminal state when the inner task reaches its terminal state,
     ///     and not when the lamda returns.</para>
-    ///     <para><c>task</c> behaves like a smart pointer and is safe to pass around by value. It can be accessed by multiple threads
+    ///     <para>task behaves like a smart pointer and is safe to pass around by value. It can be accessed by multiple threads
     ///     without the need for locks.</para>
     ///     <para>The constructor overloads that take a Windows::Foundation::IAsyncInfo interface or a lambda returning such an interface, are only available
     ///     to Windows Store apps.</para>
@@ -3141,7 +3141,7 @@ public:
         _TaskInitMaybeFunctor(_Param, details::_IsCallable(_Param,0));
     }
 
-    ///     Constructs a <c>task</c> object.
+    ///     Constructs a task object.
     /// <typeparam name="_Ty">
     ///     The type of the parameter from which the task is to be constructed.
     /// </typeparam>
@@ -3154,7 +3154,7 @@ public:
     /// <param name="_TaskOptions">
     ///     The task options include cancellation token, scheduler etc
     /// 
-        ///     The default constructor for a <c>task</c> is only present in order to allow tasks to be used within containers.
+        ///     The default constructor for a task is only present in order to allow tasks to be used within containers.
     ///     A default constructed task cannot be used until you assign a valid task to it. Methods such as <c>get</c>, <c>wait</c> or <c>then</c>
     ///     will throw an <see cref="invalid_argument Class">invalid_argument</see> exception when called on a default constructed task.
     ///     <para>A task that is created from a <c>task_completion_event</c> will complete (and have its continuations scheduled) when the task
@@ -3165,7 +3165,7 @@ public:
     ///     reach their terminal state when the enclosed Windows Runtime asynchronous operation or action completes. Similarly, tasks created
     ///     from a lamda that returns a <c>task&lt;result_type&gt;</c> reach their terminal state when the inner task reaches its terminal state,
     ///     and not when the lamda returns.</para>
-    ///     <para><c>task</c> behaves like a smart pointer and is safe to pass around by value. It can be accessed by multiple threads
+    ///     <para>task behaves like a smart pointer and is safe to pass around by value. It can be accessed by multiple threads
     ///     without the need for locks.</para>
     ///     <para>The constructor overloads that take a Windows::Foundation::IAsyncInfo interface or a lambda returning such an interface, are only available
     ///     to Windows Store apps.</para>
@@ -3184,11 +3184,11 @@ public:
         _TaskInitMaybeFunctor(_Param, details::_IsCallable(_Param,0));
     }
 
-    ///     Constructs a <c>task</c> object.
+    ///     Constructs a task object.
     /// <param name="_Other">
-    ///     The source <c>task</c> object.
+    ///     The source task object.
     /// 
-        ///     The default constructor for a <c>task</c> is only present in order to allow tasks to be used within containers.
+        ///     The default constructor for a task is only present in order to allow tasks to be used within containers.
     ///     A default constructed task cannot be used until you assign a valid task to it. Methods such as <c>get</c>, <c>wait</c> or <c>then</c>
     ///     will throw an <see cref="invalid_argument Class">invalid_argument</see> exception when called on a default constructed task.
     ///     <para>A task that is created from a <c>task_completion_event</c> will complete (and have its continuations scheduled) when the task
@@ -3199,7 +3199,7 @@ public:
     ///     reach their terminal state when the enclosed Windows Runtime asynchronous operation or action completes. Similarly, tasks created
     ///     from a lamda that returns a <c>task&lt;result_type&gt;</c> reach their terminal state when the inner task reaches its terminal state,
     ///     and not when the lamda returns.</para>
-    ///     <para><c>task</c> behaves like a smart pointer and is safe to pass around by value. It can be accessed by multiple threads
+    ///     <para>task behaves like a smart pointer and is safe to pass around by value. It can be accessed by multiple threads
     ///     without the need for locks.</para>
     ///     <para>The constructor overloads that take a Windows::Foundation::IAsyncInfo interface or a lambda returning such an interface, are only available
     ///     to Windows Store apps.</para>
@@ -3207,11 +3207,11 @@ public:
         /**/
     task(const task& _Other): _M_Impl(_Other._M_Impl) {}
 
-    ///     Constructs a <c>task</c> object.
+    ///     Constructs a task object.
     /// <param name="_Other">
-    ///     The source <c>task</c> object.
+    ///     The source task object.
     /// 
-        ///     The default constructor for a <c>task</c> is only present in order to allow tasks to be used within containers.
+        ///     The default constructor for a task is only present in order to allow tasks to be used within containers.
     ///     A default constructed task cannot be used until you assign a valid task to it. Methods such as <c>get</c>, <c>wait</c> or <c>then</c>
     ///     will throw an <see cref="invalid_argument Class">invalid_argument</see> exception when called on a default constructed task.
     ///     <para>A task that is created from a <c>task_completion_event</c> will complete (and have its continuations scheduled) when the task
@@ -3222,7 +3222,7 @@ public:
     ///     reach their terminal state when the enclosed Windows Runtime asynchronous operation or action completes. Similarly, tasks created
     ///     from a lamda that returns a <c>task&lt;result_type&gt;</c> reach their terminal state when the inner task reaches its terminal state,
     ///     and not when the lamda returns.</para>
-    ///     <para><c>task</c> behaves like a smart pointer and is safe to pass around by value. It can be accessed by multiple threads
+    ///     <para>task behaves like a smart pointer and is safe to pass around by value. It can be accessed by multiple threads
     ///     without the need for locks.</para>
     ///     <para>The constructor overloads that take a Windows::Foundation::IAsyncInfo interface or a lambda returning such an interface, are only available
     ///     to Windows Store apps.</para>
@@ -3230,11 +3230,11 @@ public:
         /**/
     task(task&& _Other): _M_Impl(std::move(_Other._M_Impl)) {}
 
-    ///     Replaces the contents of one <c>task</c> object with another.
+    ///     Replaces the contents of one task object with another.
     /// <param name="_Other">
-    ///     The source <c>task</c> object.
+    ///     The source task object.
     /// 
-        ///     As <c>task</c> behaves like a smart pointer, after a copy assignment, this <c>task</c> objects represents the same
+        ///     As task behaves like a smart pointer, after a copy assignment, this task objects represents the same
     ///     actual task as <paramref name="_Other"/> does.
         /**/
     task& operator=(const task& _Other)
@@ -3246,11 +3246,11 @@ public:
         return *this;
     }
 
-    ///     Replaces the contents of one <c>task</c> object with another.
+    ///     Replaces the contents of one task object with another.
     /// <param name="_Other">
-    ///     The source <c>task</c> object.
+    ///     The source task object.
     /// 
-        ///     As <c>task</c> behaves like a smart pointer, after a copy assignment, this <c>task</c> objects represents the same
+        ///     As task behaves like a smart pointer, after a copy assignment, this task objects represents the same
     ///     actual task as <paramref name="_Other"/> does.
         /**/
     task& operator=(task&& _Other)
@@ -3419,7 +3419,7 @@ public:
 
     ///     Determines whether the task unwraps a Windows Runtime <c>IAsyncInfo</c> interface or is descended from such a task.
     /// <returns>
-    ///     <c>true</c> if the task unwraps an <c>IAsyncInfo</c> interface or is descended from such a task, <c>false</c> otherwise.
+    ///     true if the task unwraps an <c>IAsyncInfo</c> interface or is descended from such a task, false otherwise.
     /// 
     /**/
     bool is_apartment_aware() const
@@ -3431,9 +3431,9 @@ public:
         return _M_Impl->_IsApartmentAware();
     }
 
-    ///     Determines whether two <c>task</c> objects represent the same internal task.
+    ///     Determines whether two task objects represent the same internal task.
     /// <returns>
-    ///     <c>true</c> if the objects refer to the same underlying task, and <c>false</c> otherwise.
+    ///     true if the objects refer to the same underlying task, and false otherwise.
     /// 
     /**/
     bool operator==(const task<_ReturnType>& _Rhs) const
@@ -3441,9 +3441,9 @@ public:
         return (_M_Impl == _Rhs._M_Impl);
     }
 
-    ///     Determines whether two <c>task</c> objects represent different internal tasks.
+    ///     Determines whether two task objects represent different internal tasks.
     /// <returns>
-    ///     <c>true</c> if the objects refer to different underlying tasks, and <c>false</c> otherwise.
+    ///     true if the objects refer to different underlying tasks, and false otherwise.
     /// 
     /**/
     bool operator!=(const task<_ReturnType>& _Rhs) const
@@ -3957,7 +3957,7 @@ private:
     typename details::_Task_ptr<_ReturnType>::_Type _M_Impl;
 };
 
-///     The Parallel Patterns Library (PPL) <c>task</c> class. A <c>task</c> object represents work that can be executed asynchronously,
+///     The Parallel Patterns Library (PPL) task class. A task object represents work that can be executed asynchronously,
 ///     and concurrently with other tasks and parallel work produced by parallel algorithms in the Concurrency Runtime. It produces
 ///     a result of type <typeparamref name="_ResultType"/> on successful completion. Tasks of type <c>task&lt;void&gt;</c> produce no result.
 ///     A task can be waited upon and canceled independently of other tasks. It can also be composed with other tasks using
@@ -3972,8 +3972,8 @@ public:
     /**/
     typedef void result_type;
 
-    ///     Constructs a <c>task</c> object.
-        ///     The default constructor for a <c>task</c> is only present in order to allow tasks to be used within containers.
+    ///     Constructs a task object.
+        ///     The default constructor for a task is only present in order to allow tasks to be used within containers.
     ///     A default constructed task cannot be used until you assign a valid task to it. Methods such as <c>get</c>, <c>wait</c> or <c>then</c>
     ///     will throw an <see cref="invalid_argument Class">invalid_argument</see> exception when called on a default constructed task.
     ///     <para>A task that is created from a <c>task_completion_event</c> will complete (and have its continuations scheduled) when the task
@@ -3984,7 +3984,7 @@ public:
     ///     reach their terminal state when the enclosed Windows Runtime asynchronous operation or action completes. Similarly, tasks created
     ///     from a lamda that returns a <c>task&lt;result_type&gt;</c> reach their terminal state when the inner task reaches its terminal state,
     ///     and not when the lamda returns.</para>
-    ///     <para><c>task</c> behaves like a smart pointer and is safe to pass around by value. It can be accessed by multiple threads
+    ///     <para>task behaves like a smart pointer and is safe to pass around by value. It can be accessed by multiple threads
     ///     without the need for locks.</para>
     ///     <para>The constructor overloads that take a Windows::Foundation::IAsyncInfo interface or a lambda returning such an interface, are only available
     ///     to Windows Store apps.</para>
@@ -3996,7 +3996,7 @@ public:
         // task is not usable and should throw if any wait(), get() or then() APIs are used.
     }
 
-    ///     Constructs a <c>task</c> object.
+    ///     Constructs a task object.
     /// <typeparam name="_Ty">
     ///     The type of the parameter from which the task is to be constructed.
     /// </typeparam>
@@ -4006,7 +4006,7 @@ public:
     ///     object should be a type equivalent to <c>std::function&lt;X(void)&gt;</c>, where X can be a variable of type <c>result_type</c>,
     ///     <c>task&lt;result_type&gt;</c>, or a Windows::Foundation::IAsyncInfo in Windows Store apps.
     /// 
-        ///     The default constructor for a <c>task</c> is only present in order to allow tasks to be used within containers.
+        ///     The default constructor for a task is only present in order to allow tasks to be used within containers.
     ///     A default constructed task cannot be used until you assign a valid task to it. Methods such as <c>get</c>, <c>wait</c> or <c>then</c>
     ///     will throw an <see cref="invalid_argument Class">invalid_argument</see> exception when called on a default constructed task.
     ///     <para>A task that is created from a <c>task_completion_event</c> will complete (and have its continuations scheduled) when the task
@@ -4017,7 +4017,7 @@ public:
     ///     reach their terminal state when the enclosed Windows Runtime asynchronous operation or action completes. Similarly, tasks created
     ///     from a lamda that returns a <c>task&lt;result_type&gt;</c> reach their terminal state when the inner task reaches its terminal state,
     ///     and not when the lamda returns.</para>
-    ///     <para><c>task</c> behaves like a smart pointer and is safe to pass around by value. It can be accessed by multiple threads
+    ///     <para>task behaves like a smart pointer and is safe to pass around by value. It can be accessed by multiple threads
     ///     without the need for locks.</para>
     ///     <para>The constructor overloads that take a Windows::Foundation::IAsyncInfo interface or a lambda returning such an interface, are only available
     ///     to Windows Store apps.</para>
@@ -4036,11 +4036,11 @@ public:
         _TaskInitMaybeFunctor(_Param, details::_IsCallable(_Param,0));
     }
 
-    ///     Constructs a <c>task</c> object.
+    ///     Constructs a task object.
     /// <param name="_Other">
-    ///     The source <c>task</c> object.
+    ///     The source task object.
     /// 
-        ///     The default constructor for a <c>task</c> is only present in order to allow tasks to be used within containers.
+        ///     The default constructor for a task is only present in order to allow tasks to be used within containers.
     ///     A default constructed task cannot be used until you assign a valid task to it. Methods such as <c>get</c>, <c>wait</c> or <c>then</c>
     ///     will throw an <see cref="invalid_argument Class">invalid_argument</see> exception when called on a default constructed task.
     ///     <para>A task that is created from a <c>task_completion_event</c> will complete (and have its continuations scheduled) when the task
@@ -4051,7 +4051,7 @@ public:
     ///     reach their terminal state when the enclosed Windows Runtime asynchronous operation or action completes. Similarly, tasks created
     ///     from a lamda that returns a <c>task&lt;result_type&gt;</c> reach their terminal state when the inner task reaches its terminal state,
     ///     and not when the lamda returns.</para>
-    ///     <para><c>task</c> behaves like a smart pointer and is safe to pass around by value. It can be accessed by multiple threads
+    ///     <para>task behaves like a smart pointer and is safe to pass around by value. It can be accessed by multiple threads
     ///     without the need for locks.</para>
     ///     <para>The constructor overloads that take a Windows::Foundation::IAsyncInfo interface or a lambda returning such an interface, are only available
     ///     to Windows Store apps.</para>
@@ -4059,11 +4059,11 @@ public:
         /**/
     task(const task& _Other): _M_unitTask(_Other._M_unitTask){}
 
-    ///     Constructs a <c>task</c> object.
+    ///     Constructs a task object.
     /// <param name="_Other">
-    ///     The source <c>task</c> object.
+    ///     The source task object.
     /// 
-        ///     The default constructor for a <c>task</c> is only present in order to allow tasks to be used within containers.
+        ///     The default constructor for a task is only present in order to allow tasks to be used within containers.
     ///     A default constructed task cannot be used until you assign a valid task to it. Methods such as <c>get</c>, <c>wait</c> or <c>then</c>
     ///     will throw an <see cref="invalid_argument Class">invalid_argument</see> exception when called on a default constructed task.
     ///     <para>A task that is created from a <c>task_completion_event</c> will complete (and have its continuations scheduled) when the task
@@ -4074,7 +4074,7 @@ public:
     ///     reach their terminal state when the enclosed Windows Runtime asynchronous operation or action completes. Similarly, tasks created
     ///     from a lamda that returns a <c>task&lt;result_type&gt;</c> reach their terminal state when the inner task reaches its terminal state,
     ///     and not when the lamda returns.</para>
-    ///     <para><c>task</c> behaves like a smart pointer and is safe to pass around by value. It can be accessed by multiple threads
+    ///     <para>task behaves like a smart pointer and is safe to pass around by value. It can be accessed by multiple threads
     ///     without the need for locks.</para>
     ///     <para>The constructor overloads that take a Windows::Foundation::IAsyncInfo interface or a lambda returning such an interface, are only available
     ///     to Windows Store apps.</para>
@@ -4082,11 +4082,11 @@ public:
         /**/
     task(task&& _Other) : _M_unitTask(std::move(_Other._M_unitTask)) {}
 
-    ///     Replaces the contents of one <c>task</c> object with another.
+    ///     Replaces the contents of one task object with another.
     /// <param name="_Other">
-    ///     The source <c>task</c> object.
+    ///     The source task object.
     /// 
-        ///     As <c>task</c> behaves like a smart pointer, after a copy assignment, this <c>task</c> objects represents the same
+        ///     As task behaves like a smart pointer, after a copy assignment, this task objects represents the same
     ///     actual task as <paramref name="_Other"/> does.
         /**/
     task& operator=(const task& _Other)
@@ -4098,11 +4098,11 @@ public:
         return *this;
     }
 
-    ///     Replaces the contents of one <c>task</c> object with another.
+    ///     Replaces the contents of one task object with another.
     /// <param name="_Other">
-    ///     The source <c>task</c> object.
+    ///     The source task object.
     /// 
-        ///     As <c>task</c> behaves like a smart pointer, after a copy assignment, this <c>task</c> objects represents the same
+        ///     As task behaves like a smart pointer, after a copy assignment, this task objects represents the same
     ///     actual task as <paramref name="_Other"/> does.
         /**/
     task& operator=(task&& _Other)
@@ -4218,7 +4218,7 @@ public:
 
     ///     Determines whether the task unwraps a Windows Runtime <c>IAsyncInfo</c> interface or is descended from such a task.
     /// <returns>
-    ///     <c>true</c> if the task unwraps an <c>IAsyncInfo</c> interface or is descended from such a task, <c>false</c> otherwise.
+    ///     true if the task unwraps an <c>IAsyncInfo</c> interface or is descended from such a task, false otherwise.
     /// 
     /**/
     bool is_apartment_aware() const
@@ -4226,9 +4226,9 @@ public:
         return _M_unitTask.is_apartment_aware();
     }
 
-    ///     Determines whether two <c>task</c> objects represent the same internal task.
+    ///     Determines whether two task objects represent the same internal task.
     /// <returns>
-    ///     <c>true</c> if the objects refer to the same underlying task, and <c>false</c> otherwise.
+    ///     true if the objects refer to the same underlying task, and false otherwise.
     /// 
     /**/
     bool operator==(const task<void>& _Rhs) const
@@ -4236,9 +4236,9 @@ public:
         return (_M_unitTask == _Rhs._M_unitTask);
     }
 
-    ///     Determines whether two <c>task</c> objects represent different internal tasks.
+    ///     Determines whether two task objects represent different internal tasks.
     /// <returns>
-    ///     <c>true</c> if the objects refer to different underlying tasks, and <c>false</c> otherwise.
+    ///     true if the objects refer to different underlying tasks, and false otherwise.
     /// 
     /**/
     bool operator!=(const task<void>& _Rhs) const
@@ -4405,14 +4405,14 @@ namespace details
 /// </typeparam>
 /// <param name="_Param">
 ///     The parameter from which the task is to be constructed. This could be a lambda or function object, a <c>task_completion_event</c>
-///     object, a different <c>task</c> object, or a Windows::Foundation::IAsyncInfo interface if you are using tasks in your Windows Store app.
+///     object, a different task object, or a Windows::Foundation::IAsyncInfo interface if you are using tasks in your Windows Store app.
 /// 
 /// <returns>
 ///     A new task of type <c>T</c>, that is inferred from <paramref name="_Param"/>.
 /// 
 ///     The first overload behaves like a task constructor that takes a single parameter.
 ///     <para>The second overload associates the cancellation token provided with the newly created task. If you use this overload you are not
-///     allowed to pass in a different <c>task</c> object as the first parameter.</para>
+///     allowed to pass in a different task object as the first parameter.</para>
 ///     <para>The type of the returned task is inferred from the first parameter to the function. If <paramref name="_Param"/> is a <c>task_completion_event&lt;T&gt;</c>,
 ///     a <c>task&lt;T&gt;</c>, or a functor that returns either type <c>T</c> or <c>task&lt;T&gt;</c>, the type of the created task is <c>task&lt;T&gt;</c>.</para>
 ///     <para>In a Windows Store app, if <paramref name="_Param"/> is of type Windows::Foundation::IAsyncOperation&lt;T&gt;^ or
@@ -4445,7 +4445,7 @@ auto create_task(_Ty _Param, task_options _TaskOptions = task_options()) -> task
 /// </typeparam>
 /// <param name="_Param">
 ///     The parameter from which the task is to be constructed. This could be a lambda or function object, a <c>task_completion_event</c>
-///     object, a different <c>task</c> object, or a Windows::Foundation::IAsyncInfo interface if you are using tasks in your Windows Store app.
+///     object, a different task object, or a Windows::Foundation::IAsyncInfo interface if you are using tasks in your Windows Store app.
 /// 
 /// <param name="_Token">
 ///     The cancellation token to associate with the task. When the source for this token is canceled, cancellation will be requested on the task.
@@ -4455,7 +4455,7 @@ auto create_task(_Ty _Param, task_options _TaskOptions = task_options()) -> task
 /// 
 ///     The first overload behaves like a task constructor that takes a single parameter.
 ///     <para>The second overload associates the cancellation token provided with the newly created task. If you use this overload you are not
-///     allowed to pass in a different <c>task</c> object as the first parameter.</para>
+///     allowed to pass in a different task object as the first parameter.</para>
 ///     <para>The type of the returned task is inferred from the first parameter to the function. If <paramref name="_Param"/> is a <c>task_completion_event&lt;T&gt;</c>,
 ///     a <c>task&lt;T&gt;</c>, or a functor that returns either type <c>T</c> or <c>task&lt;T&gt;</c>, the type of the created task is <c>task&lt;T&gt;</c>.</para>
 ///     <para>In a Windows Store app, if <paramref name="_Param"/> is of type Windows::Foundation::IAsyncOperation&lt;T&gt;^ or

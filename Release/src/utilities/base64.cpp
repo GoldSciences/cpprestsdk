@@ -1,13 +1,7 @@
-/***
-* Copyright (C) Microsoft. All rights reserved.
-* Licensed under the MIT license. See LICENSE.txt file in the project root for full license information.
-*
-* =+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+
-*
-* For the latest on this and related APIs, please see: https://github.com/Microsoft/cpprestsdk
-*
-* =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
-****/
+// For the latest on this and related APIs, please see: https://github.com/Microsoft/cpprestsdk
+//
+// Copyright (C) Microsoft. All rights reserved.
+// Licensed under the MIT license. See LICENSE.txt file in the project root for full license information.
 #include "stdafx.h"
 
 using namespace web;
@@ -92,36 +86,27 @@ std::vector<unsigned char> _from_base64(const utility::string_t& input)
         return result;
 
     size_t padding = 0;
-
     // Validation
     {
         auto size = input.size();
-
-        if ( (size % 4) != 0 )
-        {
+        if ( (size % 4) != 0 ) {
             throw std::runtime_error("length of base64 string is not an even multiple of 4");
         }
 
-        for (auto iter = input.begin(); iter != input.end(); ++iter,--size)
-        {
+        for (auto iter = input.begin(); iter != input.end(); ++iter,--size) {
             const size_t ch_sz = static_cast<size_t>(*iter);
-            if ( ch_sz >= _base64_dectbl.size() || _base64_dectbl[ch_sz] == 255 )
-            {
+            if ( ch_sz >= _base64_dectbl.size() || _base64_dectbl[ch_sz] == 255 ) {
                 throw std::runtime_error("invalid character found in base64 string");
             }
-            if ( _base64_dectbl[ch_sz] == 254 )
-            {
+            if ( _base64_dectbl[ch_sz] == 254 ) {
                 padding++;
                 // padding only at the end
-                if ( size > 2 )
-                {
+                if ( size > 2 ) {
                     throw std::runtime_error("invalid padding character found in base64 string");
                 }
-                if ( size == 2 )
-                {
+                if ( size == 2 ) {
                     const size_t ch2_sz = static_cast<size_t>(*(iter+1));
-                    if ( ch2_sz >= _base64_dectbl.size() || _base64_dectbl[ch2_sz] != 254 )
-                    {
+                    if ( ch2_sz >= _base64_dectbl.size() || _base64_dectbl[ch2_sz] != 254 ) {
                         throw std::runtime_error("invalid padding character found in base64 string");
                     }
                 }
@@ -139,8 +124,7 @@ std::vector<unsigned char> _from_base64(const utility::string_t& input)
     result.resize(outsz);
 
     size_t idx = 0;
-    for (; size > 4; ++idx )
-    {
+    for (; size > 4; ++idx ) {
         unsigned char target[3];
         memset(target, 0, sizeof(target));
         _triple_byte* record = reinterpret_cast<_triple_byte*>(target);
@@ -166,9 +150,7 @@ std::vector<unsigned char> _from_base64(const utility::string_t& input)
         size -= 4;
     }
 
-    // Handle the last four bytes separately, to avoid having the conditional statements
-    // in all the iterations (a performance issue).
-
+    // Handle the last four bytes separately, to avoid having the conditional statements in all the iterations (a performance issue).
     {
         unsigned char target[3];
         memset(target, 0, sizeof(target));
@@ -184,47 +166,37 @@ std::vector<unsigned char> _from_base64(const utility::string_t& input)
         result[idx] = target[0];
 
         record->_1_2 = val1 & 0xF;
-        if ( val2 != 254 )
-        {
+        if ( val2 != 254 ) {
             record->_2_1 = val2 >> 2;
             result[++idx] = target[1];
         }
-        else
-        {
-            // There shouldn't be any information (ones) in the unused bits,
-            if ( record->_1_2 != 0 )
-            {
+        else {	// There shouldn't be any information (ones) in the unused bits,
+            if ( record->_1_2 != 0 ) {
                 throw std::runtime_error("Invalid end of base64 string");
             }
-                return result;
+			return result;
         }
 
         record->_2_2 = val2 & 0x3;
-        if ( val3 != 254 )
-        {
+        if ( val3 != 254 ) {
             record->_3   = val3 & 0x3F;
             result[++idx] = target[2];
         }
-        else
-        {
-            // There shouldn't be any information (ones) in the unused bits.
-            if ( record->_2_2 != 0 )
-            {
+        else {	// There shouldn't be any information (ones) in the unused bits.
+            if ( record->_2_2 != 0 ) {
                 throw std::runtime_error("Invalid end of base64 string");
             }
-                return result;
+			return result;
         }
     }
 
     return result;
 }
 
-utility::string_t _to_base64(const unsigned char *ptr, size_t size)
-{
+utility::string_t _to_base64(const unsigned char *ptr, size_t size) {
     utility::string_t result;
 
-    for (; size >= 3; )
-    {
+    for (; size >= 3; ) {
         const _triple_byte* record = reinterpret_cast<const _triple_byte*>(ptr);
         unsigned char idx0 = record->_0;
         unsigned char idx1 = (record->_1_1 << 4) | record->_1_2;
@@ -237,31 +209,30 @@ utility::string_t _to_base64(const unsigned char *ptr, size_t size)
         size -= 3;
         ptr += 3;
     }
-    switch(size)
+    switch(size) {
+    case 1:
     {
-        case 1:
-        {
-            const _single_byte* record = reinterpret_cast<const _single_byte*>(ptr);
-            unsigned char idx0 = record->_0;
-            unsigned char idx1 = (record->_1_1 << 4);
-            result.push_back(char_t(_base64_enctbl[idx0]));
-            result.push_back(char_t(_base64_enctbl[idx1]));
-            result.push_back('=');
-            result.push_back('=');
-            break;
-        }
-        case 2:
-        {
-            const _double_byte* record = reinterpret_cast<const _double_byte*>(ptr);
-            unsigned char idx0 = record->_0;
-            unsigned char idx1 = (record->_1_1 << 4) | record->_1_2;
-            unsigned char idx2 = (record->_2_1 << 2);
-            result.push_back(char_t(_base64_enctbl[idx0]));
-            result.push_back(char_t(_base64_enctbl[idx1]));
-            result.push_back(char_t(_base64_enctbl[idx2]));
-            result.push_back('=');
-            break;
-        }
+        const _single_byte* record = reinterpret_cast<const _single_byte*>(ptr);
+        unsigned char idx0 = record->_0;
+        unsigned char idx1 = (record->_1_1 << 4);
+        result.push_back(char_t(_base64_enctbl[idx0]));
+        result.push_back(char_t(_base64_enctbl[idx1]));
+        result.push_back('=');
+        result.push_back('=');
+        break;
+    }
+    case 2:
+    {
+        const _double_byte* record = reinterpret_cast<const _double_byte*>(ptr);
+        unsigned char idx0 = record->_0;
+        unsigned char idx1 = (record->_1_1 << 4) | record->_1_2;
+        unsigned char idx2 = (record->_2_1 << 2);
+        result.push_back(char_t(_base64_enctbl[idx0]));
+        result.push_back(char_t(_base64_enctbl[idx1]));
+        result.push_back(char_t(_base64_enctbl[idx2]));
+        result.push_back('=');
+        break;
+    }
     }
     return result;
 }

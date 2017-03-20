@@ -150,22 +150,19 @@ public:
     /// <param name="timeout">The timeout (duration from microseconds range and up) used for each send and receive operation on the client.
     template <class T> void set_timeout(const T &timeout) { m_timeout = std::chrono::duration_cast<std::chrono::microseconds>(timeout); }
 
-    /// Get the client chunk size.
-    /// Returns the internal buffer size used by the http client when sending and receiving data from the network.
+    /// Get the client chunk size. Returns the internal buffer size used by the http client when sending and receiving data from the network.
     size_t chunksize() const { return m_chunksize == 0 ? 64 * 1024 : m_chunksize; }
 
     /// Sets the client chunk size.
     /// <param name="size">The internal buffer size used by the http client when sending and receiving data from the network.
     /// This is a hint -- an implementation may disregard the setting and use some other chunk size.
-    void set_chunksize(size_t size) { m_chunksize = size; }
+    void set_desired_chunk_size(size_t size) { m_chunksize = size; }
 
-    /// Returns true if the default chunk size is in use.
-    /// If true, implementations are allowed to choose whatever size is best.
+    /// Returns true if the default chunk size is in use. If true, implementations are allowed to choose whatever size is best.
     /// Returns true if default, false if set by user.
     bool is_default_chunksize() const { return m_chunksize == 0; }
 
-    /// Checks if requesting a compressed response is turned on, the default is off.
-    /// Returns true if compressed response is enabled, false otherwise
+    /// Checks if requesting a compressed response is turned on, the default is off. Returns true if compressed response is enabled, false otherwise
     bool request_compressed_response() const { return m_request_compressed; }
 
     /// Request that the server responds with a compressed body.
@@ -176,8 +173,7 @@ public:
     void set_request_compressed_response(bool request_compressed) { m_request_compressed = request_compressed; }
 
 #if !defined(__cplusplus_winrt)
-    /// Gets the server certificate validation property.
-    /// Returns true if certificates are to be verified, false otherwise.
+    /// Gets the server certificate validation property. Returns true if certificates are to be verified, false otherwise.
     bool validate_certificates() const { return m_validate_certificates; }
 
     /// Sets the server certificate validation property.

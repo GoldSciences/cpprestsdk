@@ -1,16 +1,8 @@
-/***
-* Copyright (C) Microsoft. All rights reserved.
-* Licensed under the MIT license. See LICENSE.txt file in the project root for full license information.
-*
-* =+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+
-*
-* Implementation Details of the http.h layer of messaging
-*
-* For the latest on this and related APIs, please see: https://github.com/Microsoft/cpprestsdk
-*
-* =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
-****/
-
+// Implementation Details of the http.h layer of messaging
+// For the latest on this and related APIs, please see: https://github.com/Microsoft/cpprestsdk
+//
+// Copyright (C) Microsoft. All rights reserved.
+// Licensed under the MIT license. See LICENSE.txt file in the project root for full license information.
 #include "stdafx.h"
 
 // CPPREST_EXCLUDE_COMPRESSION is set if we're on a platform that supports compression but we want to explicitly disable it.
@@ -54,8 +46,7 @@ static const http_status_to_phrase idToPhraseMap [] = {
 #undef DAT
 };
 #endif
-utility::string_t get_default_reason_phrase(status_code code)
-{
+utility::string_t get_default_reason_phrase(status_code code) {
 #if !defined(_WIN32) || _MSC_VER >= 1900
     // Future improvement: why is this stored as an array of structs instead of a map
     // indexed on the status code for faster lookup?
@@ -71,13 +62,10 @@ utility::string_t get_default_reason_phrase(status_code code)
 
     utility::string_t phrase;
     for (const auto &elm : idToPhraseMap)
-    {
-        if (elm.id == code)
-        {
+        if (elm.id == code) {
             phrase = elm.phrase;
             break;
         }
-    }
     return phrase;
 }
 
@@ -85,20 +73,17 @@ size_t chunked_encoding::add_chunked_delimiters(_Out_writes_(buffer_size) uint8_
 {
     size_t offset = 0;
 
-    if (buffer_size < bytes_read + http::details::chunked_encoding::additional_encoding_space)
-    {
+    if (buffer_size < bytes_read + http::details::chunked_encoding::additional_encoding_space) {
         throw http_exception(_XPLATSTR("Insufficient buffer size."));
     }
 
-    if (bytes_read == 0)
-    {
+    if (bytes_read == 0) {
         offset = 7;
         data[7] = '0';
         data[8] = '\r';  data[9] = '\n'; // The end of the size.
         data[10] = '\r'; data[11] = '\n'; // The end of the message.
     }
-    else
-    {
+    else {
         char buffer[9];
 #ifdef _WIN32
         sprintf_s(buffer, sizeof(buffer), "%8IX", bytes_read);
@@ -130,8 +115,7 @@ const std::array<bool,128> valid_chars =
 // Checks if the method contains any invalid characters
 bool validate_method(const utility::string_t& method)
 {
-    for (const auto &ch : method)
-    {
+    for (const auto &ch : method) {
         size_t ch_sz = static_cast<size_t>(ch);
         if (ch_sz >= 128)
             return false;
@@ -150,14 +134,20 @@ namespace compression
 
     class compression_base_impl
     {
-    public:
-        compression_base_impl(compression_algorithm alg) : m_alg(alg), m_zLibState(Z_OK)
-        {
-            memset(&m_zLibStream, 0, sizeof(m_zLibStream));
-        }
+        const compression_algorithm	m_alg;
 
-        size_t read_output(size_t input_offset, size_t available_input, size_t total_out_before, uint8_t* temp_buffer, data_buffer& output)
-        {
+        std::atomic<int>			m_zLibState{ Z_OK };
+        z_stream					m_zLibStream;
+    public:
+									compression_base_impl		(compression_algorithm alg)			: m_alg(alg), m_zLibState(Z_OK)					{ memset(&m_zLibStream, 0, sizeof(m_zLibStream)); }
+        size_t						read_output				
+			( size_t		input_offset
+			, size_t		available_input
+			, size_t		total_out_before
+			, uint8_t		* temp_buffer
+			, data_buffer	& output
+			) 
+		{
             input_offset += (available_input - stream().avail_in);
             auto out_length = stream().total_out - total_out_before;
             output.insert(output.end(), temp_buffer, temp_buffer + out_length);
@@ -165,72 +155,29 @@ namespace compression
             return input_offset;
         }
 
-        bool is_complete() const
-        {
-            return state() == Z_STREAM_END;
-        }
-
-        bool has_error() const
-        {
-            return !is_complete() && state() != Z_OK;
-        }
-
-        int state() const
-        {
-            return m_zLibState;
-        }
-
-        void set_state(int state)
-        {
-            m_zLibState = state;
-        }
-
-        compression_algorithm algorithm() const
-        {
-            return m_alg;
-        }
-
-        z_stream& stream()
-        {
-            return m_zLibStream;
-        }
-
-        int to_zlib_alg(compression_algorithm alg)
-        {
-            return static_cast<int>(alg);
-        }
-
+        bool						is_complete					()							const	{ return state() == Z_STREAM_END;				}
+        bool						has_error					()							const	{ return !is_complete() && state() != Z_OK;		}
+        int							state						()							const	{ return m_zLibState;							}
+        void						set_state					(int state)							{ m_zLibState = state;							}
+        compression_algorithm		algorithm					()							const	{ return m_alg;									}
+        z_stream&					stream						()									{ return m_zLibStream;							}
+        int							to_zlib_alg					(compression_algorithm alg)			{ return static_cast<int>(alg);					}
     private:
-        const compression_algorithm m_alg;
-
-        std::atomic<int> m_zLibState{ Z_OK };
-        z_stream m_zLibStream;
     };
 
     class stream_decompressor::stream_decompressor_impl : public compression_base_impl
     {
     public:
-        stream_decompressor_impl(compression_algorithm alg) : compression_base_impl(alg)
-        {
-            set_state(inflateInit2(&stream(), to_zlib_alg(alg)));
-        }
-
-        ~stream_decompressor_impl()
-        {
-            inflateEnd(&stream());
-        }
-
-        data_buffer decompress(const uint8_t* input, size_t input_size)
-        {
-            if (input == nullptr || input_size == 0)
-            {
+									~stream_decompressor_impl	()															{ inflateEnd(&stream()); }
+									stream_decompressor_impl	(compression_algorithm alg)									: compression_base_impl(alg) { set_state(inflateInit2(&stream(), to_zlib_alg(alg))); }
+        data_buffer					decompress					(const uint8_t* input, size_t input_size)					{
+            if (input == nullptr || input_size == 0) {
                 set_state(Z_BUF_ERROR);
                 return data_buffer();
             }
 
             // Need to guard against attempting to decompress when we're already finished or encountered an error!
-            if (is_complete() || has_error())
-            {
+            if (is_complete() || has_error()) {
                 set_state(Z_STREAM_ERROR);
                 return data_buffer();
             }
@@ -243,8 +190,7 @@ namespace compression
 
             size_t input_offset{ 0 };
 
-            while (state() == Z_OK && input_offset < input_size)
-            {
+            while (state() == Z_OK && input_offset < input_size) {
                 auto total_out_before = stream().total_out;
 
                 auto available_input = input_size - input_offset;
@@ -256,9 +202,7 @@ namespace compression
                 set_state(inflate(&stream(), Z_PARTIAL_FLUSH));
 
                 if (has_error())
-                {
                     return data_buffer();
-                }
 
                 input_offset = read_output(input_offset, available_input, total_out_before, temp_buffer, output);
             }
@@ -270,29 +214,23 @@ namespace compression
     class stream_compressor::stream_compressor_impl : public compression_base_impl
     {
     public:
-        stream_compressor_impl(compression_algorithm alg) : compression_base_impl(alg)
+														~stream_compressor_impl		()															{ deflateEnd(&stream()); }
+														stream_compressor_impl		(compression_algorithm alg)									: compression_base_impl(alg)
         {
             const int level = Z_DEFAULT_COMPRESSION;
             if (alg == compression_algorithm::gzip)
-            {
                 set_state(deflateInit2(&stream(), level, Z_DEFLATED, to_zlib_alg(alg), MAX_MEM_LEVEL, Z_DEFAULT_STRATEGY));
-            }
             else if (alg == compression_algorithm::deflate)
-            {
                 set_state(deflateInit(&stream(), level));
-            }
         }
 
-        web::http::details::compression::data_buffer compress(const uint8_t* input, size_t input_size, bool finish)
-        {
-            if (input == nullptr || input_size == 0)
-            {
+        web::http::details::compression::data_buffer	compress					(const uint8_t* input, size_t input_size, bool finish)		{
+            if (input == nullptr || input_size == 0) {
                 set_state(Z_BUF_ERROR);
                 return data_buffer();
             }
 
-            if (state() != Z_OK)
-            {
+            if (state() != Z_OK) {
                 set_state(Z_STREAM_ERROR);
                 return data_buffer();
             }
@@ -306,32 +244,25 @@ namespace compression
             size_t input_offset{ 0 };
             auto flush = Z_NO_FLUSH;
 
-            while (flush == Z_NO_FLUSH)
-            {
+            while (flush == Z_NO_FLUSH) {
                 auto total_out_before = stream().total_out;
                 auto available_input = input_size - input_offset;
 
                 if (available_input == 0)
-                {
                     flush = finish ? Z_FINISH : Z_PARTIAL_FLUSH;
-                }
-                else
-                {
+                else {
                     stream().avail_in = static_cast<int>(available_input);
                     stream().next_in = const_cast<uint8_t*>(&input[input_offset]);
                 }
 
-                do
-                {
+                do {
                     stream().next_out = temp_buffer;
                     stream().avail_out = BUFFER_SIZE;
 
                     set_state(deflate(&stream(), flush));
 
                     if (has_error())
-                    {
                         return data_buffer();
-                    }
 
                     input_offset = read_output(input_offset, available_input, total_out_before, temp_buffer, output);
 
@@ -341,45 +272,31 @@ namespace compression
             return output;
         }
 
-        ~stream_compressor_impl()
-        {
-            deflateEnd(&stream());
-        }
     };
 #else // Stub impl for when compression is not supported
 
     class compression_base_impl
     {
     public:
-        bool has_error() const
-        {
-            return true;
-        }
+        bool has_error() const { return true; }
     };
 
     class stream_compressor::stream_compressor_impl : public compression_base_impl
     {
     public:
         stream_compressor_impl(compression_algorithm) {}
-        compression::data_buffer compress(const uint8_t* data, size_t size, bool)
-        {
-            return data_buffer(data, data + size);
-        }
+        compression::data_buffer compress(const uint8_t* data, size_t size, bool) { return data_buffer(data, data + size); }
     };
 
     class stream_decompressor::stream_decompressor_impl : public compression_base_impl
     {
     public:
         stream_decompressor_impl(compression_algorithm) {}
-        compression::data_buffer decompress(const uint8_t* data, size_t size) 
-        {
-            return data_buffer(data, data + size);
-        }
+        compression::data_buffer decompress(const uint8_t* data, size_t size) { return data_buffer(data, data + size); }
     };
 #endif
 
-    bool __cdecl stream_decompressor::is_supported()
-    {
+    bool __cdecl stream_decompressor::is_supported() {
 #if !defined(CPPREST_HTTP_COMPRESSION)
     return false;
 #else
@@ -389,31 +306,18 @@ namespace compression
 
     stream_decompressor::stream_decompressor(compression_algorithm alg)
         : m_pimpl(std::make_shared<stream_decompressor::stream_decompressor_impl>(alg))
-    {
-    }
+    {}
 
-    compression::data_buffer stream_decompressor::decompress(const data_buffer& input)
-    {
+    compression::data_buffer stream_decompressor::decompress(const data_buffer& input) {
         if (input.empty())
-        {
             return data_buffer();
-        }
 
         return m_pimpl->decompress(&input[0], input.size());
     }
 
-    web::http::details::compression::data_buffer stream_decompressor::decompress(const uint8_t* input, size_t input_size)
-    {
-        return m_pimpl->decompress(input, input_size);
-    }
-
-    bool stream_decompressor::has_error() const
-    {
-        return m_pimpl->has_error();
-    }
-
-    bool __cdecl stream_compressor::is_supported()
-    {
+    web::http::details::compression::data_buffer stream_decompressor::decompress(const uint8_t* input, size_t input_size) { return m_pimpl->decompress(input, input_size); }
+    bool stream_decompressor::has_error() const { return m_pimpl->has_error(); }
+    bool __cdecl stream_compressor::is_supported() {
 #if !defined(CPPREST_HTTP_COMPRESSION)
         return false;
 #else
@@ -423,29 +327,16 @@ namespace compression
 
     stream_compressor::stream_compressor(compression_algorithm alg)
         : m_pimpl(std::make_shared<stream_compressor::stream_compressor_impl>(alg))
-    {
+    {}
 
-    }
-
-    compression::data_buffer stream_compressor::compress(const data_buffer& input, bool finish)
-    {
+    compression::data_buffer stream_compressor::compress(const data_buffer& input, bool finish) {
         if (input.empty())
-        {
             return compression::data_buffer();
-        }
 
         return m_pimpl->compress(&input[0], input.size(), finish);
     }
-
-    web::http::details::compression::data_buffer stream_compressor::compress(const uint8_t* input, size_t input_size, bool finish)
-    {
-        return m_pimpl->compress(input, input_size, finish);
-    }
-    
-    bool stream_compressor::has_error() const
-    {
-        return m_pimpl->has_error();
-    }
+    web::http::details::compression::data_buffer stream_compressor::compress(const uint8_t* input, size_t input_size, bool finish) { return m_pimpl->compress(input, input_size, finish); }
+    bool stream_compressor::has_error() const { return m_pimpl->has_error(); }
 
 } // namespace compression
 } // namespace details

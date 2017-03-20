@@ -183,7 +183,7 @@ namespace web {
 
             /// Validates a string as a URI.
             /// <param name="uri_string">The URI string to be validated.
-        /// <returns><c>true</c> if the given string represents a valid URI, <c>false</c> otherwise.
+        /// Returns true if the given string represents a valid URI, false otherwise.
         _ASYNCRTIMP static bool __cdecl validate(const utility::string_t &uri_string);
 
             /// Creates an empty uri
@@ -281,7 +281,7 @@ namespace web {
 
             /// A loopback URI is one which refers to a hostname or ip address with meaning only on the local machine.
                     /// Examples include "locahost", or ip addresses in the loopback range (127.0.0.0/24).
-                /// <returns><c>true</c> if this URI references the local host, <c>false</c> otherwise.
+                /// Returns true if this URI references the local host, false otherwise.
         bool is_host_loopback() const
         {
             return !is_empty() && ((host() == _XPLATSTR("localhost")) || (host().size() > 4 && host().substr(0,4) == _XPLATSTR("127.")));
@@ -297,7 +297,7 @@ namespace web {
         }
 
             /// A portable URI is one with a hostname that can be resolved globally (used from another machine).
-            /// <returns><c>true</c> if this URI can be resolved globally (used from another machine), <c>false</c> otherwise.
+            /// Returns true if this URI can be resolved globally (used from another machine), false otherwise.
                 /// The hostname "localhost" is a reserved name that is guaranteed to resolve to the local machine,
         /// and cannot be used for inter-machine communication. Likewise the hostnames "*" and "+" on Windows
         /// represent wildcards, and do not map to a resolvable address.
@@ -309,14 +309,14 @@ namespace web {
         // <summary>
         /// A default port is one where the port is unspecified, and will be determined by the operating system.
         /// The choice of default port may be dictated by the scheme (http -> 80) or not.
-            /// <returns><c>true</c> if this URI instance has a default port, <c>false</c> otherwise.
+            /// Returns true if this URI instance has a default port, false otherwise.
         bool is_port_default() const
         {
             return !is_empty() && this->port() == 0;
         }
 
             /// An "authority" URI is one with only a scheme, optional userinfo, hostname, and (optional) port.
-            /// <returns><c>true</c> if this is an "authority" URI, <c>false</c> otherwise.
+            /// Returns true if this is an "authority" URI, false otherwise.
         bool is_authority() const
         {
             return !is_empty() && is_path_empty() && query().empty() && fragment().empty();
@@ -324,14 +324,14 @@ namespace web {
 
             /// Returns whether the other URI has the same authority as this one
             /// <param name="other">The URI to compare the authority with.
-        /// <returns><c>true</c> if both the URI's have the same authority, <c>false</c> otherwise.
+        /// Returns true if both the URI's have the same authority, false otherwise.
         bool has_same_authority(const uri &other) const
         {
             return !is_empty() && this->authority() == other.authority();
         }
 
             /// Returns whether the path portion of this URI is empty
-            /// <returns><c>true</c> if the path portion of this URI is empty, <c>false</c> otherwise.
+            /// Returns true if the path portion of this URI is empty, false otherwise.
         bool is_path_empty() const
         {
             return path().empty() || path() == _XPLATSTR("/");

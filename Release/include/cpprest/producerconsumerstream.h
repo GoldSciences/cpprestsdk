@@ -155,11 +155,11 @@ namespace Concurrency { namespace streams {
                     /// Gets a pointer to the next already allocated contiguous block of data.
                     /// <param name="ptr">A reference to a pointer variable that will hold the address of the block on success.
             /// <param name="count">The number of contiguous characters available at the address in 'ptr.'
-            /// <returns><c>true</c> if the operation succeeded, <c>false</c> otherwise.
+            /// Returns true if the operation succeeded, false otherwise.
                         /// A return of false does not necessarily indicate that a subsequent read operation would fail, only that
             /// there is no block to return immediately or that the stream buffer does not support the operation.
             /// The stream buffer may not de-allocate the block until <see cref="::release method" /> is called.
-            /// If the end of the stream is reached, the function will return <c>true</c>, a null pointer, and a count of zero;
+            /// If the end of the stream is reached, the function will return true, a null pointer, and a count of zero;
             /// a subsequent read will not succeed.
                         virtual bool acquire(_Out_ _CharType*& ptr, _Out_ size_t& count)
             {

@@ -93,7 +93,7 @@ namespace streams
         // Writes a number of characters to the stream. Note: callers must make sure the data to be written is valid until the returned task completes.
         // <param name="ptr">A pointer to the block of data to be written.
         // <param name="count">The number of characters to write.
-        // Returns>A <c>task</c> that holds the number of characters actually written, either 'count' or 0.
+        // Returns>A task that holds the number of characters actually written, either 'count' or 0.
         virtual pplx::task<size_t>										putn_nocopy				(const _CharType *source, size_t count)												= 0;
 
         // Reads a single character from the stream and advances the read position.
@@ -177,7 +177,7 @@ namespace streams
         // Gets a pointer to the next already allocated contiguous block of data.
         // <param name="ptr">A reference to a pointer variable that will hold the address of the block on success.
         // <param name="count">The number of contiguous characters available at the address in 'ptr.'
-        // <returns><c>true</c> if the operation succeeded, <c>false</c> otherwise.
+        // Returns true if the operation succeeded, false otherwise.
         // Notes: A return of false does not necessarily indicate that a subsequent read operation would fail, only that
         // there is no block to return immediately or that the stream buffer does not support the operation.
         // The stream buffer may not de-allocate the block until release() is called.

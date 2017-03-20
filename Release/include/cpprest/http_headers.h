@@ -24,7 +24,7 @@ namespace web { namespace http {
 /// <typeparam name="_t">The type of the value to bind to.</typeparam>
 /// <param name="text">The string value.
 /// <param name="ref">The value to bind to.
-/// <returns><c>true</c> if the binding succeeds, <c>false</c> otherwise.
+/// Returns true if the binding succeeds, false otherwise.
 template<typename key_type, typename _t>
 CASABLANCA_DEPRECATED("This API is deprecated and will be removed in a future release, std::istringstream instead.")
 bool bind(const key_type &text, _t &ref) // const
@@ -44,7 +44,7 @@ bool bind(const key_type &text, _t &ref) // const
 /// <typeparam name="key_type">The type of the string value.</typeparam>
 /// <param name="text">The string value.
 /// <param name="ref">The value to bind to.
-/// <returns><c>true</c> if the binding succeeds, <c>false</c> otherwise.
+/// Returns true if the binding succeeds, false otherwise.
 template <typename key_type>
 CASABLANCA_DEPRECATED("This API is deprecated and will be removed in a future release.")
 bool bind(const key_type &text, utility::string_t &ref) //const
@@ -147,7 +147,7 @@ public:
 
     /// Checks if there is a header with the given key.
     /// <param name="name">The name of the header field.
-    /// <returns><c>true</c> if there is a header with the given name, <c>false</c> otherwise.
+    /// Returns true if there is a header with the given name, false otherwise.
     bool has(const key_type& name) const { return m_headers.find(name) != m_headers.end(); }
 
     /// Returns the number of header fields.
@@ -155,7 +155,7 @@ public:
     size_type size() const { return m_headers.size(); }
 
     /// Tests to see if there are any header fields.
-    /// <returns><c>true</c> if there are no headers, <c>false</c> otherwise.
+    /// Returns true if there are no headers, false otherwise.
     bool empty() const { return m_headers.empty(); }
 
     /// Returns a reference to header field with given name, if there is no header field one is inserted.
@@ -171,7 +171,7 @@ public:
     /// Attempts to match a header field with the given name using the '>>' operator.
     /// <param name="name">The name of the header field.
     /// <param name="value">The value of the header field.
-    /// <returns><c>true</c> if header field was found and successfully stored in value parameter.
+    /// Returns true if header field was found and successfully stored in value parameter.
     template<typename _t1>
     bool match(const key_type &name, _t1 &value) const
     {

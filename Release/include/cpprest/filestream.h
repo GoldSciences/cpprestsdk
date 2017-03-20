@@ -254,7 +254,7 @@ namespace details {
 
             /// Writes a single byte to an output stream.
             /// <param name="ch">The byte to write
-            /// Returns a <c>task</c> that holds the value of the byte written. This is EOF if the write operation fails.
+            /// Returns a task that holds the value of the byte written. This is EOF if the write operation fails.
         virtual pplx::task<int_type> _putc(_CharType ch)
         {
             auto result_tce = pplx::task_completion_event<size_t>();
@@ -301,11 +301,11 @@ namespace details {
             /// Gets a pointer to the next already allocated contiguous block of data.
             /// <param name="ptr">A reference to a pointer variable that will hold the address of the block on success.
         /// <param name="count">The number of contiguous characters available at the address in 'ptr.'
-        /// <returns><c>true</c> if the operation succeeded, <c>false</c> otherwise.
+        /// Returns true if the operation succeeded, false otherwise.
                 /// A return of false does not necessarily indicate that a subsequent read operation would fail, only that
         /// there is no block to return immediately or that the stream buffer does not support the operation.
         /// The stream buffer may not de-allocate the block until <see cref="::release method" /> is called.
-        /// If the end of the stream is reached, the function will return <c>true</c>, a null pointer, and a count of zero;
+        /// If the end of the stream is reached, the function will return true, a null pointer, and a count of zero;
         /// a subsequent read will not succeed.
                 virtual bool acquire(_Out_ _CharType*& ptr, _Out_ size_t& count)
         {
@@ -326,7 +326,7 @@ namespace details {
             /// Writes a number of characters to the stream.
             /// <param name="ptr">A pointer to the block of data to be written.
         /// <param name="count">The number of characters to write.
-        /// Returns a <c>task</c> that holds the number of characters actually written, either 'count' or 0.
+        /// Returns a task that holds the number of characters actually written, either 'count' or 0.
         virtual pplx::task<size_t> _putn(const _CharType *ptr, size_t count)
         {
             auto result_tce = pplx::task_completion_event<size_t>();
@@ -361,7 +361,7 @@ namespace details {
         }
 
             /// Reads a single byte from the stream and advance the read position.
-                /// Returns a <c>task</c> that holds the value of the byte read. This is EOF if the read fails.
+                /// Returns a task that holds the value of the byte read. This is EOF if the read fails.
         virtual pplx::task<int_type> _bumpc()
         {
             return m_readOps.enqueue_operation([this]()-> pplx::task<int_type> {
@@ -478,7 +478,7 @@ namespace details {
         }
 
             /// Advances the read position, then return the next character without advancing again.
-                /// Returns a <c>task</c> that holds the value of the byte, which is EOF if the read fails.
+                /// Returns a task that holds the value of the byte, which is EOF if the read fails.
         virtual pplx::task<int_type> _nextc()
         {
             return m_readOps.enqueue_operation([this]()-> pplx::task<int_type> {
@@ -490,7 +490,7 @@ namespace details {
         }
 
             /// Retreats the read position, then return the current character without advancing.
-                /// Returns a <c>task</c> that holds the value of the byte. The value is EOF if the read fails, <c>requires_async</c> if an asynchronous read is required
+                /// Returns a task that holds the value of the byte. The value is EOF if the read fails, <c>requires_async</c> if an asynchronous read is required
         virtual pplx::task<int_type> _ungetc()
         {
             return m_readOps.enqueue_operation([this]()-> pplx::task<int_type> {
@@ -504,7 +504,7 @@ namespace details {
             /// Reads up to a given number of characters from the stream.
             /// <param name="ptr">The address of the target memory area
         /// <param name="count">The maximum number of characters to read
-            /// Returns a <c>task</c> that holds the number of characters read. This number is O if the end of the stream is reached, EOF if there is some error.
+            /// Returns a task that holds the number of characters read. This number is O if the end of the stream is reached, EOF if there is some error.
         virtual pplx::task<size_t> _getn(_Out_writes_ (count) _CharType *ptr, _In_ size_t count)
         {
             return m_readOps.enqueue_operation([=] ()-> pplx::task<size_t>{
@@ -898,7 +898,7 @@ namespace details {
             /// <param name="file_name">The name of the file
         /// <param name="mode">The opening mode of the file
         /// <param name="prot">The file protection mode
-        /// Returns a <c>task</c> that returns an opened stream buffer on completion.
+        /// Returns a task that returns an opened stream buffer on completion.
         static pplx::task<streambuf<_CharType>> open(
             const utility::string_t &file_name,
             std::ios_base::openmode mode = std::ios_base::out,
@@ -921,7 +921,7 @@ namespace details {
             /// <param name="file">The StorageFile instance
         /// <param name="mode">The opening mode of the file
         /// <param name="prot">The file protection mode
-        /// Returns a <c>task</c> that returns an opened stream buffer on completion.
+        /// Returns a task that returns an opened stream buffer on completion.
         static pplx::task<streambuf<_CharType>> open(
             ::Windows::Storage::StorageFile^ file,
             std::ios_base::openmode mode = std::ios_base::out)
@@ -951,7 +951,7 @@ namespace details {
             /// <param name="file_name">The name of the file
         /// <param name="mode">The opening mode of the file
         /// <param name="prot">The file protection mode
-        /// Returns a <c>task</c> that returns an opened input stream on completion.
+        /// Returns a task that returns an opened input stream on completion.
         static pplx::task<streams::basic_istream<_CharType>> open_istream(
             const utility::string_t &file_name,
             std::ios_base::openmode mode = std::ios_base::in,
@@ -976,7 +976,7 @@ namespace details {
             /// <param name="file_name">The name of the file
         /// <param name="mode">The opening mode of the file
         /// <param name="prot">The file protection mode
-        /// Returns a <c>task</c> that returns an opened output stream on completion.
+        /// Returns a task that returns an opened output stream on completion.
         static pplx::task<streams::basic_ostream<_CharType>> open_ostream(
             const utility::string_t &file_name,
             std::ios_base::openmode mode = std::ios_base::out,
@@ -999,7 +999,7 @@ namespace details {
         /// The file should already exist on disk, or an exception will be thrown.
             /// <param name="file">The StorageFile reference representing the file
         /// <param name="mode">The opening mode of the file
-        /// Returns a <c>task</c> that returns an opened input stream on completion.
+        /// Returns a task that returns an opened input stream on completion.
         static pplx::task<streams::basic_istream<_CharType>> open_istream(
             ::Windows::Storage::StorageFile^ file,
             std::ios_base::openmode mode = std::ios_base::in)
@@ -1017,7 +1017,7 @@ namespace details {
         /// where it is to be found also does not exist.
             /// <param name="file">The StorageFile reference representing the file
         /// <param name="mode">The opening mode of the file
-        /// Returns a <c>task</c> that returns an opened output stream on completion.
+        /// Returns a task that returns an opened output stream on completion.
         static pplx::task<streams::basic_ostream<_CharType>> open_ostream(
             ::Windows::Storage::StorageFile^ file,
             std::ios_base::openmode mode = std::ios_base::out)

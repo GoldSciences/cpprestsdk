@@ -1,16 +1,8 @@
-/***
-* Copyright (C) Microsoft. All rights reserved.
-* Licensed under the MIT license. See LICENSE.txt file in the project root for full license information.
-*
-* =+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+
-*
-* Credential and proxy utilities.
-*
-* For the latest on this and related APIs, please see: https://github.com/Microsoft/cpprestsdk
-*
-* =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
-****/
-
+// Credential and proxy utilities.
+// For the latest on this and related APIs, please see: https://github.com/Microsoft/cpprestsdk
+//
+// Copyright (C) Microsoft. All rights reserved.
+// Licensed under the MIT license. See LICENSE.txt file in the project root for full license information.
 #include "stdafx.h"
 
 #if defined(_WIN32) && !defined(__cplusplus_winrt)
@@ -39,13 +31,10 @@ void winrt_secure_zero_buffer(Windows::Storage::Streams::IBuffer ^buffer)
     // then we can't zero out.
     byte * rawBytes;
     if (bufferByteAccess->Buffer(&rawBytes) == S_OK)
-    {
         SecureZeroMemory(rawBytes, buffer->Length);
-    }
 }
 
-winrt_encryption::winrt_encryption(const std::wstring &data)
-{
+winrt_encryption::winrt_encryption(const std::wstring &data) {
     auto provider = ref new Windows::Security::Cryptography::DataProtection::DataProtectionProvider(ref new Platform::String(L"Local=user"));
 
     // Create buffer containing plain text password.
@@ -54,8 +43,7 @@ winrt_encryption::winrt_encryption(const std::wstring &data)
         static_cast<unsigned int>(data.size()) * sizeof(std::wstring::value_type));
     Windows::Storage::Streams::IBuffer ^plaintext = Windows::Security::Cryptography::CryptographicBuffer::CreateFromByteArray(arrayref);
     m_buffer = pplx::create_task(provider->ProtectAsync(plaintext));
-    m_buffer.then([plaintext](pplx::task<Windows::Storage::Streams::IBuffer ^>)
-    {
+    m_buffer.then([plaintext](pplx::task<Windows::Storage::Streams::IBuffer ^>) {
         winrt_secure_zero_buffer(plaintext);
     });
 }
@@ -74,8 +62,7 @@ plaintext_string winrt_encryption::decrypt() const
     bufferInspectable.As(&bufferByteAccess);
     byte * rawPlaintext;
     const auto &result = bufferByteAccess->Buffer(&rawPlaintext);
-    if (result != S_OK)
-    {
+    if (result != S_OK) {
         throw ::utility::details::create_system_error(result);
     }
 
@@ -98,30 +85,21 @@ win32_encryption::win32_encryption(const std::wstring &data) :
 
     // Buffer must be a multiple of CRYPTPROTECTMEMORY_BLOCK_SIZE
     const auto mod = m_buffer.size() % CRYPTPROTECTMEMORY_BLOCK_SIZE;
-    if (mod != 0)
-    {
+    if (mod != 0) {
         m_buffer.resize(m_buffer.size() + CRYPTPROTECTMEMORY_BLOCK_SIZE - mod);
     }
-    if (!CryptProtectMemory(m_buffer.data(), static_cast<DWORD>(m_buffer.size()), CRYPTPROTECTMEMORY_SAME_PROCESS))
-    {
+    if (!CryptProtectMemory(m_buffer.data(), static_cast<DWORD>(m_buffer.size()), CRYPTPROTECTMEMORY_SAME_PROCESS)) {
         throw ::utility::details::create_system_error(GetLastError());
     }
 }
 
-win32_encryption::~win32_encryption()
-{
-    SecureZeroMemory(m_buffer.data(), m_buffer.size());
-}
+win32_encryption::~win32_encryption() { SecureZeroMemory(m_buffer.data(), m_buffer.size()); }
 
 plaintext_string win32_encryption::decrypt() const
 {
     // Copy the buffer and decrypt to avoid having to re-encrypt.
     auto data = plaintext_string(new std::wstring(reinterpret_cast<const std::wstring::value_type *>(m_buffer.data()), m_buffer.size() / 2));
-    if (!CryptUnprotectMemory(
-        const_cast<std::wstring::value_type *>(data->c_str()),
-        static_cast<DWORD>(m_buffer.size()),
-        CRYPTPROTECTMEMORY_SAME_PROCESS))
-    {
+    if (!CryptUnprotectMemory(const_cast<std::wstring::value_type *>(data->c_str()), static_cast<DWORD>(m_buffer.size()), CRYPTPROTECTMEMORY_SAME_PROCESS)) {
         throw ::utility::details::create_system_error(GetLastError());
     }
     data->resize(m_numCharacters);

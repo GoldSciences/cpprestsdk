@@ -91,7 +91,7 @@ extern "C"
 /// <param name="filename">The name of the file to open
 /// <param name="mode">A creation mode for the stream buffer
 /// <param name="prot">A file protection mode to use for the file stream (not supported on Linux)
-/// <returns><c>true</c> if the opening operation could be initiated, <c>false</c> otherwise.
+/// Returns true if the opening operation could be initiated, false otherwise.
 /// True does not signal that the file will eventually be successfully opened, just that the process was started.
 #if !defined(__cplusplus_winrt)
 _ASYNCRTIMP bool __cdecl _open_fsb_str(_In_ concurrency::streams::details::_filestream_callback *callback, const utility::char_t *filename, std::ios_base::openmode mode, int prot);
@@ -101,7 +101,7 @@ _ASYNCRTIMP bool __cdecl _open_fsb_str(_In_ concurrency::streams::details::_file
 /// <param name="callback">A pointer to the callback interface to invoke when the file has been opened.
 /// <param name="file">The file object
 /// <param name="mode">A creation mode for the stream buffer
-/// <returns><c>true</c> if the opening operation could be initiated, <c>false</c> otherwise.
+/// Returns true if the opening operation could be initiated, false otherwise.
 /// True does not signal that the file will eventually be successfully opened, just that the process was started.
 /// This is only available for WinRT.
 #if defined(__cplusplus_winrt)
@@ -111,7 +111,7 @@ _ASYNCRTIMP bool __cdecl _open_fsb_stf_str(_In_ concurrency::streams::details::_
 /// Close a file stream buffer.
 /// <param name="info">The file info record of the file
 /// <param name="callback">A pointer to the callback interface to invoke when the file has been opened.
-/// <returns><c>true</c> if the closing operation could be initiated, <c>false</c> otherwise.
+/// Returns true if the closing operation could be initiated, false otherwise.
 /// True does not signal that the file will eventually be successfully closed, just that the process was started.
 _ASYNCRTIMP bool __cdecl _close_fsb_nolock(_In_ concurrency::streams::details::_file_info **info, _In_ concurrency::streams::details::_filestream_callback *callback);
 _ASYNCRTIMP bool __cdecl _close_fsb(_In_ concurrency::streams::details::_file_info **info, _In_ concurrency::streams::details::_filestream_callback *callback);
@@ -136,7 +136,7 @@ _ASYNCRTIMP size_t __cdecl _getn_fsb(_In_ concurrency::streams::details::_file_i
 /// Flush all buffered data to the underlying file.
 /// <param name="info">The file info record of the file
 /// <param name="callback">A pointer to the callback interface to invoke when the write request is completed.
-/// <returns><c>true</c> if the request was initiated
+/// Returns true if the request was initiated
 _ASYNCRTIMP bool __cdecl _sync_fsb(_In_ concurrency::streams::details::_file_info *info, _In_ concurrency::streams::details::_filestream_callback *callback);
 
 /// Get the size of the underlying file.
@@ -147,18 +147,18 @@ _ASYNCRTIMP utility::size64_t __cdecl _get_size(_In_ concurrency::streams::detai
 /// Adjust the internal buffers and pointers when the application seeks to a new read location in the stream.
 /// <param name="info">The file info record of the file
 /// <param name="pos">The new position (offset from the start) in the file stream
-/// <returns><c>true</c> if the request was initiated
+/// Returns true if the request was initiated
 _ASYNCRTIMP size_t __cdecl _seekrdpos_fsb(_In_ concurrency::streams::details::_file_info *info, size_t pos, size_t char_size);
 
 /// Adjust the internal buffers and pointers when the application seeks to a new read location in the stream.
 /// <param name="info">The file info record of the file
 /// <param name="pos">The new position (offset from the start) in the file stream
-/// <returns><c>true</c> if the request was initiated
+/// Returns true if the request was initiated
 _ASYNCRTIMP size_t __cdecl _seekrdtoend_fsb(_In_ concurrency::streams::details::_file_info *info, int64_t offset, size_t char_size);
 
 /// Adjust the internal buffers and pointers when the application seeks to a new write location in the stream.
 /// <param name="info">The file info record of the file
 /// <param name="pos">The new position (offset from the start) in the file stream
-/// <returns><c>true</c> if the request was initiated
+/// Returns true if the request was initiated
 _ASYNCRTIMP size_t __cdecl _seekwrpos_fsb(_In_ concurrency::streams::details::_file_info *info, size_t pos, size_t char_size);
 }

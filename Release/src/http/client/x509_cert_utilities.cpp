@@ -1,16 +1,8 @@
-/***
-* Copyright (C) Microsoft. All rights reserved.
-* Licensed under the MIT license. See LICENSE.txt file in the project root for full license information.
-*
-* =+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+
-*
-* Contains utility functions for helping to verify server certificates in OS X/iOS.
-*
-* For the latest on this and related APIs, please see: https://github.com/Microsoft/cpprestsdk
-*
-* =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
-****/
-
+// Contains utility functions for helping to verify server certificates in OS X/iOS.
+// For the latest on this and related APIs, please see: https://github.com/Microsoft/cpprestsdk
+//
+// Copyright (C) Microsoft. All rights reserved.
+// Licensed under the MIT license. See LICENSE.txt file in the project root for full license information.
 #include "stdafx.h"
 
 #if defined(__APPLE__) || (defined(ANDROID) || defined(__ANDROID__)) || (defined(_WIN32)  && !defined(__cplusplus_winrt) && !defined(_M_ARM) && !defined(CPPREST_EXCLUDE_WEBSOCKETS))
@@ -44,38 +36,29 @@ bool verify_cert_chain_platform_specific(boost::asio::ssl::verify_context &verif
     X509_STORE_CTX *storeContext = verifyCtx.native_handle();
     int currentDepth = X509_STORE_CTX_get_error_depth(storeContext);
     if (currentDepth != 0)
-    {
         return true;
-    }
 
     STACK_OF(X509) *certStack = X509_STORE_CTX_get_chain(storeContext);
     const int numCerts = sk_X509_num(certStack);
     if (numCerts < 0)
-    {
         return false;
-    }
 
     std::vector<std::string> certChain;
     certChain.reserve(numCerts);
-    for (int i = 0; i < numCerts; ++i)
-    {
+    for (int i = 0; i < numCerts; ++i) {
         X509 *cert = sk_X509_value(certStack, i);
 
         // Encode into DER format into raw memory.
         int len = i2d_X509(cert, nullptr);
         if (len < 0)
-        {
             return false;
-        }
 
         std::string certData;
         certData.resize(len);
         unsigned char * buffer = reinterpret_cast<unsigned char *>(&certData[0]);
         len = i2d_X509(cert, &buffer);
         if (len < 0)
-        {
             return false;
-        }
 
         certChain.push_back(std::move(certData));
     }
@@ -84,8 +67,7 @@ bool verify_cert_chain_platform_specific(boost::asio::ssl::verify_context &verif
 
     // The Windows Crypto APIs don't do host name checks, use Boost's implementation.
 #if defined(_WIN32)
-    if (verify_result)
-    {
+    if (verify_result) {
         boost::asio::ssl::rfc2818_verification rfc2818(hostName);
         verify_result = rfc2818(verify_result, verifyCtx);
     }
@@ -98,11 +80,9 @@ using namespace crossplat;
 
 /// Helper function to check return value and see if any exceptions
 /// occurred when calling a JNI function.
-/// <returns><c>true</c> if JNI call failed, <c>false</c> otherwise.
-static bool jni_failed(JNIEnv *env)
-{
-    if(env->ExceptionOccurred())
-    {
+/// Returns true if JNI call failed, false otherwise.
+static bool jni_failed(JNIEnv *env) {
+    if(env->ExceptionOccurred()) {
         // Clear exception otherwise no other JNI functions can be called.
         // In the future if we improve error reporting the exception message
         // can be retrieved from here.
@@ -112,20 +92,14 @@ static bool jni_failed(JNIEnv *env)
     return false;
 }
 template <typename T>
-static bool jni_failed(JNIEnv *env, const java_local_ref<T> &result)
-{
+static bool jni_failed(JNIEnv *env, const java_local_ref<T> &result) {
     if(jni_failed(env) || !result)
-    {
         return true;
-    }
     return false;
 }
-static bool jni_failed(JNIEnv *env, const jmethodID &result)
-{
+static bool jni_failed(JNIEnv *env, const jmethodID &result) {
     if(jni_failed(env) || result == nullptr)
-    {
         return true;
-    }
     return false;
 }
 #define CHECK_JREF(env, obj) if(jni_failed<decltype(obj)::element_type>(env, obj)) return false;
@@ -300,32 +274,18 @@ bool verify_X509_cert_chain(const std::vector<std::string> &certChain, const std
 namespace {
     // Simple RAII pattern wrapper to perform CFRelease on objects.
     template <typename T>
-    class cf_ref
-    {
+    class cf_ref {
+					cf_ref			(const cf_ref &);
+		cf_ref &	operator=		(const cf_ref &);
+        T			value			;
     public:
-        cf_ref(T v) : value(v)
-        {
-            static_assert(sizeof(cf_ref<T>) == sizeof(T), "Code assumes just a wrapper, see usage in CFArrayCreate below.");
-        }
-        cf_ref() : value(nullptr) {}
-        cf_ref(cf_ref &&other) : value(other.value) { other.value = nullptr; }
+					~cf_ref			()										{ if(value != nullptr) CFRelease(value); }
+					cf_ref			(T v)									: value(v)				{ static_assert(sizeof(cf_ref<T>) == sizeof(T), "Code assumes just a wrapper, see usage in CFArrayCreate below."); }
+					cf_ref			()										: value(nullptr)		{}
+					cf_ref			(cf_ref &&other)						: value(other.value)	{ other.value = nullptr; }
 
-        ~cf_ref()
-        {
-            if(value != nullptr)
-            {
-                CFRelease(value);
-            }
-        }
 
-        T & get()
-        {
-            return value;
-        }
-    private:
-        cf_ref(const cf_ref &);
-        cf_ref & operator=(const cf_ref &);
-        T value;
+        T &			get				()										{ return value; }
     };
 }
 
@@ -337,51 +297,34 @@ bool verify_X509_cert_chain(const std::vector<std::string> &certChain, const std
     std::vector<cf_ref<SecCertificateRef>> certs;
     for(const auto & certBuf : certChain)
     {
-        cf_ref<CFDataRef> certDataRef = CFDataCreateWithBytesNoCopy(kCFAllocatorDefault,
-                                                                   reinterpret_cast<const unsigned char*>(certBuf.c_str()),
-                                                                   certBuf.size(),
-                                                                   kCFAllocatorNull);
+        cf_ref<CFDataRef> certDataRef = CFDataCreateWithBytesNoCopy(kCFAllocatorDefault, reinterpret_cast<const unsigned char*>(certBuf.c_str()), certBuf.size(), kCFAllocatorNull);
         if(certDataRef.get() == nullptr)
-        {
             return false;
-        }
 
         cf_ref<SecCertificateRef> certObj = SecCertificateCreateWithData(nullptr, certDataRef.get());
         if(certObj.get() == nullptr)
-        {
             return false;
-        }
         certs.push_back(std::move(certObj));
     }
     cf_ref<CFArrayRef> certsArray = CFArrayCreate(kCFAllocatorDefault, const_cast<const void **>(reinterpret_cast<void **>(&certs[0])), certs.size(), nullptr);
     if(certsArray.get() == nullptr)
-    {
         return false;
-    }
 
     // Create trust management object with certificates and SSL policy.
     // Note: SecTrustCreateWithCertificates expects the certificate to be
     // verified is the first element.
-    cf_ref<CFStringRef> cfHostName = CFStringCreateWithCStringNoCopy(kCFAllocatorDefault,
-                                                                    hostName.c_str(),
-                                                                    kCFStringEncodingASCII,
-                                                                    kCFAllocatorNull);
+    cf_ref<CFStringRef> cfHostName = CFStringCreateWithCStringNoCopy(kCFAllocatorDefault, hostName.c_str(), kCFStringEncodingASCII, kCFAllocatorNull);
     if(cfHostName.get() == nullptr)
-    {
         return false;
-    }
     cf_ref<SecPolicyRef> policy = SecPolicyCreateSSL(true /* client side */, cfHostName.get());
     cf_ref<SecTrustRef> trust;
     OSStatus status = SecTrustCreateWithCertificates(certsArray.get(), policy.get(), &trust.get());
-    if(status == noErr)
-    {
+    if(status == noErr) {
         // Perform actual certificate verification.
         SecTrustResultType trustResult;
         status = SecTrustEvaluate(trust.get(), &trustResult);
         if(status == noErr && (trustResult == kSecTrustResultUnspecified || trustResult == kSecTrustResultProceed))
-        {
             return true;
-        }
     }
 
     return false;
@@ -391,18 +334,14 @@ bool verify_X509_cert_chain(const std::vector<std::string> &certChain, const std
 #if defined(_WIN32)
 namespace {
     // Helper RAII unique_ptrs to free Windows structures.
-    struct cert_free_certificate_context
-    {
-        void operator()(const CERT_CONTEXT *ctx) const
-        {
+    struct cert_free_certificate_context {
+        void operator()(const CERT_CONTEXT *ctx) const {
             CertFreeCertificateContext(ctx);
         }
     };
     typedef std::unique_ptr<const CERT_CONTEXT, cert_free_certificate_context> cert_context;
-    struct cert_free_certificate_chain
-    {
-        void operator()(const CERT_CHAIN_CONTEXT *chain) const
-        {
+    struct cert_free_certificate_chain {
+        void operator()(const CERT_CHAIN_CONTEXT *chain) const {
             CertFreeCertificateChain(chain);
         }
     };
@@ -417,9 +356,7 @@ bool verify_X509_cert_chain(const std::vector<std::string> &certChain, const std
         reinterpret_cast<const unsigned char *>(certChain[0].c_str()),
         static_cast<DWORD>(certChain[0].size())));
     if (cert == nullptr)
-    {
         return false;
-    }
 
     // Let the OS build a certificate chain from the server certificate.
     CERT_CHAIN_PARA params;
@@ -427,36 +364,23 @@ bool verify_X509_cert_chain(const std::vector<std::string> &certChain, const std
     params.cbSize = sizeof(CERT_CHAIN_PARA);
     params.RequestedUsage.dwType = USAGE_MATCH_TYPE_OR;
     LPSTR usages [] =
-    {
-        szOID_PKIX_KP_SERVER_AUTH,
-
-        // For older servers and to match IE.
-        szOID_SERVER_GATED_CRYPTO,
-        szOID_SGC_NETSCAPE
-    };
+		{	szOID_PKIX_KP_SERVER_AUTH
+			// For older servers and to match IE.
+		,	szOID_SERVER_GATED_CRYPTO
+		,	szOID_SGC_NETSCAPE
+		};
     params.RequestedUsage.Usage.cUsageIdentifier = std::extent<decltype(usages)>::value;
     params.RequestedUsage.Usage.rgpszUsageIdentifier = usages;
     PCCERT_CHAIN_CONTEXT chainContext;
     chain_context chain;
-    if (!CertGetCertificateChain(
-        nullptr,
-        cert.get(),
-        nullptr,
-        nullptr,
-        &params,
-        CERT_CHAIN_REVOCATION_CHECK_CHAIN,
-        nullptr,
-        &chainContext))
-    {
+    if (!CertGetCertificateChain(nullptr, cert.get(), nullptr, nullptr, &params, CERT_CHAIN_REVOCATION_CHECK_CHAIN, nullptr, &chainContext))
         return false;
-    }
-    chain.reset(chainContext);
+
+	chain.reset(chainContext);
 
     // Check to see if the certificate chain is actually trusted.
     if (chain->TrustStatus.dwErrorStatus != CERT_TRUST_NO_ERROR)
-    {
         return false;
-    }
 
     return true;
 }
