@@ -1,0 +1,4832 @@
+File name: astreambuf.h
+File folder: D:\Jeez\cpprestsdk\Release\include\cpprest
+File creation date: Sat Mar 18 07:50:48 2017
+File modification date: Sun Mar 19 19:08:37 2017
+File code lines: 319
+File directive lines: 10
+File comment lines: 84
+File blank lines: 129
+File bytes: 30842
+
+File name: asyncrt_utils.h
+File folder: D:\Jeez\cpprestsdk\Release\include\cpprest
+File creation date: Sat Mar 18 07:50:48 2017
+File modification date: Sun Mar 19 12:04:07 2017
+File code lines: 199
+File directive lines: 56
+File comment lines: 33
+File blank lines: 88
+File bytes: 14270
+
+File name: base_uri.h
+File folder: D:\Jeez\cpprestsdk\Release\include\cpprest
+File creation date: Sat Mar 18 07:50:48 2017
+File modification date: Sun Mar 19 19:26:23 2017
+File code lines: 137
+File directive lines: 8
+File comment lines: 102
+File blank lines: 122
+File bytes: 12340
+
+File name: containerstream.h
+File folder: D:\Jeez\cpprestsdk\Release\include\cpprest
+File creation date: Sat Mar 18 07:50:48 2017
+File modification date: Sun Mar 19 19:33:49 2017
+File code lines: 199
+File directive lines: 11
+File comment lines: 130
+File blank lines: 208
+File bytes: 18067
+
+File name: filestream.h
+File folder: D:\Jeez\cpprestsdk\Release\include\cpprest
+File creation date: Sat Mar 18 07:50:49 2017
+File modification date: Sun Mar 19 19:33:49 2017
+File code lines: 447
+File directive lines: 34
+File comment lines: 156
+File blank lines: 415
+File bytes: 30427
+
+File name: http_client.h
+File folder: D:\Jeez\cpprestsdk\Release\include\cpprest
+File creation date: Sat Mar 18 07:50:49 2017
+File modification date: Sun Mar 19 19:33:49 2017
+File code lines: 219
+File directive lines: 61
+File comment lines: 192
+File blank lines: 171
+File bytes: 24647
+
+File name: http_headers.h
+File folder: D:\Jeez\cpprestsdk\Release\include\cpprest
+File creation date: Sat Mar 18 07:50:49 2017
+File modification date: Sun Mar 19 19:33:49 2017
+File code lines: 98
+File directive lines: 10
+File comment lines: 69
+File blank lines: 86
+File bytes: 8955
+
+File name: http_listener.h
+File folder: D:\Jeez\cpprestsdk\Release\include\cpprest
+File creation date: Sat Mar 18 07:50:49 2017
+File modification date: Sun Mar 19 19:33:49 2017
+File code lines: 93
+File directive lines: 24
+File comment lines: 62
+File blank lines: 108
+File bytes: 7836
+
+File name: http_msg.h
+File folder: D:\Jeez\cpprestsdk\Release\include\cpprest
+File creation date: Sat Mar 18 07:50:49 2017
+File modification date: Sun Mar 19 20:09:24 2017
+File code lines: 309
+File directive lines: 43
+File comment lines: 286
+File blank lines: 199
+File bytes: 46403
+
+File name: interopstream.h
+File folder: D:\Jeez\cpprestsdk\Release\include\cpprest
+File creation date: Sat Mar 18 07:50:49 2017
+File modification date: Sun Mar 19 19:33:49 2017
+File code lines: 162
+File directive lines: 13
+File comment lines: 114
+File blank lines: 161
+File bytes: 15162
+
+File name: json.h
+File folder: D:\Jeez\cpprestsdk\Release\include\cpprest
+File creation date: Sat Mar 18 07:50:49 2017
+File modification date: Sun Mar 19 19:33:49 2017
+File code lines: 675
+File directive lines: 54
+File comment lines: 347
+File blank lines: 562
+File bytes: 49342
+
+File name: oauth1.h
+File folder: D:\Jeez\cpprestsdk\Release\include\cpprest
+File creation date: Sat Mar 18 07:50:49 2017
+File modification date: Sun Mar 19 19:26:23 2017
+File code lines: 182
+File directive lines: 16
+File comment lines: 129
+File blank lines: 154
+File bytes: 16529
+
+File name: oauth2.h
+File folder: D:\Jeez\cpprestsdk\Release\include\cpprest
+File creation date: Sat Mar 18 07:50:49 2017
+File modification date: Sun Mar 19 19:26:23 2017
+File code lines: 145
+File directive lines: 11
+File comment lines: 175
+File blank lines: 109
+File bytes: 17026
+
+File name: producerconsumerstream.h
+File folder: D:\Jeez\cpprestsdk\Release\include\cpprest
+File creation date: Sat Mar 18 07:50:49 2017
+File modification date: Sun Mar 19 19:33:49 2017
+File code lines: 249
+File directive lines: 16
+File comment lines: 125
+File blank lines: 254
+File bytes: 17546
+
+File name: rawptrstream.h
+File folder: D:\Jeez\cpprestsdk\Release\include\cpprest
+File creation date: Sat Mar 18 07:50:49 2017
+File modification date: Sun Mar 19 19:33:49 2017
+File code lines: 213
+File directive lines: 17
+File comment lines: 125
+File blank lines: 209
+File bytes: 18127
+
+File name: streams.h
+File folder: D:\Jeez\cpprestsdk\Release\include\cpprest
+File creation date: Sat Mar 18 07:50:49 2017
+File modification date: Sun Mar 19 19:26:23 2017
+File code lines: 860
+File directive lines: 25
+File comment lines: 153
+File blank lines: 649
+File bytes: 48076
+
+File name: uri.h
+File folder: D:\Jeez\cpprestsdk\Release\include\cpprest
+File creation date: Sat Mar 18 07:50:49 2017
+File modification date: Sat Mar 18 07:50:49 2017
+File code lines: 7
+File directive lines: 6
+File comment lines: 0
+File blank lines: 10
+File bytes: 643
+
+File name: uri_builder.h
+File folder: D:\Jeez\cpprestsdk\Release\include\cpprest
+File creation date: Sat Mar 18 07:50:49 2017
+File modification date: Sun Mar 19 19:33:49 2017
+File code lines: 79
+File directive lines: 6
+File comment lines: 75
+File blank lines: 69
+File bytes: 8326
+
+File name: version.h
+File folder: D:\Jeez\cpprestsdk\Release\include\cpprest
+File creation date: Sat Mar 18 07:50:49 2017
+File modification date: Sat Mar 18 07:50:49 2017
+File code lines: 2
+File directive lines: 4
+File comment lines: 0
+File blank lines: 4
+File bytes: 359
+
+File name: ws_client.h
+File folder: D:\Jeez\cpprestsdk\Release\include\cpprest
+File creation date: Sat Mar 18 07:50:49 2017
+File modification date: Sun Mar 19 19:33:49 2017
+File code lines: 182
+File directive lines: 21
+File comment lines: 135
+File blank lines: 203
+File bytes: 17855
+
+File name: ws_msg.h
+File folder: D:\Jeez\cpprestsdk\Release\include\cpprest
+File creation date: Sat Mar 18 07:50:49 2017
+File modification date: Sun Mar 19 19:33:49 2017
+File code lines: 79
+File directive lines: 19
+File comment lines: 37
+File blank lines: 84
+File bytes: 6225
+
+File name: basic_types.h
+File folder: D:\Jeez\cpprestsdk\Release\include\cpprest\details
+File creation date: Sat Mar 18 07:50:48 2017
+File modification date: Sat Mar 18 07:50:48 2017
+File code lines: 49
+File directive lines: 48
+File comment lines: 6
+File blank lines: 25
+File bytes: 3392
+
+File name: cpprest_compat.h
+File folder: D:\Jeez\cpprestsdk\Release\include\cpprest\details
+File creation date: Sat Mar 18 07:50:48 2017
+File modification date: Sat Mar 18 07:50:48 2017
+File code lines: 8
+File directive lines: 49
+File comment lines: 7
+File blank lines: 23
+File bytes: 2235
+
+File name: fileio.h
+File folder: D:\Jeez\cpprestsdk\Release\include\cpprest\details
+File creation date: Sat Mar 18 07:50:48 2017
+File modification date: Sun Mar 19 19:26:23 2017
+File code lines: 55
+File directive lines: 10
+File comment lines: 56
+File blank lines: 43
+File bytes: 7929
+
+File name: http_helpers.h
+File folder: D:\Jeez\cpprestsdk\Release\include\cpprest\details
+File creation date: Sat Mar 18 07:50:48 2017
+File modification date: Sat Mar 18 07:50:48 2017
+File code lines: 47
+File directive lines: 3
+File comment lines: 6
+File blank lines: 52
+File bytes: 2667
+
+File name: http_server.h
+File folder: D:\Jeez\cpprestsdk\Release\include\cpprest\details
+File creation date: Sat Mar 18 07:50:48 2017
+File modification date: Sun Mar 19 19:26:23 2017
+File code lines: 17
+File directive lines: 5
+File comment lines: 12
+File blank lines: 20
+File bytes: 1709
+
+File name: http_server_api.h
+File folder: D:\Jeez\cpprestsdk\Release\include\cpprest\details
+File creation date: Sat Mar 18 07:50:48 2017
+File modification date: Sun Mar 19 19:06:52 2017
+File code lines: 25
+File directive lines: 6
+File comment lines: 15
+File blank lines: 29
+File bytes: 2433
+
+File name: http_server_asio.h
+File folder: D:\Jeez\cpprestsdk\Release\include\cpprest\details
+File creation date: Sat Mar 18 07:50:49 2017
+File modification date: Sat Mar 18 07:50:49 2017
+File code lines: 132
+File directive lines: 15
+File comment lines: 0
+File blank lines: 77
+File bytes: 6395
+
+File name: http_server_httpsys.h
+File folder: D:\Jeez\cpprestsdk\Release\include\cpprest\details
+File creation date: Sat Mar 18 07:50:49 2017
+File modification date: Sun Mar 19 19:26:23 2017
+File code lines: 94
+File directive lines: 11
+File comment lines: 42
+File blank lines: 77
+File bytes: 6556
+
+File name: nosal.h
+File folder: D:\Jeez\cpprestsdk\Release\include\cpprest\details
+File creation date: Sat Mar 18 07:50:49 2017
+File modification date: Sat Mar 18 07:50:49 2017
+File code lines: 4
+File directive lines: 53
+File comment lines: 1
+File blank lines: 19
+File bytes: 1163
+
+File name: resource.h
+File folder: D:\Jeez\cpprestsdk\Release\include\cpprest\details
+File creation date: Sat Mar 18 07:50:49 2017
+File modification date: Sat Mar 18 07:50:49 2017
+File code lines: 1
+File directive lines: 8
+File comment lines: 3
+File blank lines: 2
+File bytes: 373
+
+File name: SafeInt3.hpp
+File folder: D:\Jeez\cpprestsdk\Release\include\cpprest\details
+File creation date: Sat Mar 18 07:50:48 2017
+File modification date: Sat Mar 18 07:50:48 2017
+File code lines: 3299
+File directive lines: 228
+File comment lines: 732
+File blank lines: 2789
+File bytes: 191746
+
+File name: uri_parser.h
+File folder: D:\Jeez\cpprestsdk\Release\include\cpprest\details
+File creation date: Sat Mar 18 07:50:49 2017
+File modification date: Sun Mar 19 18:56:27 2017
+File code lines: 56
+File directive lines: 2
+File comment lines: 62
+File blank lines: 53
+File bytes: 5370
+
+File name: web_utilities.h
+File folder: D:\Jeez\cpprestsdk\Release\include\cpprest\details
+File creation date: Sat Mar 18 07:50:49 2017
+File modification date: Sun Mar 19 19:26:23 2017
+File code lines: 76
+File directive lines: 19
+File comment lines: 34
+File blank lines: 55
+File bytes: 5529
+
+File name: x509_cert_utilities.h
+File folder: D:\Jeez\cpprestsdk\Release\include\cpprest\details
+File creation date: Sat Mar 18 07:50:49 2017
+File modification date: Sun Mar 19 19:26:23 2017
+File code lines: 9
+File directive lines: 19
+File comment lines: 5
+File blank lines: 14
+File bytes: 1643
+
+File name: pplx.h
+File folder: D:\Jeez\cpprestsdk\Release\include\pplx
+File creation date: Sat Mar 18 07:50:49 2017
+File modification date: Sun Mar 19 19:06:52 2017
+File code lines: 63
+File directive lines: 42
+File comment lines: 25
+File blank lines: 89
+File bytes: 4788
+
+File name: pplxcancellation_token.h
+File folder: D:\Jeez\cpprestsdk\Release\include\pplx
+File creation date: Sat Mar 18 07:50:49 2017
+File modification date: Sun Mar 19 19:08:37 2017
+File code lines: 407
+File directive lines: 28
+File comment lines: 101
+File blank lines: 505
+File bytes: 21750
+
+File name: pplxconv.h
+File folder: D:\Jeez\cpprestsdk\Release\include\pplx
+File creation date: Sat Mar 18 07:50:49 2017
+File modification date: Sat Mar 18 07:50:49 2017
+File code lines: 28
+File directive lines: 11
+File comment lines: 1
+File blank lines: 32
+File bytes: 2042
+
+File name: pplxinterface.h
+File folder: D:\Jeez\cpprestsdk\Release\include\pplx
+File creation date: Sat Mar 18 07:50:49 2017
+File modification date: Sun Mar 19 19:06:52 2017
+File code lines: 69
+File directive lines: 32
+File comment lines: 25
+File blank lines: 90
+File bytes: 5870
+
+File name: pplxlinux.h
+File folder: D:\Jeez\cpprestsdk\Release\include\pplx
+File creation date: Sat Mar 18 07:50:49 2017
+File modification date: Sun Mar 19 19:06:52 2017
+File code lines: 124
+File directive lines: 30
+File comment lines: 17
+File blank lines: 128
+File bytes: 6336
+
+File name: pplxtasks.h
+File folder: D:\Jeez\cpprestsdk\Release\include\pplx
+File creation date: Sat Mar 18 07:50:49 2017
+File modification date: Sun Mar 19 19:08:37 2017
+File code lines: 2701
+File directive lines: 205
+File comment lines: 1398
+File blank lines: 2709
+File bytes: 261453
+
+File name: pplxwin.h
+File folder: D:\Jeez\cpprestsdk\Release\include\pplx
+File creation date: Sat Mar 18 07:50:49 2017
+File modification date: Sun Mar 19 19:06:52 2017
+File code lines: 111
+File directive lines: 14
+File comment lines: 23
+File blank lines: 115
+File bytes: 5573
+
+File name: threadpool.h
+File folder: D:\Jeez\cpprestsdk\Release\include\pplx
+File creation date: Sat Mar 18 07:50:49 2017
+File modification date: Sat Mar 18 07:50:49 2017
+File code lines: 26
+File directive lines: 19
+File comment lines: 1
+File blank lines: 29
+File bytes: 1725
+
+File name: simple_broadcast_server.cpp
+File folder: D:\Jeez\cpprestsdk\Release\libs\websocketpp\docs
+File creation date: Sat Mar 18 07:50:49 2017
+File modification date: Sat Mar 18 07:50:49 2017
+File code lines: 30
+File directive lines: 3
+File comment lines: 0
+File blank lines: 19
+File bytes: 1098
+
+File name: simple_count_server_thread.cpp
+File folder: D:\Jeez\cpprestsdk\Release\libs\websocketpp\docs
+File creation date: Sat Mar 18 07:50:49 2017
+File modification date: Sat Mar 18 07:50:49 2017
+File code lines: 37
+File directive lines: 6
+File comment lines: 0
+File blank lines: 22
+File bytes: 1217
+
+File name: associative_storage.cpp
+File folder: D:\Jeez\cpprestsdk\Release\libs\websocketpp\examples\associative_storage
+File creation date: Sat Mar 18 07:50:49 2017
+File modification date: Sat Mar 18 07:50:49 2017
+File code lines: 51
+File directive lines: 5
+File comment lines: 2
+File blank lines: 30
+File bytes: 2041
+
+File name: broadcast_server.cpp
+File folder: D:\Jeez\cpprestsdk\Release\libs\websocketpp\examples\broadcast_server
+File creation date: Sat Mar 18 07:50:49 2017
+File modification date: Sat Mar 18 07:50:49 2017
+File code lines: 89
+File directive lines: 7
+File comment lines: 12
+File blank lines: 48
+File bytes: 3464
+
+File name: debug_client.cpp
+File folder: D:\Jeez\cpprestsdk\Release\libs\websocketpp\examples\debug_client
+File creation date: Sat Mar 18 07:50:49 2017
+File modification date: Sat Mar 18 07:50:49 2017
+File code lines: 108
+File directive lines: 4
+File comment lines: 6
+File blank lines: 48
+File bytes: 6068
+
+File name: debug_server.cpp
+File folder: D:\Jeez\cpprestsdk\Release\libs\websocketpp\examples\debug_server
+File creation date: Sat Mar 18 07:50:49 2017
+File modification date: Sat Mar 18 07:50:49 2017
+File code lines: 100
+File directive lines: 4
+File comment lines: 16
+File blank lines: 54
+File bytes: 5688
+
+File name: main.cpp
+File folder: D:\Jeez\cpprestsdk\Release\libs\websocketpp\examples\dev
+File creation date: Sat Mar 18 07:50:49 2017
+File modification date: Sat Mar 18 07:50:49 2017
+File code lines: 98
+File directive lines: 6
+File comment lines: 12
+File blank lines: 84
+File bytes: 5740
+
+File name: echo_handler.hpp
+File folder: D:\Jeez\cpprestsdk\Release\libs\websocketpp\examples\echo_server
+File creation date: Sat Mar 18 07:50:49 2017
+File modification date: Sat Mar 18 07:50:49 2017
+File code lines: 24
+File directive lines: 3
+File comment lines: 0
+File blank lines: 10
+File bytes: 1776
+
+File name: echo_server.cpp
+File folder: D:\Jeez\cpprestsdk\Release\libs\websocketpp\examples\echo_server
+File creation date: Sat Mar 18 07:50:49 2017
+File modification date: Sat Mar 18 07:50:49 2017
+File code lines: 28
+File directive lines: 3
+File comment lines: 9
+File blank lines: 18
+File bytes: 1466
+
+File name: echo_server_both.cpp
+File folder: D:\Jeez\cpprestsdk\Release\libs\websocketpp\examples\echo_server_both
+File creation date: Sat Mar 18 07:50:50 2017
+File modification date: Sat Mar 18 07:50:50 2017
+File code lines: 49
+File directive lines: 3
+File comment lines: 15
+File blank lines: 20
+File bytes: 2883
+
+File name: echo_server_tls.cpp
+File folder: D:\Jeez\cpprestsdk\Release\libs\websocketpp\examples\echo_server_tls
+File creation date: Sat Mar 18 07:50:50 2017
+File modification date: Sat Mar 18 07:50:50 2017
+File code lines: 39
+File directive lines: 3
+File comment lines: 7
+File blank lines: 24
+File bytes: 1986
+
+File name: enriched_storage.cpp
+File folder: D:\Jeez\cpprestsdk\Release\libs\websocketpp\examples\enriched_storage
+File creation date: Sat Mar 18 07:50:50 2017
+File modification date: Sat Mar 18 07:50:50 2017
+File code lines: 56
+File directive lines: 3
+File comment lines: 2
+File blank lines: 26
+File bytes: 2285
+
+File name: handler_switch.cpp
+File folder: D:\Jeez\cpprestsdk\Release\libs\websocketpp\examples\handler_switch
+File creation date: Sat Mar 18 07:50:50 2017
+File modification date: Sat Mar 18 07:50:50 2017
+File code lines: 21
+File directive lines: 3
+File comment lines: 3
+File blank lines: 15
+File bytes: 1102
+
+File name: iostream_server.cpp
+File folder: D:\Jeez\cpprestsdk\Release\libs\websocketpp\examples\iostream_server
+File creation date: Sat Mar 18 07:50:50 2017
+File modification date: Sat Mar 18 07:50:50 2017
+File code lines: 45
+File directive lines: 4
+File comment lines: 16
+File blank lines: 24
+File bytes: 2583
+
+File name: print_server.cpp
+File folder: D:\Jeez\cpprestsdk\Release\libs\websocketpp\examples\print_server
+File creation date: Sat Mar 18 07:50:50 2017
+File modification date: Sat Mar 18 07:50:50 2017
+File code lines: 10
+File directive lines: 3
+File comment lines: 0
+File blank lines: 9
+File bytes: 453
+
+File name: simple_broadcast_server.cpp
+File folder: D:\Jeez\cpprestsdk\Release\libs\websocketpp\examples\simple_broadcast_server
+File creation date: Sat Mar 18 07:50:50 2017
+File modification date: Sat Mar 18 07:50:50 2017
+File code lines: 30
+File directive lines: 3
+File comment lines: 0
+File blank lines: 18
+File bytes: 1098
+
+File name: sip_client.cpp
+File folder: D:\Jeez\cpprestsdk\Release\libs\websocketpp\examples\sip_client
+File creation date: Sat Mar 18 07:50:50 2017
+File modification date: Sat Mar 18 07:50:50 2017
+File code lines: 37
+File directive lines: 5
+File comment lines: 9
+File blank lines: 33
+File bytes: 2384
+
+File name: subprotocol_server.cpp
+File folder: D:\Jeez\cpprestsdk\Release\libs\websocketpp\examples\subprotocol_server
+File creation date: Sat Mar 18 07:50:50 2017
+File modification date: Sat Mar 18 07:50:50 2017
+File code lines: 26
+File directive lines: 3
+File comment lines: 0
+File blank lines: 19
+File bytes: 1062
+
+File name: telemetry_client.cpp
+File folder: D:\Jeez\cpprestsdk\Release\libs\websocketpp\examples\telemetry_client
+File creation date: Sat Mar 18 07:50:50 2017
+File modification date: Sat Mar 18 07:50:50 2017
+File code lines: 82
+File directive lines: 3
+File comment lines: 23
+File blank lines: 48
+File bytes: 4335
+
+File name: telemetry_server.cpp
+File folder: D:\Jeez\cpprestsdk\Release\libs\websocketpp\examples\telemetry_server
+File creation date: Sat Mar 18 07:50:50 2017
+File modification date: Sat Mar 18 07:50:50 2017
+File code lines: 119
+File directive lines: 7
+File comment lines: 13
+File blank lines: 65
+File bytes: 5102
+
+File name: testee_client.cpp
+File folder: D:\Jeez\cpprestsdk\Release\libs\websocketpp\examples\testee_client
+File creation date: Sat Mar 18 07:50:50 2017
+File modification date: Sat Mar 18 07:50:50 2017
+File code lines: 40
+File directive lines: 3
+File comment lines: 6
+File blank lines: 31
+File bytes: 1751
+
+File name: testee_server.cpp
+File folder: D:\Jeez\cpprestsdk\Release\libs\websocketpp\examples\testee_server
+File creation date: Sat Mar 18 07:50:50 2017
+File modification date: Sat Mar 18 07:50:50 2017
+File code lines: 85
+File directive lines: 3
+File comment lines: 10
+File blank lines: 40
+File bytes: 4645
+
+File name: utility_client.cpp
+File folder: D:\Jeez\cpprestsdk\Release\libs\websocketpp\examples\utility_client
+File creation date: Sat Mar 18 07:50:50 2017
+File modification date: Sat Mar 18 07:50:50 2017
+File code lines: 215
+File directive lines: 9
+File comment lines: 2
+File blank lines: 99
+File bytes: 9103
+
+File name: connection.cpp
+File folder: D:\Jeez\cpprestsdk\Release\libs\websocketpp\test\connection
+File creation date: Sat Mar 18 07:50:50 2017
+File modification date: Sat Mar 18 07:50:50 2017
+File code lines: 271
+File directive lines: 4
+File comment lines: 32
+File blank lines: 171
+File bytes: 17461
+
+File name: connection_tu2.cpp
+File folder: D:\Jeez\cpprestsdk\Release\libs\websocketpp\test\connection
+File creation date: Sat Mar 18 07:50:50 2017
+File modification date: Sat Mar 18 07:50:50 2017
+File code lines: 42
+File directive lines: 1
+File comment lines: 0
+File blank lines: 19
+File bytes: 2311
+
+File name: connection_tu2.hpp
+File folder: D:\Jeez\cpprestsdk\Release\libs\websocketpp\test\connection
+File creation date: Sat Mar 18 07:50:50 2017
+File modification date: Sat Mar 18 07:50:50 2017
+File code lines: 30
+File directive lines: 6
+File comment lines: 5
+File blank lines: 10
+File bytes: 2507
+
+File name: endpoint.cpp
+File folder: D:\Jeez\cpprestsdk\Release\libs\websocketpp\test\endpoint
+File creation date: Sat Mar 18 07:50:50 2017
+File modification date: Sat Mar 18 07:50:50 2017
+File code lines: 74
+File directive lines: 6
+File comment lines: 1
+File blank lines: 45
+File bytes: 3917
+
+File name: extension.cpp
+File folder: D:\Jeez\cpprestsdk\Release\libs\websocketpp\test\extension
+File creation date: Sat Mar 18 07:50:50 2017
+File modification date: Sat Mar 18 07:50:50 2017
+File code lines: 23
+File directive lines: 4
+File comment lines: 1
+File blank lines: 9
+File bytes: 1742
+
+File name: permessage_deflate.cpp
+File folder: D:\Jeez\cpprestsdk\Release\libs\websocketpp\test\extension
+File creation date: Sat Mar 18 07:50:50 2017
+File modification date: Sat Mar 18 07:50:50 2017
+File code lines: 360
+File directive lines: 9
+File comment lines: 9
+File blank lines: 165
+File bytes: 17680
+
+File name: parser.cpp
+File folder: D:\Jeez\cpprestsdk\Release\libs\websocketpp\test\http
+File creation date: Sat Mar 18 07:50:50 2017
+File modification date: Sat Mar 18 07:50:50 2017
+File code lines: 796
+File directive lines: 6
+File comment lines: 11
+File blank lines: 314
+File bytes: 33954
+
+File name: parser_perf.cpp
+File folder: D:\Jeez\cpprestsdk\Release\libs\websocketpp\test\http
+File creation date: Sat Mar 18 07:50:50 2017
+File modification date: Sat Mar 18 07:50:50 2017
+File code lines: 78
+File directive lines: 2
+File comment lines: 4
+File blank lines: 57
+File bytes: 4463
+
+File name: basic.cpp
+File folder: D:\Jeez\cpprestsdk\Release\libs\websocketpp\test\logger
+File creation date: Sat Mar 18 07:50:50 2017
+File modification date: Sat Mar 18 07:50:50 2017
+File code lines: 47
+File directive lines: 6
+File comment lines: 5
+File blank lines: 23
+File bytes: 3294
+
+File name: alloc.cpp
+File folder: D:\Jeez\cpprestsdk\Release\libs\websocketpp\test\message_buffer
+File creation date: Sat Mar 18 07:50:50 2017
+File modification date: Sat Mar 18 07:50:50 2017
+File code lines: 65
+File directive lines: 5
+File comment lines: 1
+File blank lines: 25
+File bytes: 3531
+
+File name: message.cpp
+File folder: D:\Jeez\cpprestsdk\Release\libs\websocketpp\test\message_buffer
+File creation date: Sat Mar 18 07:50:50 2017
+File modification date: Sat Mar 18 07:50:50 2017
+File code lines: 44
+File directive lines: 5
+File comment lines: 1
+File blank lines: 22
+File bytes: 2611
+
+File name: pool.cpp
+File folder: D:\Jeez\cpprestsdk\Release\libs\websocketpp\test\message_buffer
+File creation date: Sat Mar 18 07:50:51 2017
+File modification date: Sat Mar 18 07:50:51 2017
+File code lines: 100
+File directive lines: 7
+File comment lines: 1
+File blank lines: 48
+File bytes: 6725
+
+File name: extension_permessage_compress.cpp
+File folder: D:\Jeez\cpprestsdk\Release\libs\websocketpp\test\processors
+File creation date: Sat Mar 18 07:50:51 2017
+File modification date: Sat Mar 18 07:50:51 2017
+File code lines: 126
+File directive lines: 7
+File comment lines: 3
+File blank lines: 62
+File bytes: 6499
+
+File name: hybi00.cpp
+File folder: D:\Jeez\cpprestsdk\Release\libs\websocketpp\test\processors
+File creation date: Sat Mar 18 07:50:51 2017
+File modification date: Sat Mar 18 07:50:51 2017
+File code lines: 165
+File directive lines: 9
+File comment lines: 4
+File blank lines: 96
+File bytes: 10147
+
+File name: hybi07.cpp
+File folder: D:\Jeez\cpprestsdk\Release\libs\websocketpp\test\processors
+File creation date: Sat Mar 18 07:50:51 2017
+File modification date: Sat Mar 18 07:50:51 2017
+File code lines: 125
+File directive lines: 11
+File comment lines: 4
+File blank lines: 53
+File bytes: 7729
+
+File name: hybi08.cpp
+File folder: D:\Jeez\cpprestsdk\Release\libs\websocketpp\test\processors
+File creation date: Sat Mar 18 07:50:51 2017
+File modification date: Sat Mar 18 07:50:51 2017
+File code lines: 127
+File directive lines: 11
+File comment lines: 4
+File blank lines: 55
+File bytes: 7749
+
+File name: hybi13.cpp
+File folder: D:\Jeez\cpprestsdk\Release\libs\websocketpp\test\processors
+File creation date: Sat Mar 18 07:50:51 2017
+File modification date: Sat Mar 18 07:50:51 2017
+File code lines: 404
+File directive lines: 12
+File comment lines: 40
+File blank lines: 237
+File bytes: 23007
+
+File name: processor.cpp
+File folder: D:\Jeez\cpprestsdk\Release\libs\websocketpp\test\processors
+File creation date: Sat Mar 18 07:50:51 2017
+File modification date: Sat Mar 18 07:50:51 2017
+File code lines: 71
+File directive lines: 6
+File comment lines: 1
+File blank lines: 57
+File bytes: 4808
+
+File name: none.cpp
+File folder: D:\Jeez\cpprestsdk\Release\libs\websocketpp\test\random
+File creation date: Sat Mar 18 07:50:51 2017
+File modification date: Sat Mar 18 07:50:51 2017
+File code lines: 25
+File directive lines: 4
+File comment lines: 1
+File blank lines: 10
+File bytes: 1846
+
+File name: random_device.cpp
+File folder: D:\Jeez\cpprestsdk\Release\libs\websocketpp\test\random
+File creation date: Sat Mar 18 07:50:51 2017
+File modification date: Sat Mar 18 07:50:51 2017
+File code lines: 30
+File directive lines: 6
+File comment lines: 1
+File blank lines: 13
+File bytes: 2029
+
+File name: client.cpp
+File folder: D:\Jeez\cpprestsdk\Release\libs\websocketpp\test\roles
+File creation date: Sat Mar 18 07:50:51 2017
+File modification date: Sat Mar 18 07:50:51 2017
+File code lines: 118
+File directive lines: 7
+File comment lines: 7
+File blank lines: 62
+File bytes: 6126
+
+File name: server.cpp
+File folder: D:\Jeez\cpprestsdk\Release\libs\websocketpp\test\roles
+File creation date: Sat Mar 18 07:50:51 2017
+File modification date: Sat Mar 18 07:50:51 2017
+File code lines: 150
+File directive lines: 5
+File comment lines: 4
+File blank lines: 88
+File bytes: 9746
+
+File name: hybi_util.cpp
+File folder: D:\Jeez\cpprestsdk\Release\libs\websocketpp\test\transport
+File creation date: Sat Mar 18 07:50:51 2017
+File modification date: Sat Mar 18 07:50:51 2017
+File code lines: 57
+File directive lines: 5
+File comment lines: 1
+File blank lines: 35
+File bytes: 3136
+
+File name: integration.cpp
+File folder: D:\Jeez\cpprestsdk\Release\libs\websocketpp\test\transport
+File creation date: Sat Mar 18 07:50:51 2017
+File modification date: Sat Mar 18 07:50:51 2017
+File code lines: 355
+File directive lines: 10
+File comment lines: 53
+File blank lines: 191
+File bytes: 17946
+
+File name: base.cpp
+File folder: D:\Jeez\cpprestsdk\Release\libs\websocketpp\test\transport\asio
+File creation date: Sat Mar 18 07:50:51 2017
+File modification date: Sat Mar 18 07:50:51 2017
+File code lines: 30
+File directive lines: 4
+File comment lines: 1
+File blank lines: 14
+File bytes: 2056
+
+File name: timers.cpp
+File folder: D:\Jeez\cpprestsdk\Release\libs\websocketpp\test\transport\asio
+File creation date: Sat Mar 18 07:50:51 2017
+File modification date: Sat Mar 18 07:50:51 2017
+File code lines: 109
+File directive lines: 12
+File comment lines: 11
+File blank lines: 55
+File bytes: 5869
+
+File name: base.cpp
+File folder: D:\Jeez\cpprestsdk\Release\libs\websocketpp\test\transport\iostream
+File creation date: Sat Mar 18 07:50:51 2017
+File modification date: Sat Mar 18 07:50:51 2017
+File code lines: 22
+File directive lines: 3
+File comment lines: 1
+File blank lines: 7
+File bytes: 1697
+
+File name: connection.cpp
+File folder: D:\Jeez\cpprestsdk\Release\libs\websocketpp\test\transport\iostream
+File creation date: Sat Mar 18 07:50:51 2017
+File modification date: Sat Mar 18 07:50:51 2017
+File code lines: 362
+File directive lines: 10
+File comment lines: 10
+File blank lines: 193
+File bytes: 15583
+
+File name: endpoint.cpp
+File folder: D:\Jeez\cpprestsdk\Release\libs\websocketpp\test\transport\iostream
+File creation date: Sat Mar 18 07:50:51 2017
+File modification date: Sat Mar 18 07:50:51 2017
+File code lines: 25
+File directive lines: 4
+File comment lines: 1
+File blank lines: 11
+File bytes: 1848
+
+File name: close.cpp
+File folder: D:\Jeez\cpprestsdk\Release\libs\websocketpp\test\utility
+File creation date: Sat Mar 18 07:50:51 2017
+File modification date: Sat Mar 18 07:50:51 2017
+File code lines: 83
+File directive lines: 6
+File comment lines: 5
+File blank lines: 31
+File bytes: 4054
+
+File name: error.cpp
+File folder: D:\Jeez\cpprestsdk\Release\libs\websocketpp\test\utility
+File creation date: Sat Mar 18 07:50:51 2017
+File modification date: Sat Mar 18 07:50:51 2017
+File code lines: 36
+File directive lines: 3
+File comment lines: 1
+File blank lines: 14
+File bytes: 2353
+
+File name: frame.cpp
+File folder: D:\Jeez\cpprestsdk\Release\libs\websocketpp\test\utility
+File creation date: Sat Mar 18 07:50:51 2017
+File modification date: Sat Mar 18 07:50:51 2017
+File code lines: 384
+File directive lines: 6
+File comment lines: 15
+File blank lines: 133
+File bytes: 16124
+
+File name: sha1.cpp
+File folder: D:\Jeez\cpprestsdk\Release\libs\websocketpp\test\utility
+File creation date: Sat Mar 18 07:50:51 2017
+File modification date: Sat Mar 18 07:50:51 2017
+File code lines: 51
+File directive lines: 6
+File comment lines: 1
+File blank lines: 23
+File bytes: 2877
+
+File name: uri.cpp
+File folder: D:\Jeez\cpprestsdk\Release\libs\websocketpp\test\utility
+File creation date: Sat Mar 18 07:50:51 2017
+File modification date: Sat Mar 18 07:50:51 2017
+File code lines: 146
+File directive lines: 5
+File comment lines: 23
+File blank lines: 72
+File bytes: 7946
+
+File name: utilities.cpp
+File folder: D:\Jeez\cpprestsdk\Release\libs\websocketpp\test\utility
+File creation date: Sat Mar 18 07:50:51 2017
+File modification date: Sat Mar 18 07:50:51 2017
+File code lines: 43
+File directive lines: 5
+File comment lines: 1
+File blank lines: 24
+File bytes: 2671
+
+File name: step1.cpp
+File folder: D:\Jeez\cpprestsdk\Release\libs\websocketpp\tutorials\utility_client
+File creation date: Sat Mar 18 07:50:51 2017
+File modification date: Sat Mar 18 07:50:51 2017
+File code lines: 40
+File directive lines: 2
+File comment lines: 1
+File blank lines: 13
+File bytes: 2124
+
+File name: step2.cpp
+File folder: D:\Jeez\cpprestsdk\Release\libs\websocketpp\tutorials\utility_client
+File creation date: Sat Mar 18 07:50:51 2017
+File modification date: Sat Mar 18 07:50:51 2017
+File code lines: 41
+File directive lines: 4
+File comment lines: 1
+File blank lines: 15
+File bytes: 2278
+
+File name: step3.cpp
+File folder: D:\Jeez\cpprestsdk\Release\libs\websocketpp\tutorials\utility_client
+File creation date: Sat Mar 18 07:50:51 2017
+File modification date: Sat Mar 18 07:50:51 2017
+File code lines: 53
+File directive lines: 6
+File comment lines: 1
+File blank lines: 21
+File bytes: 2808
+
+File name: step4.cpp
+File folder: D:\Jeez\cpprestsdk\Release\libs\websocketpp\tutorials\utility_client
+File creation date: Sat Mar 18 07:50:51 2017
+File modification date: Sat Mar 18 07:50:51 2017
+File code lines: 131
+File directive lines: 9
+File comment lines: 1
+File blank lines: 61
+File bytes: 6388
+
+File name: step5.cpp
+File folder: D:\Jeez\cpprestsdk\Release\libs\websocketpp\tutorials\utility_client
+File creation date: Sat Mar 18 07:50:51 2017
+File modification date: Sat Mar 18 07:50:51 2017
+File code lines: 181
+File directive lines: 9
+File comment lines: 2
+File blank lines: 88
+File bytes: 8368
+
+File name: step6.cpp
+File folder: D:\Jeez\cpprestsdk\Release\libs\websocketpp\tutorials\utility_client
+File creation date: Sat Mar 18 07:50:51 2017
+File modification date: Sat Mar 18 07:50:51 2017
+File code lines: 218
+File directive lines: 9
+File comment lines: 2
+File blank lines: 106
+File bytes: 9841
+
+File name: client.hpp
+File folder: D:\Jeez\cpprestsdk\Release\libs\websocketpp\websocketpp
+File creation date: Sat Mar 18 07:50:51 2017
+File modification date: Sat Mar 18 07:50:51 2017
+File code lines: 21
+File directive lines: 4
+File comment lines: 0
+File blank lines: 8
+File bytes: 1666
+
+File name: close.hpp
+File folder: D:\Jeez\cpprestsdk\Release\libs\websocketpp\websocketpp
+File creation date: Sat Mar 18 07:50:51 2017
+File modification date: Sat Mar 18 07:50:51 2017
+File code lines: 183
+File directive lines: 8
+File comment lines: 44
+File blank lines: 107
+File bytes: 10863
+
+File name: connection.hpp
+File folder: D:\Jeez\cpprestsdk\Release\libs\websocketpp\websocketpp
+File creation date: Sat Mar 18 07:50:52 2017
+File modification date: Sat Mar 18 07:50:52 2017
+File code lines: 780
+File directive lines: 28
+File comment lines: 189
+File blank lines: 540
+File bytes: 47767
+
+File name: connection_base.hpp
+File folder: D:\Jeez\cpprestsdk\Release\libs\websocketpp\websocketpp
+File creation date: Sat Mar 18 07:50:52 2017
+File modification date: Sat Mar 18 07:50:52 2017
+File code lines: 23
+File directive lines: 3
+File comment lines: 2
+File blank lines: 10
+File bytes: 1758
+
+File name: endpoint.hpp
+File folder: D:\Jeez\cpprestsdk\Release\libs\websocketpp\websocketpp
+File creation date: Sat Mar 18 07:50:52 2017
+File modification date: Sat Mar 18 07:50:52 2017
+File code lines: 355
+File directive lines: 8
+File comment lines: 55
+File blank lines: 201
+File bytes: 20133
+
+File name: endpoint_base.hpp
+File folder: D:\Jeez\cpprestsdk\Release\libs\websocketpp\websocketpp
+File creation date: Sat Mar 18 07:50:52 2017
+File modification date: Sat Mar 18 07:50:52 2017
+File code lines: 23
+File directive lines: 3
+File comment lines: 2
+File blank lines: 10
+File bytes: 1750
+
+File name: error.hpp
+File folder: D:\Jeez\cpprestsdk\Release\libs\websocketpp\websocketpp
+File creation date: Sat Mar 18 07:50:52 2017
+File modification date: Sat Mar 18 07:50:52 2017
+File code lines: 151
+File directive lines: 8
+File comment lines: 42
+File blank lines: 71
+File bytes: 7262
+
+File name: error_container.hpp
+File folder: D:\Jeez\cpprestsdk\Release\libs\websocketpp\websocketpp
+File creation date: Sat Mar 18 07:50:52 2017
+File modification date: Sat Mar 18 07:50:52 2017
+File code lines: 44
+File directive lines: 3
+File comment lines: 2
+File blank lines: 22
+File bytes: 2308
+
+File name: frame.hpp
+File folder: D:\Jeez\cpprestsdk\Release\libs\websocketpp\websocketpp
+File creation date: Sat Mar 18 07:50:52 2017
+File modification date: Sat Mar 18 07:50:52 2017
+File code lines: 484
+File directive lines: 9
+File comment lines: 62
+File blank lines: 308
+File bytes: 24569
+
+File name: server.hpp
+File folder: D:\Jeez\cpprestsdk\Release\libs\websocketpp\websocketpp
+File creation date: Sat Mar 18 07:50:53 2017
+File modification date: Sat Mar 18 07:50:53 2017
+File code lines: 21
+File directive lines: 4
+File comment lines: 0
+File blank lines: 8
+File bytes: 1666
+
+File name: uri.hpp
+File folder: D:\Jeez\cpprestsdk\Release\libs\websocketpp\websocketpp
+File creation date: Sat Mar 18 07:50:53 2017
+File modification date: Sat Mar 18 07:50:53 2017
+File code lines: 216
+File directive lines: 8
+File comment lines: 30
+File blank lines: 100
+File bytes: 7731
+
+File name: utf8_validator.hpp
+File folder: D:\Jeez\cpprestsdk\Release\libs\websocketpp\websocketpp
+File creation date: Sat Mar 18 07:50:53 2017
+File modification date: Sat Mar 18 07:50:53 2017
+File code lines: 88
+File directive lines: 5
+File comment lines: 13
+File blank lines: 48
+File bytes: 4970
+
+File name: utilities.hpp
+File folder: D:\Jeez\cpprestsdk\Release\libs\websocketpp\websocketpp
+File creation date: Sat Mar 18 07:50:53 2017
+File modification date: Sat Mar 18 07:50:53 2017
+File code lines: 102
+File directive lines: 8
+File comment lines: 15
+File blank lines: 57
+File bytes: 6515
+
+File name: version.hpp
+File folder: D:\Jeez\cpprestsdk\Release\libs\websocketpp\websocketpp
+File creation date: Sat Mar 18 07:50:53 2017
+File modification date: Sat Mar 18 07:50:53 2017
+File code lines: 35
+File directive lines: 3
+File comment lines: 6
+File blank lines: 16
+File bytes: 2316
+
+File name: base64.hpp
+File folder: D:\Jeez\cpprestsdk\Release\libs\websocketpp\websocketpp\base64
+File creation date: Sat Mar 18 07:50:51 2017
+File modification date: Sat Mar 18 07:50:51 2017
+File code lines: 107
+File directive lines: 4
+File comment lines: 5
+File blank lines: 62
+File bytes: 4548
+
+File name: chrono.hpp
+File folder: D:\Jeez\cpprestsdk\Release\libs\websocketpp\websocketpp\common
+File creation date: Sat Mar 18 07:50:51 2017
+File modification date: Sat Mar 18 07:50:51 2017
+File code lines: 25
+File directive lines: 16
+File comment lines: 2
+File blank lines: 12
+File bytes: 2077
+
+File name: connection_hdl.hpp
+File folder: D:\Jeez\cpprestsdk\Release\libs\websocketpp\websocketpp\common
+File creation date: Sat Mar 18 07:50:51 2017
+File modification date: Sat Mar 18 07:50:51 2017
+File code lines: 31
+File directive lines: 4
+File comment lines: 2
+File blank lines: 15
+File bytes: 2332
+
+File name: cpp11.hpp
+File folder: D:\Jeez\cpprestsdk\Release\libs\websocketpp\websocketpp\common
+File creation date: Sat Mar 18 07:50:51 2017
+File modification date: Sat Mar 18 07:50:51 2017
+File code lines: 31
+File directive lines: 66
+File comment lines: 30
+File blank lines: 23
+File bytes: 5432
+
+File name: functional.hpp
+File folder: D:\Jeez\cpprestsdk\Release\libs\websocketpp\websocketpp\common
+File creation date: Sat Mar 18 07:50:51 2017
+File modification date: Sat Mar 18 07:50:51 2017
+File code lines: 46
+File directive lines: 26
+File comment lines: 8
+File blank lines: 25
+File bytes: 3465
+
+File name: md5.hpp
+File folder: D:\Jeez\cpprestsdk\Release\libs\websocketpp\websocketpp\common
+File creation date: Sat Mar 18 07:50:51 2017
+File modification date: Sat Mar 18 07:50:51 2017
+File code lines: 260
+File directive lines: 105
+File comment lines: 3
+File blank lines: 80
+File bytes: 15136
+
+File name: memory.hpp
+File folder: D:\Jeez\cpprestsdk\Release\libs\websocketpp\websocketpp\common
+File creation date: Sat Mar 18 07:50:51 2017
+File modification date: Sat Mar 18 07:50:51 2017
+File code lines: 38
+File directive lines: 26
+File comment lines: 4
+File blank lines: 18
+File bytes: 3056
+
+File name: network.hpp
+File folder: D:\Jeez\cpprestsdk\Release\libs\websocketpp\websocketpp\common
+File creation date: Sat Mar 18 07:50:51 2017
+File modification date: Sat Mar 18 07:50:51 2017
+File code lines: 59
+File directive lines: 11
+File comment lines: 7
+File blank lines: 27
+File bytes: 3175
+
+File name: platforms.hpp
+File folder: D:\Jeez\cpprestsdk\Release\libs\websocketpp\websocketpp\common
+File creation date: Sat Mar 18 07:50:51 2017
+File modification date: Sat Mar 18 07:50:52 2017
+File code lines: 23
+File directive lines: 9
+File comment lines: 2
+File blank lines: 12
+File bytes: 2030
+
+File name: random.hpp
+File folder: D:\Jeez\cpprestsdk\Release\libs\websocketpp\websocketpp\common
+File creation date: Sat Mar 18 07:50:52 2017
+File modification date: Sat Mar 18 07:50:52 2017
+File code lines: 30
+File directive lines: 29
+File comment lines: 5
+File blank lines: 18
+File bytes: 3048
+
+File name: regex.hpp
+File folder: D:\Jeez\cpprestsdk\Release\libs\websocketpp\websocketpp\common
+File creation date: Sat Mar 18 07:50:52 2017
+File modification date: Sat Mar 18 07:50:52 2017
+File code lines: 29
+File directive lines: 16
+File comment lines: 2
+File blank lines: 12
+File bytes: 2123
+
+File name: stdint.hpp
+File folder: D:\Jeez\cpprestsdk\Release\libs\websocketpp\websocketpp\common
+File creation date: Sat Mar 18 07:50:52 2017
+File modification date: Sat Mar 18 07:50:52 2017
+File code lines: 47
+File directive lines: 13
+File comment lines: 0
+File blank lines: 13
+File bytes: 2496
+
+File name: system_error.hpp
+File folder: D:\Jeez\cpprestsdk\Release\libs\websocketpp\websocketpp\common
+File creation date: Sat Mar 18 07:50:52 2017
+File modification date: Sat Mar 18 07:50:52 2017
+File code lines: 34
+File directive lines: 27
+File comment lines: 4
+File blank lines: 17
+File bytes: 3115
+
+File name: thread.hpp
+File folder: D:\Jeez\cpprestsdk\Release\libs\websocketpp\websocketpp\common
+File creation date: Sat Mar 18 07:50:52 2017
+File modification date: Sat Mar 18 07:50:52 2017
+File code lines: 38
+File directive lines: 23
+File comment lines: 2
+File blank lines: 13
+File bytes: 2789
+
+File name: time.hpp
+File folder: D:\Jeez\cpprestsdk\Release\libs\websocketpp\websocketpp\common
+File creation date: Sat Mar 18 07:50:52 2017
+File modification date: Sat Mar 18 07:50:52 2017
+File code lines: 29
+File directive lines: 8
+File comment lines: 6
+File blank lines: 13
+File bytes: 2349
+
+File name: basic.hpp
+File folder: D:\Jeez\cpprestsdk\Release\libs\websocketpp\websocketpp\concurrency
+File creation date: Sat Mar 18 07:50:52 2017
+File modification date: Sat Mar 18 07:50:52 2017
+File code lines: 27
+File directive lines: 4
+File comment lines: 3
+File blank lines: 12
+File bytes: 1953
+
+File name: none.hpp
+File folder: D:\Jeez\cpprestsdk\Release\libs\websocketpp\websocketpp\concurrency
+File creation date: Sat Mar 18 07:50:52 2017
+File modification date: Sat Mar 18 07:50:52 2017
+File code lines: 44
+File directive lines: 3
+File comment lines: 10
+File blank lines: 23
+File bytes: 2840
+
+File name: asio.hpp
+File folder: D:\Jeez\cpprestsdk\Release\libs\websocketpp\websocketpp\config
+File creation date: Sat Mar 18 07:50:52 2017
+File modification date: Sat Mar 18 07:50:52 2017
+File code lines: 44
+File directive lines: 7
+File comment lines: 5
+File blank lines: 21
+File bytes: 2891
+
+File name: asio_client.hpp
+File folder: D:\Jeez\cpprestsdk\Release\libs\websocketpp\websocketpp\config
+File creation date: Sat Mar 18 07:50:52 2017
+File modification date: Sat Mar 18 07:50:52 2017
+File code lines: 44
+File directive lines: 7
+File comment lines: 5
+File blank lines: 21
+File bytes: 2954
+
+File name: asio_no_tls.hpp
+File folder: D:\Jeez\cpprestsdk\Release\libs\websocketpp\websocketpp\config
+File creation date: Sat Mar 18 07:50:52 2017
+File modification date: Sat Mar 18 07:50:52 2017
+File code lines: 45
+File directive lines: 5
+File comment lines: 3
+File blank lines: 20
+File bytes: 2729
+
+File name: asio_no_tls_client.hpp
+File folder: D:\Jeez\cpprestsdk\Release\libs\websocketpp\websocketpp\config
+File creation date: Sat Mar 18 07:50:52 2017
+File modification date: Sat Mar 18 07:50:52 2017
+File code lines: 45
+File directive lines: 5
+File comment lines: 3
+File blank lines: 20
+File bytes: 2785
+
+File name: boost_config.hpp
+File folder: D:\Jeez\cpprestsdk\Release\libs\websocketpp\websocketpp\config
+File creation date: Sat Mar 18 07:50:52 2017
+File modification date: Sat Mar 18 07:50:52 2017
+File code lines: 23
+File directive lines: 28
+File comment lines: 4
+File blank lines: 17
+File bytes: 2792
+
+File name: core.hpp
+File folder: D:\Jeez\cpprestsdk\Release\libs\websocketpp\websocketpp\config
+File creation date: Sat Mar 18 07:50:52 2017
+File modification date: Sat Mar 18 07:50:52 2017
+File code lines: 126
+File directive lines: 17
+File comment lines: 56
+File blank lines: 86
+File bytes: 9831
+
+File name: core_client.hpp
+File folder: D:\Jeez\cpprestsdk\Release\libs\websocketpp\websocketpp\config
+File creation date: Sat Mar 18 07:50:52 2017
+File modification date: Sat Mar 18 07:50:52 2017
+File code lines: 128
+File directive lines: 24
+File comment lines: 56
+File blank lines: 86
+File bytes: 10099
+
+File name: debug.hpp
+File folder: D:\Jeez\cpprestsdk\Release\libs\websocketpp\websocketpp\config
+File creation date: Sat Mar 18 07:50:52 2017
+File modification date: Sat Mar 18 07:50:52 2017
+File code lines: 126
+File directive lines: 16
+File comment lines: 56
+File blank lines: 88
+File bytes: 9747
+
+File name: debug_asio.hpp
+File folder: D:\Jeez\cpprestsdk\Release\libs\websocketpp\websocketpp\config
+File creation date: Sat Mar 18 07:50:52 2017
+File modification date: Sat Mar 18 07:50:52 2017
+File code lines: 44
+File directive lines: 7
+File comment lines: 5
+File blank lines: 21
+File bytes: 2953
+
+File name: debug_asio_no_tls.hpp
+File folder: D:\Jeez\cpprestsdk\Release\libs\websocketpp\websocketpp\config
+File creation date: Sat Mar 18 07:50:52 2017
+File modification date: Sat Mar 18 07:50:52 2017
+File code lines: 45
+File directive lines: 5
+File comment lines: 3
+File blank lines: 20
+File bytes: 2785
+
+File name: minimal_client.hpp
+File folder: D:\Jeez\cpprestsdk\Release\libs\websocketpp\websocketpp\config
+File creation date: Sat Mar 18 07:50:52 2017
+File modification date: Sat Mar 18 07:50:52 2017
+File code lines: 46
+File directive lines: 4
+File comment lines: 3
+File blank lines: 19
+File bytes: 2677
+
+File name: minimal_server.hpp
+File folder: D:\Jeez\cpprestsdk\Release\libs\websocketpp\websocketpp\config
+File creation date: Sat Mar 18 07:50:52 2017
+File modification date: Sat Mar 18 07:50:52 2017
+File code lines: 145
+File directive lines: 17
+File comment lines: 56
+File blank lines: 94
+File bytes: 10436
+
+File name: extension.hpp
+File folder: D:\Jeez\cpprestsdk\Release\libs\websocketpp\websocketpp\extensions
+File creation date: Sat Mar 18 07:50:52 2017
+File modification date: Sat Mar 18 07:50:52 2017
+File code lines: 57
+File directive lines: 7
+File comment lines: 5
+File blank lines: 33
+File bytes: 3188
+
+File name: disabled.hpp
+File folder: D:\Jeez\cpprestsdk\Release\libs\websocketpp\websocketpp\extensions\permessage_deflate
+File creation date: Sat Mar 18 07:50:52 2017
+File modification date: Sat Mar 18 07:50:52 2017
+File code lines: 52
+File directive lines: 10
+File comment lines: 11
+File blank lines: 33
+File bytes: 3599
+
+File name: enabled.hpp
+File folder: D:\Jeez\cpprestsdk\Release\libs\websocketpp\websocketpp\extensions\permessage_deflate
+File creation date: Sat Mar 18 07:50:52 2017
+File modification date: Sat Mar 18 07:50:52 2017
+File code lines: 431
+File directive lines: 13
+File comment lines: 54
+File blank lines: 227
+File bytes: 20281
+
+File name: constants.hpp
+File folder: D:\Jeez\cpprestsdk\Release\libs\websocketpp\websocketpp\http
+File creation date: Sat Mar 18 07:50:52 2017
+File modification date: Sat Mar 18 07:50:52 2017
+File code lines: 231
+File directive lines: 8
+File comment lines: 16
+File blank lines: 53
+File bytes: 8072
+
+File name: parser.hpp
+File folder: D:\Jeez\cpprestsdk\Release\libs\websocketpp\websocketpp\http
+File creation date: Sat Mar 18 07:50:52 2017
+File modification date: Sat Mar 18 07:50:52 2017
+File code lines: 336
+File directive lines: 10
+File comment lines: 53
+File blank lines: 216
+File bytes: 15792
+
+File name: request.hpp
+File folder: D:\Jeez\cpprestsdk\Release\libs\websocketpp\websocketpp\http
+File creation date: Sat Mar 18 07:50:52 2017
+File modification date: Sat Mar 18 07:50:52 2017
+File code lines: 68
+File directive lines: 7
+File comment lines: 13
+File blank lines: 36
+File bytes: 4163
+
+File name: response.hpp
+File folder: D:\Jeez\cpprestsdk\Release\libs\websocketpp\websocketpp\http
+File creation date: Sat Mar 18 07:50:52 2017
+File modification date: Sat Mar 18 07:50:52 2017
+File code lines: 111
+File directive lines: 7
+File comment lines: 15
+File blank lines: 55
+File bytes: 6318
+
+File name: parser.hpp
+File folder: D:\Jeez\cpprestsdk\Release\libs\websocketpp\websocketpp\http\impl
+File creation date: Sat Mar 18 07:50:52 2017
+File modification date: Sat Mar 18 07:50:52 2017
+File code lines: 107
+File directive lines: 8
+File comment lines: 11
+File blank lines: 70
+File bytes: 5255
+
+File name: request.hpp
+File folder: D:\Jeez\cpprestsdk\Release\libs\websocketpp\websocketpp\http\impl
+File creation date: Sat Mar 18 07:50:52 2017
+File modification date: Sat Mar 18 07:50:52 2017
+File code lines: 99
+File directive lines: 7
+File comment lines: 19
+File blank lines: 66
+File bytes: 5284
+
+File name: response.hpp
+File folder: D:\Jeez\cpprestsdk\Release\libs\websocketpp\websocketpp\http\impl
+File creation date: Sat Mar 18 07:50:52 2017
+File modification date: Sat Mar 18 07:50:52 2017
+File code lines: 136
+File directive lines: 8
+File comment lines: 32
+File blank lines: 90
+File bytes: 6559
+
+File name: connection_impl.hpp
+File folder: D:\Jeez\cpprestsdk\Release\libs\websocketpp\websocketpp\impl
+File creation date: Sat Mar 18 07:50:52 2017
+File modification date: Sat Mar 18 07:50:52 2017
+File code lines: 1309
+File directive lines: 16
+File comment lines: 197
+File blank lines: 745
+File bytes: 57867
+
+File name: endpoint_impl.hpp
+File folder: D:\Jeez\cpprestsdk\Release\libs\websocketpp\websocketpp\impl
+File creation date: Sat Mar 18 07:50:52 2017
+File modification date: Sat Mar 18 07:50:52 2017
+File code lines: 158
+File directive lines: 4
+File comment lines: 8
+File blank lines: 85
+File bytes: 7808
+
+File name: utilities_impl.hpp
+File folder: D:\Jeez\cpprestsdk\Release\libs\websocketpp\websocketpp\impl
+File creation date: Sat Mar 18 07:50:52 2017
+File modification date: Sat Mar 18 07:50:52 2017
+File code lines: 52
+File directive lines: 5
+File comment lines: 2
+File blank lines: 28
+File bytes: 2829
+
+File name: basic.hpp
+File folder: D:\Jeez\cpprestsdk\Release\libs\websocketpp\websocketpp\logger
+File creation date: Sat Mar 18 07:50:52 2017
+File modification date: Sat Mar 18 07:50:52 2017
+File code lines: 100
+File directive lines: 14
+File comment lines: 9
+File blank lines: 46
+File bytes: 5101
+
+File name: levels.hpp
+File folder: D:\Jeez\cpprestsdk\Release\libs\websocketpp\websocketpp\logger
+File creation date: Sat Mar 18 07:50:52 2017
+File modification date: Sat Mar 18 07:50:52 2017
+File code lines: 120
+File directive lines: 4
+File comment lines: 43
+File blank lines: 36
+File bytes: 6518
+
+File name: stub.hpp
+File folder: D:\Jeez\cpprestsdk\Release\libs\websocketpp\websocketpp\logger
+File creation date: Sat Mar 18 07:50:52 2017
+File modification date: Sat Mar 18 07:50:52 2017
+File code lines: 57
+File directive lines: 6
+File comment lines: 11
+File blank lines: 45
+File bytes: 3659
+
+File name: syslog.hpp
+File folder: D:\Jeez\cpprestsdk\Release\libs\websocketpp\websocketpp\logger
+File creation date: Sat Mar 18 07:50:52 2017
+File modification date: Sat Mar 18 07:50:52 2017
+File code lines: 85
+File directive lines: 7
+File comment lines: 9
+File blank lines: 45
+File bytes: 4608
+
+File name: alloc.hpp
+File folder: D:\Jeez\cpprestsdk\Release\libs\websocketpp\websocketpp\message_buffer
+File creation date: Sat Mar 18 07:50:52 2017
+File modification date: Sat Mar 18 07:50:52 2017
+File code lines: 54
+File directive lines: 5
+File comment lines: 11
+File blank lines: 35
+File bytes: 3568
+
+File name: message.hpp
+File folder: D:\Jeez\cpprestsdk\Release\libs\websocketpp\websocketpp\message_buffer
+File creation date: Sat Mar 18 07:50:52 2017
+File modification date: Sat Mar 18 07:50:52 2017
+File code lines: 184
+File directive lines: 6
+File comment lines: 24
+File blank lines: 126
+File bytes: 9924
+
+File name: pool.hpp
+File folder: D:\Jeez\cpprestsdk\Release\libs\websocketpp\websocketpp\message_buffer
+File creation date: Sat Mar 18 07:50:52 2017
+File modification date: Sat Mar 18 07:50:52 2017
+File code lines: 129
+File directive lines: 5
+File comment lines: 19
+File blank lines: 76
+File bytes: 7251
+
+File name: base.hpp
+File folder: D:\Jeez\cpprestsdk\Release\libs\websocketpp\websocketpp\processors
+File creation date: Sat Mar 18 07:50:52 2017
+File modification date: Sat Mar 18 07:50:52 2017
+File code lines: 174
+File directive lines: 9
+File comment lines: 44
+File blank lines: 72
+File bytes: 8726
+
+File name: hybi00.hpp
+File folder: D:\Jeez\cpprestsdk\Release\libs\websocketpp\websocketpp\processors
+File creation date: Sat Mar 18 07:50:52 2017
+File modification date: Sat Mar 18 07:50:52 2017
+File code lines: 226
+File directive lines: 16
+File comment lines: 55
+File blank lines: 151
+File bytes: 11907
+
+File name: hybi07.hpp
+File folder: D:\Jeez\cpprestsdk\Release\libs\websocketpp\websocketpp\processors
+File creation date: Sat Mar 18 07:50:52 2017
+File modification date: Sat Mar 18 07:50:52 2017
+File code lines: 43
+File directive lines: 6
+File comment lines: 4
+File blank lines: 25
+File bytes: 2831
+
+File name: hybi08.hpp
+File folder: D:\Jeez\cpprestsdk\Release\libs\websocketpp\websocketpp\processors
+File creation date: Sat Mar 18 07:50:52 2017
+File modification date: Sat Mar 18 07:50:52 2017
+File code lines: 46
+File directive lines: 6
+File comment lines: 4
+File blank lines: 27
+File bytes: 2979
+
+File name: hybi13.hpp
+File folder: D:\Jeez\cpprestsdk\Release\libs\websocketpp\websocketpp\processors
+File creation date: Sat Mar 18 07:50:52 2017
+File modification date: Sat Mar 18 07:50:52 2017
+File code lines: 522
+File directive lines: 22
+File comment lines: 101
+File blank lines: 360
+File bytes: 26515
+
+File name: processor.hpp
+File folder: D:\Jeez\cpprestsdk\Release\libs\websocketpp\websocketpp\processors
+File creation date: Sat Mar 18 07:50:52 2017
+File modification date: Sat Mar 18 07:50:53 2017
+File code lines: 208
+File directive lines: 12
+File comment lines: 35
+File blank lines: 137
+File bytes: 13083
+
+File name: none.hpp
+File folder: D:\Jeez\cpprestsdk\Release\libs\websocketpp\websocketpp\random
+File creation date: Sat Mar 18 07:50:53 2017
+File modification date: Sat Mar 18 07:50:53 2017
+File code lines: 34
+File directive lines: 3
+File comment lines: 7
+File blank lines: 16
+File bytes: 2338
+
+File name: random_device.hpp
+File folder: D:\Jeez\cpprestsdk\Release\libs\websocketpp\websocketpp\random
+File creation date: Sat Mar 18 07:50:53 2017
+File modification date: Sat Mar 18 07:50:53 2017
+File code lines: 45
+File directive lines: 4
+File comment lines: 8
+File blank lines: 23
+File bytes: 2952
+
+File name: client_endpoint.hpp
+File folder: D:\Jeez\cpprestsdk\Release\libs\websocketpp\websocketpp\roles
+File creation date: Sat Mar 18 07:50:53 2017
+File modification date: Sat Mar 18 07:50:53 2017
+File code lines: 88
+File directive lines: 7
+File comment lines: 15
+File blank lines: 60
+File bytes: 5278
+
+File name: server_endpoint.hpp
+File folder: D:\Jeez\cpprestsdk\Release\libs\websocketpp\websocketpp\roles
+File creation date: Sat Mar 18 07:50:53 2017
+File modification date: Sat Mar 18 07:50:53 2017
+File code lines: 88
+File directive lines: 6
+File comment lines: 16
+File blank lines: 56
+File bytes: 5521
+
+File name: base.hpp
+File folder: D:\Jeez\cpprestsdk\Release\libs\websocketpp\websocketpp\transport\asio
+File creation date: Sat Mar 18 07:50:53 2017
+File modification date: Sat Mar 18 07:50:53 2017
+File code lines: 114
+File directive lines: 11
+File comment lines: 33
+File blank lines: 93
+File bytes: 6490
+
+File name: connection.hpp
+File folder: D:\Jeez\cpprestsdk\Release\libs\websocketpp\websocketpp\transport\asio
+File creation date: Sat Mar 18 07:50:53 2017
+File modification date: Sat Mar 18 07:50:53 2017
+File code lines: 653
+File directive lines: 19
+File comment lines: 111
+File blank lines: 379
+File bytes: 30201
+
+File name: endpoint.hpp
+File folder: D:\Jeez\cpprestsdk\Release\libs\websocketpp\websocketpp\transport\asio
+File creation date: Sat Mar 18 07:50:53 2017
+File modification date: Sat Mar 18 07:50:53 2017
+File code lines: 643
+File directive lines: 19
+File comment lines: 73
+File blank lines: 359
+File bytes: 29193
+
+File name: base.hpp
+File folder: D:\Jeez\cpprestsdk\Release\libs\websocketpp\websocketpp\transport\asio\security
+File creation date: Sat Mar 18 07:50:53 2017
+File modification date: Sat Mar 18 07:50:53 2017
+File code lines: 75
+File directive lines: 10
+File comment lines: 24
+File blank lines: 43
+File bytes: 4616
+
+File name: none.hpp
+File folder: D:\Jeez\cpprestsdk\Release\libs\websocketpp\websocketpp\transport\asio\security
+File creation date: Sat Mar 18 07:50:53 2017
+File modification date: Sat Mar 18 07:50:53 2017
+File code lines: 166
+File directive lines: 8
+File comment lines: 38
+File blank lines: 117
+File bytes: 9418
+
+File name: tls.hpp
+File folder: D:\Jeez\cpprestsdk\Release\libs\websocketpp\websocketpp\transport\asio\security
+File creation date: Sat Mar 18 07:50:53 2017
+File modification date: Sat Mar 18 07:50:53 2017
+File code lines: 220
+File directive lines: 12
+File comment lines: 46
+File blank lines: 143
+File bytes: 12128
+
+File name: connection.hpp
+File folder: D:\Jeez\cpprestsdk\Release\libs\websocketpp\websocketpp\transport\base
+File creation date: Sat Mar 18 07:50:53 2017
+File modification date: Sat Mar 18 07:50:53 2017
+File code lines: 142
+File directive lines: 8
+File comment lines: 25
+File blank lines: 63
+File bytes: 7973
+
+File name: endpoint.hpp
+File folder: D:\Jeez\cpprestsdk\Release\libs\websocketpp\websocketpp\transport\base
+File creation date: Sat Mar 18 07:50:53 2017
+File modification date: Sat Mar 18 07:50:53 2017
+File code lines: 48
+File directive lines: 5
+File comment lines: 5
+File blank lines: 19
+File bytes: 3282
+
+File name: base.hpp
+File folder: D:\Jeez\cpprestsdk\Release\libs\websocketpp\websocketpp\transport\debug
+File creation date: Sat Mar 18 07:50:53 2017
+File modification date: Sat Mar 18 07:50:53 2017
+File code lines: 56
+File directive lines: 6
+File comment lines: 13
+File blank lines: 29
+File bytes: 3286
+
+File name: connection.hpp
+File folder: D:\Jeez\cpprestsdk\Release\libs\websocketpp\websocketpp\transport\debug
+File creation date: Sat Mar 18 07:50:53 2017
+File modification date: Sat Mar 18 07:50:53 2017
+File code lines: 217
+File directive lines: 11
+File comment lines: 30
+File blank lines: 139
+File bytes: 11501
+
+File name: endpoint.hpp
+File folder: D:\Jeez\cpprestsdk\Release\libs\websocketpp\websocketpp\transport\debug
+File creation date: Sat Mar 18 07:50:53 2017
+File modification date: Sat Mar 18 07:50:53 2017
+File code lines: 72
+File directive lines: 7
+File comment lines: 19
+File blank lines: 42
+File bytes: 4972
+
+File name: base.hpp
+File folder: D:\Jeez\cpprestsdk\Release\libs\websocketpp\websocketpp\transport\iostream
+File creation date: Sat Mar 18 07:50:53 2017
+File modification date: Sat Mar 18 07:50:53 2017
+File code lines: 62
+File directive lines: 8
+File comment lines: 19
+File blank lines: 32
+File bytes: 4111
+
+File name: connection.hpp
+File folder: D:\Jeez\cpprestsdk\Release\libs\websocketpp\websocketpp\transport\iostream
+File creation date: Sat Mar 18 07:50:53 2017
+File modification date: Sat Mar 18 07:50:53 2017
+File code lines: 367
+File directive lines: 14
+File comment lines: 51
+File blank lines: 229
+File bytes: 19381
+
+File name: endpoint.hpp
+File folder: D:\Jeez\cpprestsdk\Release\libs\websocketpp\websocketpp\transport\iostream
+File creation date: Sat Mar 18 07:50:53 2017
+File modification date: Sat Mar 18 07:50:53 2017
+File code lines: 122
+File directive lines: 9
+File comment lines: 22
+File blank lines: 69
+File bytes: 7726
+
+File name: base.hpp
+File folder: D:\Jeez\cpprestsdk\Release\libs\websocketpp\websocketpp\transport\stub
+File creation date: Sat Mar 18 07:50:53 2017
+File modification date: Sat Mar 18 07:50:53 2017
+File code lines: 50
+File directive lines: 6
+File comment lines: 12
+File blank lines: 27
+File bytes: 3080
+
+File name: connection.hpp
+File folder: D:\Jeez\cpprestsdk\Release\libs\websocketpp\websocketpp\transport\stub
+File creation date: Sat Mar 18 07:50:53 2017
+File modification date: Sat Mar 18 07:50:53 2017
+File code lines: 139
+File directive lines: 11
+File comment lines: 26
+File blank lines: 96
+File bytes: 8495
+
+File name: endpoint.hpp
+File folder: D:\Jeez\cpprestsdk\Release\libs\websocketpp\websocketpp\transport\stub
+File creation date: Sat Mar 18 07:50:53 2017
+File modification date: Sat Mar 18 07:50:53 2017
+File code lines: 72
+File directive lines: 7
+File comment lines: 19
+File blank lines: 42
+File bytes: 5031
+
+File name: bingrequest.cpp
+File folder: D:\Jeez\cpprestsdk\Release\samples\BingRequest
+File creation date: Sat Mar 18 07:50:53 2017
+File modification date: Sat Mar 18 07:50:53 2017
+File code lines: 46
+File directive lines: 8
+File comment lines: 6
+File blank lines: 31
+File bytes: 2621
+
+File name: BlackJackClient.cpp
+File folder: D:\Jeez\cpprestsdk\Release\samples\BlackJack\BlackJack_Client
+File creation date: Sat Mar 18 07:50:53 2017
+File modification date: Sun Mar 19 00:16:47 2017
+File code lines: 130
+File directive lines: 27
+File comment lines: 15
+File blank lines: 75
+File bytes: 7968
+
+File name: BlackJack_Server.cpp
+File folder: D:\Jeez\cpprestsdk\Release\samples\BlackJack\BlackJack_Server
+File creation date: Sat Mar 18 07:50:53 2017
+File modification date: Sun Mar 19 00:16:47 2017
+File code lines: 25
+File directive lines: 4
+File comment lines: 7
+File blank lines: 14
+File bytes: 1478
+
+File name: Dealer.cpp
+File folder: D:\Jeez\cpprestsdk\Release\samples\BlackJack\BlackJack_Server
+File creation date: Sat Mar 18 09:28:12 2017
+File modification date: Sun Mar 19 00:16:47 2017
+File code lines: 84
+File directive lines: 1
+File comment lines: 8
+File blank lines: 40
+File bytes: 5455
+
+File name: Dealer.h
+File folder: D:\Jeez\cpprestsdk\Release\samples\BlackJack\BlackJack_Server
+File creation date: Sun Mar 19 00:16:47 2017
+File modification date: Sun Mar 19 00:16:47 2017
+File code lines: 22
+File directive lines: 5
+File comment lines: 3
+File blank lines: 9
+File bytes: 1763
+
+File name: messagetypes.h
+File folder: D:\Jeez\cpprestsdk\Release\samples\BlackJack\BlackJack_Server
+File creation date: Sat Mar 18 07:50:54 2017
+File modification date: Sun Mar 19 00:16:47 2017
+File code lines: 142
+File directive lines: 30
+File comment lines: 2
+File blank lines: 57
+File bytes: 9091
+
+File name: Table.cpp
+File folder: D:\Jeez\cpprestsdk\Release\samples\BlackJack\BlackJack_Server
+File creation date: Sat Mar 18 07:50:54 2017
+File modification date: Sun Mar 19 09:56:30 2017
+File code lines: 228
+File directive lines: 13
+File comment lines: 15
+File blank lines: 126
+File bytes: 12228
+
+File name: Table.h
+File folder: D:\Jeez\cpprestsdk\Release\samples\BlackJack\BlackJack_Server
+File creation date: Sat Mar 18 07:50:54 2017
+File modification date: Sun Mar 19 00:16:47 2017
+File code lines: 30
+File directive lines: 4
+File comment lines: 2
+File blank lines: 15
+File bytes: 1822
+
+File name: casalens.cpp
+File folder: D:\Jeez\cpprestsdk\Release\samples\CasaLens
+File creation date: Sat Mar 18 07:50:54 2017
+File modification date: Sun Mar 19 00:16:48 2017
+File code lines: 65
+File directive lines: 5
+File comment lines: 10
+File blank lines: 29
+File bytes: 5107
+
+File name: casalens.h
+File folder: D:\Jeez\cpprestsdk\Release\samples\CasaLens
+File creation date: Sat Mar 18 07:50:54 2017
+File modification date: Sun Mar 19 00:38:09 2017
+File code lines: 46
+File directive lines: 3
+File comment lines: 17
+File blank lines: 17
+File bytes: 4194
+
+File name: datafetcher.cpp
+File folder: D:\Jeez\cpprestsdk\Release\samples\CasaLens
+File creation date: Sat Mar 18 07:50:54 2017
+File modification date: Sun Mar 19 01:35:13 2017
+File code lines: 225
+File directive lines: 3
+File comment lines: 30
+File blank lines: 83
+File bytes: 15546
+
+File name: App.xaml.cpp
+File folder: D:\Jeez\cpprestsdk\Release\samples\FacebookDemo
+File creation date: Sat Mar 18 07:50:55 2017
+File modification date: Sat Mar 18 07:50:55 2017
+File code lines: 40
+File directive lines: 2
+File comment lines: 34
+File blank lines: 36
+File bytes: 3818
+
+File name: App.xaml.h
+File folder: D:\Jeez\cpprestsdk\Release\samples\FacebookDemo
+File creation date: Sat Mar 18 07:50:55 2017
+File modification date: Sat Mar 18 07:50:55 2017
+File code lines: 13
+File directive lines: 2
+File comment lines: 3
+File blank lines: 11
+File bytes: 846
+
+File name: Facebook.cpp
+File folder: D:\Jeez\cpprestsdk\Release\samples\FacebookDemo
+File creation date: Sat Mar 18 07:50:55 2017
+File modification date: Sat Mar 18 07:50:55 2017
+File code lines: 78
+File directive lines: 2
+File comment lines: 10
+File blank lines: 46
+File bytes: 4273
+
+File name: Facebook.h
+File folder: D:\Jeez\cpprestsdk\Release\samples\FacebookDemo
+File creation date: Sat Mar 18 07:50:55 2017
+File modification date: Sat Mar 18 07:50:55 2017
+File code lines: 21
+File directive lines: 3
+File comment lines: 0
+File blank lines: 9
+File bytes: 1042
+
+File name: MainPage.xaml.cpp
+File folder: D:\Jeez\cpprestsdk\Release\samples\FacebookDemo
+File creation date: Sat Mar 18 07:50:55 2017
+File modification date: Sat Mar 18 07:50:55 2017
+File code lines: 57
+File directive lines: 4
+File comment lines: 5
+File blank lines: 38
+File bytes: 2870
+
+File name: MainPage.xaml.h
+File folder: D:\Jeez\cpprestsdk\Release\samples\FacebookDemo
+File creation date: Sat Mar 18 07:50:55 2017
+File modification date: Sat Mar 18 07:50:55 2017
+File code lines: 35
+File directive lines: 2
+File comment lines: 3
+File blank lines: 21
+File bytes: 1644
+
+File name: pch.cpp
+File folder: D:\Jeez\cpprestsdk\Release\samples\FacebookDemo
+File creation date: Sat Mar 18 07:50:55 2017
+File modification date: Sat Mar 18 07:50:55 2017
+File code lines: 6
+File directive lines: 1
+File comment lines: 0
+File blank lines: 4
+File bytes: 462
+
+File name: pch.h
+File folder: D:\Jeez\cpprestsdk\Release\samples\FacebookDemo
+File creation date: Sat Mar 18 07:50:55 2017
+File modification date: Sat Mar 18 07:50:55 2017
+File code lines: 6
+File directive lines: 3
+File comment lines: 0
+File blank lines: 5
+File bytes: 497
+
+File name: Oauth1Client.cpp
+File folder: D:\Jeez\cpprestsdk\Release\samples\Oauth1Client
+File creation date: Sat Mar 18 07:50:55 2017
+File modification date: Sat Mar 18 07:50:55 2017
+File code lines: 149
+File directive lines: 14
+File comment lines: 12
+File blank lines: 128
+File bytes: 6801
+
+File name: stdafx.cpp
+File folder: D:\Jeez\cpprestsdk\Release\samples\Oauth1Client
+File creation date: Sat Mar 18 07:50:55 2017
+File modification date: Sat Mar 18 07:50:55 2017
+File code lines: 6
+File directive lines: 1
+File comment lines: 2
+File blank lines: 6
+File bytes: 556
+
+File name: stdafx.h
+File folder: D:\Jeez\cpprestsdk\Release\samples\Oauth1Client
+File creation date: Sat Mar 18 07:50:55 2017
+File modification date: Sat Mar 18 07:50:55 2017
+File code lines: 8
+File directive lines: 3
+File comment lines: 0
+File blank lines: 6
+File bytes: 602
+
+File name: Oauth2Client.cpp
+File folder: D:\Jeez\cpprestsdk\Release\samples\Oauth2Client
+File creation date: Sat Mar 18 07:50:55 2017
+File modification date: Sat Mar 18 07:50:55 2017
+File code lines: 160
+File directive lines: 14
+File comment lines: 18
+File blank lines: 131
+File bytes: 7640
+
+File name: stdafx.cpp
+File folder: D:\Jeez\cpprestsdk\Release\samples\Oauth2Client
+File creation date: Sat Mar 18 07:50:56 2017
+File modification date: Sat Mar 18 07:50:56 2017
+File code lines: 6
+File directive lines: 1
+File comment lines: 2
+File blank lines: 6
+File bytes: 556
+
+File name: stdafx.h
+File folder: D:\Jeez\cpprestsdk\Release\samples\Oauth2Client
+File creation date: Sat Mar 18 07:50:56 2017
+File modification date: Sat Mar 18 07:50:56 2017
+File code lines: 8
+File directive lines: 3
+File comment lines: 0
+File blank lines: 6
+File bytes: 602
+
+File name: App.xaml.cpp
+File folder: D:\Jeez\cpprestsdk\Release\samples\OAuth2Live
+File creation date: Sat Mar 18 07:50:55 2017
+File modification date: Sat Mar 18 07:50:55 2017
+File code lines: 34
+File directive lines: 2
+File comment lines: 37
+File blank lines: 33
+File bytes: 3433
+
+File name: App.xaml.h
+File folder: D:\Jeez\cpprestsdk\Release\samples\OAuth2Live
+File creation date: Sat Mar 18 07:50:55 2017
+File modification date: Sat Mar 18 07:50:55 2017
+File code lines: 7
+File directive lines: 2
+File comment lines: 6
+File blank lines: 9
+File bytes: 461
+
+File name: MainPage.xaml.cpp
+File folder: D:\Jeez\cpprestsdk\Release\samples\OAuth2Live
+File creation date: Sat Mar 18 07:50:55 2017
+File modification date: Sat Mar 18 07:50:55 2017
+File code lines: 126
+File directive lines: 5
+File comment lines: 10
+File blank lines: 94
+File bytes: 7084
+
+File name: MainPage.xaml.h
+File folder: D:\Jeez\cpprestsdk\Release\samples\OAuth2Live
+File creation date: Sat Mar 18 07:50:55 2017
+File modification date: Sat Mar 18 07:50:55 2017
+File code lines: 21
+File directive lines: 2
+File comment lines: 6
+File blank lines: 14
+File bytes: 1409
+
+File name: pch.cpp
+File folder: D:\Jeez\cpprestsdk\Release\samples\OAuth2Live
+File creation date: Sat Mar 18 07:50:55 2017
+File modification date: Sat Mar 18 07:50:55 2017
+File code lines: 0
+File directive lines: 1
+File comment lines: 3
+File blank lines: 2
+File bytes: 100
+
+File name: pch.h
+File folder: D:\Jeez\cpprestsdk\Release\samples\OAuth2Live
+File creation date: Sat Mar 18 07:50:55 2017
+File modification date: Sat Mar 18 07:50:55 2017
+File code lines: 3
+File directive lines: 8
+File comment lines: 0
+File blank lines: 4
+File bytes: 347
+
+File name: searchfile.cpp
+File folder: D:\Jeez\cpprestsdk\Release\samples\SearchFile
+File creation date: Sat Mar 18 07:50:56 2017
+File modification date: Sun Mar 19 19:05:41 2017
+File code lines: 86
+File directive lines: 6
+File comment lines: 9
+File blank lines: 43
+File bytes: 4652
+
+File name: App.xaml.cpp
+File folder: D:\Jeez\cpprestsdk\Release\samples\WindowsLiveAuth
+File creation date: Sat Mar 18 07:50:56 2017
+File modification date: Sat Mar 18 07:50:56 2017
+File code lines: 37
+File directive lines: 2
+File comment lines: 34
+File blank lines: 34
+File bytes: 3541
+
+File name: App.xaml.h
+File folder: D:\Jeez\cpprestsdk\Release\samples\WindowsLiveAuth
+File creation date: Sat Mar 18 07:50:56 2017
+File modification date: Sat Mar 18 07:50:56 2017
+File code lines: 10
+File directive lines: 2
+File comment lines: 3
+File blank lines: 9
+File bytes: 574
+
+File name: live_connect.h
+File folder: D:\Jeez\cpprestsdk\Release\samples\WindowsLiveAuth
+File creation date: Sat Mar 18 07:50:56 2017
+File modification date: Sat Mar 18 07:50:56 2017
+File code lines: 178
+File directive lines: 7
+File comment lines: 128
+File blank lines: 149
+File bytes: 17386
+
+File name: MainPage.xaml.cpp
+File folder: D:\Jeez\cpprestsdk\Release\samples\WindowsLiveAuth
+File creation date: Sat Mar 18 07:50:56 2017
+File modification date: Sat Mar 18 07:50:56 2017
+File code lines: 97
+File directive lines: 3
+File comment lines: 16
+File blank lines: 85
+File bytes: 5978
+
+File name: MainPage.xaml.h
+File folder: D:\Jeez\cpprestsdk\Release\samples\WindowsLiveAuth
+File creation date: Sat Mar 18 07:50:56 2017
+File modification date: Sat Mar 18 07:50:56 2017
+File code lines: 15
+File directive lines: 2
+File comment lines: 3
+File blank lines: 8
+File bytes: 927
+
+File name: pch.cpp
+File folder: D:\Jeez\cpprestsdk\Release\samples\WindowsLiveAuth
+File creation date: Sat Mar 18 07:50:56 2017
+File modification date: Sat Mar 18 07:50:56 2017
+File code lines: 3
+File directive lines: 1
+File comment lines: 0
+File blank lines: 2
+File bytes: 176
+
+File name: pch.h
+File folder: D:\Jeez\cpprestsdk\Release\samples\WindowsLiveAuth
+File creation date: Sat Mar 18 07:50:56 2017
+File modification date: Sat Mar 18 07:50:56 2017
+File code lines: 3
+File directive lines: 5
+File comment lines: 0
+File blank lines: 3
+File bytes: 267
+
+File name: http_client.cpp
+File folder: D:\Jeez\cpprestsdk\Release\src\http\client
+File creation date: Sat Mar 18 07:50:57 2017
+File modification date: Sun Mar 19 18:06:03 2017
+File code lines: 141
+File directive lines: 11
+File comment lines: 32
+File blank lines: 113
+File bytes: 10867
+
+File name: http_client_asio.cpp
+File folder: D:\Jeez\cpprestsdk\Release\src\http\client
+File creation date: Sat Mar 18 07:50:57 2017
+File modification date: Sun Mar 19 19:06:42 2017
+File code lines: 765
+File directive lines: 36
+File comment lines: 115
+File blank lines: 738
+File bytes: 47158
+
+File name: http_client_impl.h
+File folder: D:\Jeez\cpprestsdk\Release\src\http\client
+File creation date: Sat Mar 18 07:50:57 2017
+File modification date: Sun Mar 19 19:06:53 2017
+File code lines: 49
+File directive lines: 12
+File comment lines: 18
+File blank lines: 38
+File bytes: 4220
+
+File name: http_client_msg.cpp
+File folder: D:\Jeez\cpprestsdk\Release\src\http\client
+File creation date: Sat Mar 18 07:50:57 2017
+File modification date: Sat Mar 18 07:50:57 2017
+File code lines: 40
+File directive lines: 2
+File comment lines: 4
+File blank lines: 43
+File bytes: 2351
+
+File name: http_client_winhttp.cpp
+File folder: D:\Jeez\cpprestsdk\Release\src\http\client
+File creation date: Sat Mar 18 07:50:57 2017
+File modification date: Sun Mar 19 19:06:52 2017
+File code lines: 675
+File directive lines: 5
+File comment lines: 125
+File blank lines: 544
+File bytes: 38173
+
+File name: http_client_winrt.cpp
+File folder: D:\Jeez\cpprestsdk\Release\src\http\client
+File creation date: Sat Mar 18 07:50:57 2017
+File modification date: Sun Mar 19 19:06:52 2017
+File code lines: 253
+File directive lines: 11
+File comment lines: 63
+File blank lines: 230
+File bytes: 15709
+
+File name: x509_cert_utilities.cpp
+File folder: D:\Jeez\cpprestsdk\Release\src\http\client
+File creation date: Sat Mar 18 07:50:57 2017
+File modification date: Sun Mar 19 19:08:37 2017
+File code lines: 262
+File directive lines: 30
+File comment lines: 42
+File blank lines: 134
+File bytes: 13934
+
+File name: http_helpers.cpp
+File folder: D:\Jeez\cpprestsdk\Release\src\http\common
+File creation date: Sat Mar 18 07:50:57 2017
+File modification date: Sat Mar 18 07:50:57 2017
+File code lines: 191
+File directive lines: 45
+File comment lines: 11
+File blank lines: 205
+File bytes: 10004
+
+File name: http_msg.cpp
+File folder: D:\Jeez\cpprestsdk\Release\src\http\common
+File creation date: Sat Mar 18 07:50:57 2017
+File modification date: Sun Mar 19 19:06:52 2017
+File code lines: 496
+File directive lines: 55
+File comment lines: 72
+File blank lines: 414
+File bytes: 29376
+
+File name: internal_http_helpers.h
+File folder: D:\Jeez\cpprestsdk\Release\src\http\common
+File creation date: Sat Mar 18 07:50:57 2017
+File modification date: Sun Mar 19 19:06:52 2017
+File code lines: 13
+File directive lines: 3
+File comment lines: 4
+File blank lines: 11
+File bytes: 831
+
+File name: http_listener.cpp
+File folder: D:\Jeez\cpprestsdk\Release\src\http\listener
+File creation date: Sat Mar 18 07:50:57 2017
+File modification date: Sat Mar 18 07:50:57 2017
+File code lines: 75
+File directive lines: 3
+File comment lines: 15
+File blank lines: 90
+File bytes: 4091
+
+File name: http_listener_msg.cpp
+File folder: D:\Jeez\cpprestsdk\Release\src\http\listener
+File creation date: Sat Mar 18 07:50:57 2017
+File modification date: Sat Mar 18 07:50:57 2017
+File code lines: 32
+File directive lines: 4
+File comment lines: 8
+File blank lines: 34
+File bytes: 2374
+
+File name: http_server_api.cpp
+File folder: D:\Jeez\cpprestsdk\Release\src\http\listener
+File creation date: Sat Mar 18 07:50:57 2017
+File modification date: Sat Mar 18 07:50:57 2017
+File code lines: 64
+File directive lines: 6
+File comment lines: 10
+File blank lines: 86
+File bytes: 3736
+
+File name: http_server_asio.cpp
+File folder: D:\Jeez\cpprestsdk\Release\src\http\listener
+File creation date: Sat Mar 18 07:50:57 2017
+File modification date: Sat Mar 18 07:50:57 2017
+File code lines: 450
+File directive lines: 15
+File comment lines: 54
+File blank lines: 461
+File bytes: 25135
+
+File name: http_server_httpsys.cpp
+File folder: D:\Jeez\cpprestsdk\Release\src\http\listener
+File creation date: Sat Mar 18 07:50:57 2017
+File modification date: Sun Mar 19 19:06:52 2017
+File code lines: 539
+File directive lines: 8
+File comment lines: 104
+File blank lines: 364
+File bytes: 28588
+
+File name: oauth1.cpp
+File folder: D:\Jeez\cpprestsdk\Release\src\http\oauth
+File creation date: Sat Mar 18 07:50:57 2017
+File modification date: Sat Mar 18 07:50:57 2017
+File code lines: 202
+File directive lines: 27
+File comment lines: 25
+File blank lines: 168
+File bytes: 13019
+
+File name: oauth2.cpp
+File folder: D:\Jeez\cpprestsdk\Release\src\http\oauth
+File creation date: Sat Mar 18 07:50:57 2017
+File modification date: Sat Mar 18 07:50:57 2017
+File code lines: 96
+File directive lines: 6
+File comment lines: 17
+File blank lines: 100
+File bytes: 6494
+
+File name: json.cpp
+File folder: D:\Jeez\cpprestsdk\Release\src\json
+File creation date: Sat Mar 18 07:50:57 2017
+File modification date: Sat Mar 18 07:50:57 2017
+File code lines: 216
+File directive lines: 59
+File comment lines: 2
+File blank lines: 206
+File bytes: 11213
+
+File name: json_parsing.cpp
+File folder: D:\Jeez\cpprestsdk\Release\src\json
+File creation date: Sat Mar 18 07:50:57 2017
+File modification date: Sun Mar 19 12:56:05 2017
+File code lines: 659
+File directive lines: 26
+File comment lines: 47
+File blank lines: 263
+File bytes: 30422
+
+File name: json_serialization.cpp
+File folder: D:\Jeez\cpprestsdk\Release\src\json
+File creation date: Sat Mar 18 07:50:57 2017
+File modification date: Sat Mar 18 07:50:57 2017
+File code lines: 135
+File directive lines: 22
+File comment lines: 9
+File blank lines: 96
+File bytes: 5829
+
+File name: stdafx.cpp
+File folder: D:\Jeez\cpprestsdk\Release\src\pch
+File creation date: Sat Mar 18 07:50:57 2017
+File modification date: Sat Mar 18 07:50:57 2017
+File code lines: 4
+File directive lines: 1
+File comment lines: 2
+File blank lines: 8
+File bytes: 470
+
+File name: stdafx.h
+File folder: D:\Jeez\cpprestsdk\Release\src\pch
+File creation date: Sat Mar 18 07:50:57 2017
+File modification date: Sat Mar 18 07:50:57 2017
+File code lines: 8
+File directive lines: 112
+File comment lines: 12
+File blank lines: 28
+File bytes: 3963
+
+File name: pplx.cpp
+File folder: D:\Jeez\cpprestsdk\Release\src\pplx
+File creation date: Sat Mar 18 07:50:57 2017
+File modification date: Sun Mar 19 13:05:24 2017
+File code lines: 43
+File directive lines: 7
+File comment lines: 11
+File blank lines: 29
+File bytes: 2735
+
+File name: pplxapple.cpp
+File folder: D:\Jeez\cpprestsdk\Release\src\pplx
+File creation date: Sat Mar 18 07:50:57 2017
+File modification date: Sun Mar 19 13:08:09 2017
+File code lines: 10
+File directive lines: 7
+File comment lines: 9
+File blank lines: 8
+File bytes: 1079
+
+File name: pplxlinux.cpp
+File folder: D:\Jeez\cpprestsdk\Release\src\pplx
+File creation date: Sat Mar 18 07:50:57 2017
+File modification date: Sat Mar 18 07:50:57 2017
+File code lines: 16
+File directive lines: 7
+File comment lines: 2
+File blank lines: 23
+File bytes: 1124
+
+File name: pplxwin.cpp
+File folder: D:\Jeez\cpprestsdk\Release\src\pplx
+File creation date: Sat Mar 18 07:50:57 2017
+File modification date: Sat Mar 18 07:50:57 2017
+File code lines: 107
+File directive lines: 23
+File comment lines: 11
+File blank lines: 137
+File bytes: 6470
+
+File name: threadpool.cpp
+File folder: D:\Jeez\cpprestsdk\Release\src\pplx
+File creation date: Sat Mar 18 07:50:57 2017
+File modification date: Sat Mar 18 07:50:57 2017
+File code lines: 60
+File directive lines: 35
+File comment lines: 3
+File blank lines: 59
+File bytes: 2911
+
+File name: fileio_posix.cpp
+File folder: D:\Jeez\cpprestsdk\Release\src\streams
+File creation date: Sat Mar 18 07:50:57 2017
+File modification date: Sun Mar 19 19:26:23 2017
+File code lines: 257
+File directive lines: 2
+File comment lines: 78
+File blank lines: 260
+File bytes: 17899
+
+File name: fileio_win32.cpp
+File folder: D:\Jeez\cpprestsdk\Release\src\streams
+File creation date: Sat Mar 18 07:50:57 2017
+File modification date: Sun Mar 19 19:08:37 2017
+File code lines: 354
+File directive lines: 22
+File comment lines: 132
+File blank lines: 220
+File bytes: 29208
+
+File name: fileio_winrt.cpp
+File folder: D:\Jeez\cpprestsdk\Release\src\streams
+File creation date: Sat Mar 18 07:50:57 2017
+File modification date: Sun Mar 19 19:26:23 2017
+File code lines: 449
+File directive lines: 6
+File comment lines: 96
+File blank lines: 348
+File bytes: 29516
+
+File name: uri.cpp
+File folder: D:\Jeez\cpprestsdk\Release\src\uri
+File creation date: Sat Mar 18 07:50:57 2017
+File modification date: Sun Mar 19 19:06:52 2017
+File code lines: 169
+File directive lines: 1
+File comment lines: 22
+File blank lines: 182
+File bytes: 8893
+
+File name: uri_builder.cpp
+File folder: D:\Jeez\cpprestsdk\Release\src\uri
+File creation date: Sat Mar 18 07:50:57 2017
+File modification date: Sat Mar 18 07:50:57 2017
+File code lines: 49
+File directive lines: 1
+File comment lines: 3
+File blank lines: 57
+File bytes: 2407
+
+File name: uri_parser.cpp
+File folder: D:\Jeez\cpprestsdk\Release\src\uri
+File creation date: Sat Mar 18 07:50:57 2017
+File modification date: Sat Mar 18 07:50:57 2017
+File code lines: 177
+File directive lines: 2
+File comment lines: 34
+File blank lines: 139
+File bytes: 7771
+
+File name: asyncrt_utils.cpp
+File folder: D:\Jeez\cpprestsdk\Release\src\utilities
+File creation date: Sat Mar 18 07:50:57 2017
+File modification date: Sun Mar 19 19:06:52 2017
+File code lines: 478
+File directive lines: 94
+File comment lines: 69
+File blank lines: 380
+File bytes: 25378
+
+File name: base64.cpp
+File folder: D:\Jeez\cpprestsdk\Release\src\utilities
+File creation date: Sat Mar 18 07:50:57 2017
+File modification date: Sat Mar 18 07:50:57 2017
+File code lines: 148
+File directive lines: 4
+File comment lines: 12
+File blank lines: 103
+File bytes: 6755
+
+File name: web_utilities.cpp
+File folder: D:\Jeez\cpprestsdk\Release\src\utilities
+File creation date: Sat Mar 18 07:50:57 2017
+File modification date: Sat Mar 18 07:50:57 2017
+File code lines: 68
+File directive lines: 14
+File comment lines: 10
+File blank lines: 53
+File bytes: 4824
+
+File name: ws_client.cpp
+File folder: D:\Jeez\cpprestsdk\Release\src\websockets\client
+File creation date: Sat Mar 18 07:50:57 2017
+File modification date: Sat Mar 18 07:50:57 2017
+File code lines: 45
+File directive lines: 3
+File comment lines: 1
+File blank lines: 45
+File bytes: 2823
+
+File name: ws_client_winrt.cpp
+File folder: D:\Jeez\cpprestsdk\Release\src\websockets\client
+File creation date: Sat Mar 18 07:50:57 2017
+File modification date: Sat Mar 18 07:50:57 2017
+File code lines: 230
+File directive lines: 4
+File comment lines: 50
+File blank lines: 224
+File bytes: 15422
+
+File name: ws_client_wspp.cpp
+File folder: D:\Jeez\cpprestsdk\Release\src\websockets\client
+File creation date: Sat Mar 18 07:50:57 2017
+File modification date: Sat Mar 18 07:50:57 2017
+File code lines: 357
+File directive lines: 54
+File comment lines: 72
+File blank lines: 320
+File bytes: 22291
+
+File name: ws_msg.cpp
+File folder: D:\Jeez\cpprestsdk\Release\src\websockets\client
+File creation date: Sat Mar 18 07:50:57 2017
+File modification date: Sat Mar 18 07:50:57 2017
+File code lines: 31
+File directive lines: 4
+File comment lines: 0
+File blank lines: 32
+File bytes: 1770
+
+File name: test_module_loader.cpp
+File folder: D:\Jeez\cpprestsdk\Release\tests\common\TestRunner
+File creation date: Sat Mar 18 07:50:58 2017
+File modification date: Sat Mar 18 07:50:58 2017
+File code lines: 77
+File directive lines: 18
+File comment lines: 6
+File blank lines: 77
+File bytes: 3116
+
+File name: test_module_loader.h
+File folder: D:\Jeez\cpprestsdk\Release\tests\common\TestRunner
+File creation date: Sat Mar 18 07:50:58 2017
+File modification date: Sat Mar 18 07:50:58 2017
+File code lines: 38
+File directive lines: 5
+File comment lines: 5
+File blank lines: 33
+File bytes: 1633
+
+File name: test_runner.cpp
+File folder: D:\Jeez\cpprestsdk\Release\tests\common\TestRunner
+File creation date: Sat Mar 18 07:50:58 2017
+File modification date: Sat Mar 18 07:50:58 2017
+File code lines: 306
+File directive lines: 49
+File comment lines: 25
+File blank lines: 260
+File bytes: 16201
+
+File name: android_native_app_glue.c
+File folder: D:\Jeez\cpprestsdk\Release\tests\common\TestRunner\vs14.android\TestRunner.android.NativeActivity
+File creation date: Sat Mar 18 07:50:58 2017
+File modification date: Sat Mar 18 07:50:58 2017
+File code lines: 298
+File directive lines: 7
+File comment lines: 5
+File blank lines: 116
+File bytes: 14056
+
+File name: android_native_app_glue.h
+File folder: D:\Jeez\cpprestsdk\Release\tests\common\TestRunner\vs14.android\TestRunner.android.NativeActivity
+File creation date: Sat Mar 18 07:50:58 2017
+File modification date: Sat Mar 18 07:50:58 2017
+File code lines: 170
+File directive lines: 13
+File comment lines: 34
+File blank lines: 127
+File bytes: 10487
+
+File name: main.cpp
+File folder: D:\Jeez\cpprestsdk\Release\tests\common\TestRunner\vs14.android\TestRunner.android.NativeActivity
+File creation date: Sat Mar 18 07:50:58 2017
+File modification date: Sat Mar 18 07:50:58 2017
+File code lines: 266
+File directive lines: 14
+File comment lines: 29
+File blank lines: 128
+File bytes: 12095
+
+File name: pch.h
+File folder: D:\Jeez\cpprestsdk\Release\tests\common\TestRunner\vs14.android\TestRunner.android.NativeActivity
+File creation date: Sat Mar 18 07:50:58 2017
+File modification date: Sat Mar 18 07:50:58 2017
+File code lines: 0
+File directive lines: 10
+File comment lines: 5
+File blank lines: 8
+File bytes: 466
+
+File name: config.h
+File folder: D:\Jeez\cpprestsdk\Release\tests\common\UnitTestpp
+File creation date: Sat Mar 18 07:50:58 2017
+File modification date: Sat Mar 18 07:50:58 2017
+File code lines: 24
+File directive lines: 23
+File comment lines: 13
+File blank lines: 26
+File bytes: 3476
+
+File name: unittestpp.h
+File folder: D:\Jeez\cpprestsdk\Release\tests\common\UnitTestpp
+File creation date: Sat Mar 18 07:50:59 2017
+File modification date: Sat Mar 18 07:50:59 2017
+File code lines: 21
+File directive lines: 9
+File comment lines: 0
+File blank lines: 12
+File bytes: 1749
+
+File name: AssertException.cpp
+File folder: D:\Jeez\cpprestsdk\Release\tests\common\UnitTestpp\src
+File creation date: Sat Mar 18 07:50:58 2017
+File modification date: Sat Mar 18 07:50:58 2017
+File code lines: 24
+File directive lines: 3
+File comment lines: 0
+File blank lines: 21
+File bytes: 1699
+
+File name: AssertException.h
+File folder: D:\Jeez\cpprestsdk\Release\tests\common\UnitTestpp\src
+File creation date: Sat Mar 18 07:50:58 2017
+File modification date: Sat Mar 18 07:50:58 2017
+File code lines: 26
+File directive lines: 8
+File comment lines: 0
+File blank lines: 20
+File bytes: 1882
+
+File name: CheckMacros.h
+File folder: D:\Jeez\cpprestsdk\Release\tests\common\UnitTestpp\src
+File creation date: Sat Mar 18 07:50:58 2017
+File modification date: Sat Mar 18 07:50:58 2017
+File code lines: 86
+File directive lines: 83
+File comment lines: 1
+File blank lines: 55
+File bytes: 8242
+
+File name: Checks.h
+File folder: D:\Jeez\cpprestsdk\Release\tests\common\UnitTestpp\src
+File creation date: Sat Mar 18 07:50:58 2017
+File modification date: Sat Mar 18 07:50:58 2017
+File code lines: 180
+File directive lines: 22
+File comment lines: 3
+File blank lines: 133
+File bytes: 11080
+
+File name: CompositeTestReporter.cpp
+File folder: D:\Jeez\cpprestsdk\Release\tests\common\UnitTestpp\src
+File creation date: Sat Mar 18 07:50:58 2017
+File modification date: Sat Mar 18 07:50:58 2017
+File code lines: 53
+File directive lines: 9
+File comment lines: 1
+File blank lines: 45
+File bytes: 3249
+
+File name: CompositeTestReporter.h
+File folder: D:\Jeez\cpprestsdk\Release\tests\common\UnitTestpp\src
+File creation date: Sat Mar 18 07:50:58 2017
+File modification date: Sat Mar 18 07:50:58 2017
+File code lines: 38
+File directive lines: 4
+File comment lines: 1
+File blank lines: 22
+File bytes: 2555
+
+File name: CurrentTest.cpp
+File folder: D:\Jeez\cpprestsdk\Release\tests\common\UnitTestpp\src
+File creation date: Sat Mar 18 07:50:58 2017
+File modification date: Sat Mar 18 07:50:58 2017
+File code lines: 28
+File directive lines: 1
+File comment lines: 0
+File blank lines: 19
+File bytes: 1820
+
+File name: CurrentTest.h
+File folder: D:\Jeez\cpprestsdk\Release\tests\common\UnitTestpp\src
+File creation date: Sat Mar 18 07:50:58 2017
+File modification date: Sat Mar 18 07:50:58 2017
+File code lines: 27
+File directive lines: 4
+File comment lines: 0
+File blank lines: 19
+File bytes: 1831
+
+File name: DeferredTestReporter.cpp
+File folder: D:\Jeez\cpprestsdk\Release\tests\common\UnitTestpp\src
+File creation date: Sat Mar 18 07:50:58 2017
+File modification date: Sat Mar 18 07:50:58 2017
+File code lines: 34
+File directive lines: 3
+File comment lines: 0
+File blank lines: 25
+File bytes: 2294
+
+File name: DeferredTestReporter.h
+File folder: D:\Jeez\cpprestsdk\Release\tests\common\UnitTestpp\src
+File creation date: Sat Mar 18 07:50:58 2017
+File modification date: Sat Mar 18 07:50:58 2017
+File code lines: 31
+File directive lines: 9
+File comment lines: 0
+File blank lines: 24
+File bytes: 2279
+
+File name: DeferredTestResult.cpp
+File folder: D:\Jeez\cpprestsdk\Release\tests\common\UnitTestpp\src
+File creation date: Sat Mar 18 07:50:58 2017
+File modification date: Sat Mar 18 07:50:58 2017
+File code lines: 41
+File directive lines: 11
+File comment lines: 2
+File blank lines: 32
+File bytes: 2460
+
+File name: DeferredTestResult.h
+File folder: D:\Jeez\cpprestsdk\Release\tests\common\UnitTestpp\src
+File creation date: Sat Mar 18 07:50:58 2017
+File modification date: Sat Mar 18 07:50:58 2017
+File code lines: 41
+File directive lines: 9
+File comment lines: 0
+File blank lines: 31
+File bytes: 2331
+
+File name: ExceptionMacros.h
+File folder: D:\Jeez\cpprestsdk\Release\tests\common\UnitTestpp\src
+File creation date: Sat Mar 18 07:50:58 2017
+File modification date: Sat Mar 18 07:50:58 2017
+File code lines: 21
+File directive lines: 15
+File comment lines: 0
+File blank lines: 13
+File bytes: 2010
+
+File name: ExecuteTest.h
+File folder: D:\Jeez\cpprestsdk\Release\tests\common\UnitTestpp\src
+File creation date: Sat Mar 18 07:50:58 2017
+File modification date: Sat Mar 18 07:50:58 2017
+File code lines: 38
+File directive lines: 24
+File comment lines: 0
+File blank lines: 32
+File bytes: 2665
+
+File name: GlobalSettings.cpp
+File folder: D:\Jeez\cpprestsdk\Release\tests\common\UnitTestpp\src
+File creation date: Sat Mar 18 07:50:58 2017
+File modification date: Sat Mar 18 07:50:58 2017
+File code lines: 36
+File directive lines: 4
+File comment lines: 0
+File blank lines: 29
+File bytes: 2271
+
+File name: GlobalSettings.h
+File folder: D:\Jeez\cpprestsdk\Release\tests\common\UnitTestpp\src
+File creation date: Sat Mar 18 07:50:58 2017
+File modification date: Sat Mar 18 07:50:58 2017
+File code lines: 31
+File directive lines: 4
+File comment lines: 3
+File blank lines: 21
+File bytes: 2234
+
+File name: HelperMacros.h
+File folder: D:\Jeez\cpprestsdk\Release\tests\common\UnitTestpp\src
+File creation date: Sat Mar 18 07:50:58 2017
+File modification date: Sat Mar 18 07:50:58 2017
+File code lines: 27
+File directive lines: 37
+File comment lines: 0
+File blank lines: 19
+File bytes: 2860
+
+File name: MemoryOutStream.cpp
+File folder: D:\Jeez\cpprestsdk\Release\tests\common\UnitTestpp\src
+File creation date: Sat Mar 18 07:50:58 2017
+File modification date: Sat Mar 18 07:50:58 2017
+File code lines: 100
+File directive lines: 10
+File comment lines: 0
+File blank lines: 100
+File bytes: 4350
+
+File name: MemoryOutStream.h
+File folder: D:\Jeez\cpprestsdk\Release\tests\common\UnitTestpp\src
+File creation date: Sat Mar 18 07:50:58 2017
+File modification date: Sat Mar 18 07:50:58 2017
+File code lines: 56
+File directive lines: 10
+File comment lines: 0
+File blank lines: 38
+File bytes: 2863
+
+File name: ReportAssert.cpp
+File folder: D:\Jeez\cpprestsdk\Release\tests\common\UnitTestpp\src
+File creation date: Sat Mar 18 07:50:58 2017
+File modification date: Sat Mar 18 07:50:58 2017
+File code lines: 48
+File directive lines: 11
+File comment lines: 0
+File blank lines: 40
+File bytes: 2758
+
+File name: ReportAssert.h
+File folder: D:\Jeez\cpprestsdk\Release\tests\common\UnitTestpp\src
+File creation date: Sat Mar 18 07:50:58 2017
+File modification date: Sat Mar 18 07:50:59 2017
+File code lines: 23
+File directive lines: 4
+File comment lines: 0
+File blank lines: 16
+File bytes: 1742
+
+File name: ReportAssertImpl.h
+File folder: D:\Jeez\cpprestsdk\Release\tests\common\UnitTestpp\src
+File creation date: Sat Mar 18 07:50:59 2017
+File modification date: Sat Mar 18 07:50:59 2017
+File code lines: 36
+File directive lines: 16
+File comment lines: 0
+File blank lines: 25
+File bytes: 2531
+
+File name: stdafx.cpp
+File folder: D:\Jeez\cpprestsdk\Release\tests\common\UnitTestpp\src
+File creation date: Sat Mar 18 07:50:59 2017
+File modification date: Sat Mar 18 07:50:59 2017
+File code lines: 21
+File directive lines: 1
+File comment lines: 2
+File blank lines: 11
+File bytes: 1643
+
+File name: stdafx.h
+File folder: D:\Jeez\cpprestsdk\Release\tests\common\UnitTestpp\src
+File creation date: Sat Mar 18 07:50:59 2017
+File modification date: Sat Mar 18 07:50:59 2017
+File code lines: 21
+File directive lines: 21
+File comment lines: 0
+File blank lines: 14
+File bytes: 1989
+
+File name: Test.cpp
+File folder: D:\Jeez\cpprestsdk\Release\tests\common\UnitTestpp\src
+File creation date: Sat Mar 18 07:50:59 2017
+File modification date: Sat Mar 18 07:50:59 2017
+File code lines: 30
+File directive lines: 5
+File comment lines: 0
+File blank lines: 27
+File bytes: 1958
+
+File name: Test.h
+File folder: D:\Jeez\cpprestsdk\Release\tests\common\UnitTestpp\src
+File creation date: Sat Mar 18 07:50:59 2017
+File modification date: Sat Mar 18 07:50:59 2017
+File code lines: 36
+File directive lines: 5
+File comment lines: 0
+File blank lines: 24
+File bytes: 2106
+
+File name: TestDetails.cpp
+File folder: D:\Jeez\cpprestsdk\Release\tests\common\UnitTestpp\src
+File creation date: Sat Mar 18 07:50:59 2017
+File modification date: Sat Mar 18 07:50:59 2017
+File code lines: 32
+File directive lines: 1
+File comment lines: 0
+File blank lines: 20
+File bytes: 1967
+
+File name: TestDetails.h
+File folder: D:\Jeez\cpprestsdk\Release\tests\common\UnitTestpp\src
+File creation date: Sat Mar 18 07:50:59 2017
+File modification date: Sat Mar 18 07:50:59 2017
+File code lines: 33
+File directive lines: 4
+File comment lines: 0
+File blank lines: 20
+File bytes: 2136
+
+File name: TestList.cpp
+File folder: D:\Jeez\cpprestsdk\Release\tests\common\UnitTestpp\src
+File creation date: Sat Mar 18 07:50:59 2017
+File modification date: Sat Mar 18 07:50:59 2017
+File code lines: 55
+File directive lines: 15
+File comment lines: 3
+File blank lines: 44
+File bytes: 3026
+
+File name: TestList.h
+File folder: D:\Jeez\cpprestsdk\Release\tests\common\UnitTestpp\src
+File creation date: Sat Mar 18 07:50:59 2017
+File modification date: Sat Mar 18 07:50:59 2017
+File code lines: 36
+File directive lines: 4
+File comment lines: 0
+File blank lines: 28
+File bytes: 1976
+
+File name: TestMacros.h
+File folder: D:\Jeez\cpprestsdk\Release\tests\common\UnitTestpp\src
+File creation date: Sat Mar 18 07:50:59 2017
+File modification date: Sat Mar 18 07:50:59 2017
+File code lines: 138
+File directive lines: 63
+File comment lines: 0
+File blank lines: 55
+File bytes: 10033
+
+File name: TestProperties.h
+File folder: D:\Jeez\cpprestsdk\Release\tests\common\UnitTestpp\src
+File creation date: Sat Mar 18 07:50:59 2017
+File modification date: Sat Mar 18 07:50:59 2017
+File code lines: 46
+File directive lines: 6
+File comment lines: 2
+File blank lines: 44
+File bytes: 2612
+
+File name: TestReporter.cpp
+File folder: D:\Jeez\cpprestsdk\Release\tests\common\UnitTestpp\src
+File creation date: Sat Mar 18 07:50:59 2017
+File modification date: Sat Mar 18 07:50:59 2017
+File code lines: 24
+File directive lines: 1
+File comment lines: 0
+File blank lines: 19
+File bytes: 1643
+
+File name: TestReporter.h
+File folder: D:\Jeez\cpprestsdk\Release\tests\common\UnitTestpp\src
+File creation date: Sat Mar 18 07:50:59 2017
+File modification date: Sat Mar 18 07:50:59 2017
+File code lines: 31
+File directive lines: 4
+File comment lines: 0
+File blank lines: 19
+File bytes: 2184
+
+File name: TestReporterStdout.cpp
+File folder: D:\Jeez\cpprestsdk\Release\tests\common\UnitTestpp\src
+File creation date: Sat Mar 18 07:50:59 2017
+File modification date: Sat Mar 18 07:50:59 2017
+File code lines: 70
+File directive lines: 23
+File comment lines: 2
+File blank lines: 47
+File bytes: 4116
+
+File name: TestReporterStdout.h
+File folder: D:\Jeez\cpprestsdk\Release\tests\common\UnitTestpp\src
+File creation date: Sat Mar 18 07:50:59 2017
+File modification date: Sat Mar 18 07:50:59 2017
+File code lines: 28
+File directive lines: 4
+File comment lines: 0
+File blank lines: 18
+File bytes: 2118
+
+File name: TestResults.cpp
+File folder: D:\Jeez\cpprestsdk\Release\tests\common\UnitTestpp\src
+File creation date: Sat Mar 18 07:50:59 2017
+File modification date: Sat Mar 18 07:50:59 2017
+File code lines: 58
+File directive lines: 9
+File comment lines: 0
+File blank lines: 46
+File bytes: 2975
+
+File name: TestResults.h
+File folder: D:\Jeez\cpprestsdk\Release\tests\common\UnitTestpp\src
+File creation date: Sat Mar 18 07:50:59 2017
+File modification date: Sat Mar 18 07:50:59 2017
+File code lines: 44
+File directive lines: 6
+File comment lines: 0
+File blank lines: 26
+File bytes: 2546
+
+File name: TestRunner.cpp
+File folder: D:\Jeez\cpprestsdk\Release\tests\common\UnitTestpp\src
+File creation date: Sat Mar 18 07:50:59 2017
+File modification date: Sat Mar 18 07:50:59 2017
+File code lines: 101
+File directive lines: 23
+File comment lines: 7
+File blank lines: 78
+File bytes: 5484
+
+File name: TestRunner.h
+File folder: D:\Jeez\cpprestsdk\Release\tests\common\UnitTestpp\src
+File creation date: Sat Mar 18 07:50:59 2017
+File modification date: Sat Mar 18 07:50:59 2017
+File code lines: 57
+File directive lines: 7
+File comment lines: 0
+File blank lines: 44
+File bytes: 3239
+
+File name: TestSuite.h
+File folder: D:\Jeez\cpprestsdk\Release\tests\common\UnitTestpp\src
+File creation date: Sat Mar 18 07:50:59 2017
+File modification date: Sat Mar 18 07:50:59 2017
+File code lines: 24
+File directive lines: 3
+File comment lines: 0
+File blank lines: 16
+File bytes: 1687
+
+File name: TimeHelpers.h
+File folder: D:\Jeez\cpprestsdk\Release\tests\common\UnitTestpp\src
+File creation date: Sat Mar 18 07:50:59 2017
+File modification date: Sat Mar 18 07:50:59 2017
+File code lines: 21
+File directive lines: 6
+File comment lines: 0
+File blank lines: 11
+File bytes: 1661
+
+File name: XmlTestReporter.cpp
+File folder: D:\Jeez\cpprestsdk\Release\tests\common\UnitTestpp\src
+File creation date: Sat Mar 18 07:50:59 2017
+File modification date: Sat Mar 18 07:50:59 2017
+File code lines: 86
+File directive lines: 6
+File comment lines: 0
+File blank lines: 70
+File bytes: 4359
+
+File name: XmlTestReporter.h
+File folder: D:\Jeez\cpprestsdk\Release\tests\common\UnitTestpp\src
+File creation date: Sat Mar 18 07:50:59 2017
+File modification date: Sat Mar 18 07:50:59 2017
+File code lines: 36
+File directive lines: 8
+File comment lines: 0
+File blank lines: 25
+File bytes: 2535
+
+File name: SignalTranslator.cpp
+File folder: D:\Jeez\cpprestsdk\Release\tests\common\UnitTestpp\src\Posix
+File creation date: Sat Mar 18 07:50:58 2017
+File modification date: Sat Mar 18 07:50:58 2017
+File code lines: 45
+File directive lines: 1
+File comment lines: 0
+File blank lines: 31
+File bytes: 2514
+
+File name: SignalTranslator.h
+File folder: D:\Jeez\cpprestsdk\Release\tests\common\UnitTestpp\src\Posix
+File creation date: Sat Mar 18 07:50:58 2017
+File modification date: Sat Mar 18 07:50:58 2017
+File code lines: 38
+File directive lines: 11
+File comment lines: 0
+File blank lines: 23
+File bytes: 2366
+
+File name: TimeHelpers.cpp
+File folder: D:\Jeez\cpprestsdk\Release\tests\common\UnitTestpp\src\Posix
+File creation date: Sat Mar 18 07:50:58 2017
+File modification date: Sat Mar 18 07:50:58 2017
+File code lines: 35
+File directive lines: 2
+File comment lines: 0
+File blank lines: 27
+File bytes: 2028
+
+File name: TimeHelpers.h
+File folder: D:\Jeez\cpprestsdk\Release\tests\common\UnitTestpp\src\Posix
+File creation date: Sat Mar 18 07:50:58 2017
+File modification date: Sat Mar 18 07:50:58 2017
+File code lines: 31
+File directive lines: 4
+File comment lines: 0
+File blank lines: 24
+File bytes: 1798
+
+File name: RecordingReporter.h
+File folder: D:\Jeez\cpprestsdk\Release\tests\common\UnitTestpp\src\tests
+File creation date: Sat Mar 18 07:50:59 2017
+File modification date: Sat Mar 18 07:50:59 2017
+File code lines: 84
+File directive lines: 6
+File comment lines: 0
+File blank lines: 39
+File bytes: 3763
+
+File name: ScopedCurrentTest.h
+File folder: D:\Jeez\cpprestsdk\Release\tests\common\UnitTestpp\src\tests
+File creation date: Sat Mar 18 07:50:59 2017
+File modification date: Sat Mar 18 07:50:59 2017
+File code lines: 38
+File directive lines: 5
+File comment lines: 0
+File blank lines: 25
+File bytes: 2374
+
+File name: stdafx.cpp
+File folder: D:\Jeez\cpprestsdk\Release\tests\common\UnitTestpp\src\tests
+File creation date: Sat Mar 18 07:50:59 2017
+File modification date: Sat Mar 18 07:50:59 2017
+File code lines: 21
+File directive lines: 1
+File comment lines: 2
+File blank lines: 11
+File bytes: 1643
+
+File name: stdafx.h
+File folder: D:\Jeez\cpprestsdk\Release\tests\common\UnitTestpp\src\tests
+File creation date: Sat Mar 18 07:50:59 2017
+File modification date: Sat Mar 18 07:50:59 2017
+File code lines: 21
+File directive lines: 13
+File comment lines: 0
+File blank lines: 14
+File bytes: 1881
+
+File name: TestAssertHandler.cpp
+File folder: D:\Jeez\cpprestsdk\Release\tests\common\UnitTestpp\src\tests
+File creation date: Sat Mar 18 07:50:59 2017
+File modification date: Sat Mar 18 07:50:59 2017
+File code lines: 79
+File directive lines: 6
+File comment lines: 0
+File blank lines: 78
+File bytes: 3854
+
+File name: TestCheckMacros.cpp
+File folder: D:\Jeez\cpprestsdk\Release\tests\common\UnitTestpp\src\tests
+File creation date: Sat Mar 18 07:50:59 2017
+File modification date: Sat Mar 18 07:50:59 2017
+File code lines: 309
+File directive lines: 1
+File comment lines: 0
+File blank lines: 236
+File bytes: 12806
+
+File name: TestChecks.cpp
+File folder: D:\Jeez\cpprestsdk\Release\tests\common\UnitTestpp\src\tests
+File creation date: Sat Mar 18 07:50:59 2017
+File modification date: Sat Mar 18 07:50:59 2017
+File code lines: 202
+File directive lines: 1
+File comment lines: 0
+File blank lines: 115
+File bytes: 8907
+
+File name: TestCompositeTestReporter.cpp
+File folder: D:\Jeez\cpprestsdk\Release\tests\common\UnitTestpp\src\tests
+File creation date: Sat Mar 18 07:50:59 2017
+File modification date: Sat Mar 18 07:50:59 2017
+File code lines: 133
+File directive lines: 2
+File comment lines: 0
+File blank lines: 73
+File bytes: 5270
+
+File name: TestCurrentTest.cpp
+File folder: D:\Jeez\cpprestsdk\Release\tests\common\UnitTestpp\src\tests
+File creation date: Sat Mar 18 07:50:59 2017
+File modification date: Sat Mar 18 07:50:59 2017
+File code lines: 36
+File directive lines: 1
+File comment lines: 0
+File blank lines: 30
+File bytes: 2055
+
+File name: TestDeferredTestReporter.cpp
+File folder: D:\Jeez\cpprestsdk\Release\tests\common\UnitTestpp\src\tests
+File creation date: Sat Mar 18 07:50:59 2017
+File modification date: Sat Mar 18 07:50:59 2017
+File code lines: 84
+File directive lines: 6
+File comment lines: 0
+File blank lines: 61
+File bytes: 4456
+
+File name: TestMemoryOutStream.cpp
+File folder: D:\Jeez\cpprestsdk\Release\tests\common\UnitTestpp\src\tests
+File creation date: Sat Mar 18 07:50:59 2017
+File modification date: Sat Mar 18 07:50:59 2017
+File code lines: 115
+File directive lines: 6
+File comment lines: 0
+File blank lines: 84
+File bytes: 5123
+
+File name: TestTest.cpp
+File folder: D:\Jeez\cpprestsdk\Release\tests\common\UnitTestpp\src\tests
+File creation date: Sat Mar 18 07:50:59 2017
+File modification date: Sat Mar 18 07:50:59 2017
+File code lines: 78
+File directive lines: 5
+File comment lines: 0
+File blank lines: 75
+File bytes: 3309
+
+File name: TestTestList.cpp
+File folder: D:\Jeez\cpprestsdk\Release\tests\common\UnitTestpp\src\tests
+File creation date: Sat Mar 18 07:50:59 2017
+File modification date: Sat Mar 18 07:50:59 2017
+File code lines: 47
+File directive lines: 1
+File comment lines: 0
+File blank lines: 32
+File bytes: 2194
+
+File name: TestTestMacros.cpp
+File folder: D:\Jeez\cpprestsdk\Release\tests\common\UnitTestpp\src\tests
+File creation date: Sat Mar 18 07:50:59 2017
+File modification date: Sat Mar 18 07:50:59 2017
+File code lines: 100
+File directive lines: 13
+File comment lines: 4
+File blank lines: 110
+File bytes: 5346
+
+File name: TestTestResults.cpp
+File folder: D:\Jeez\cpprestsdk\Release\tests\common\UnitTestpp\src\tests
+File creation date: Sat Mar 18 07:50:59 2017
+File modification date: Sat Mar 18 07:50:59 2017
+File code lines: 87
+File directive lines: 1
+File comment lines: 0
+File blank lines: 52
+File bytes: 4198
+
+File name: TestTestRunner.cpp
+File folder: D:\Jeez\cpprestsdk\Release\tests\common\UnitTestpp\src\tests
+File creation date: Sat Mar 18 07:50:59 2017
+File modification date: Sat Mar 18 07:50:59 2017
+File code lines: 181
+File directive lines: 2
+File comment lines: 0
+File blank lines: 120
+File bytes: 7337
+
+File name: TestTestSuite.cpp
+File folder: D:\Jeez\cpprestsdk\Release\tests\common\UnitTestpp\src\tests
+File creation date: Sat Mar 18 07:50:59 2017
+File modification date: Sat Mar 18 07:50:59 2017
+File code lines: 23
+File directive lines: 1
+File comment lines: 3
+File blank lines: 16
+File bytes: 1809
+
+File name: TestUnitTestPP.cpp
+File folder: D:\Jeez\cpprestsdk\Release\tests\common\UnitTestpp\src\tests
+File creation date: Sat Mar 18 07:50:59 2017
+File modification date: Sat Mar 18 07:50:59 2017
+File code lines: 86
+File directive lines: 3
+File comment lines: 1
+File blank lines: 88
+File bytes: 3553
+
+File name: TestXmlTestReporter.cpp
+File folder: D:\Jeez\cpprestsdk\Release\tests\common\UnitTestpp\src\tests
+File creation date: Sat Mar 18 07:50:59 2017
+File modification date: Sat Mar 18 07:50:59 2017
+File code lines: 134
+File directive lines: 7
+File comment lines: 1
+File blank lines: 77
+File bytes: 6622
+
+File name: TimeHelpers.cpp
+File folder: D:\Jeez\cpprestsdk\Release\tests\common\UnitTestpp\src\Win32
+File creation date: Sat Mar 18 07:50:59 2017
+File modification date: Sat Mar 18 07:50:59 2017
+File code lines: 45
+File directive lines: 3
+File comment lines: 0
+File blank lines: 29
+File bytes: 2545
+
+File name: TimeHelpers.h
+File folder: D:\Jeez\cpprestsdk\Release\tests\common\UnitTestpp\src\Win32
+File creation date: Sat Mar 18 07:50:59 2017
+File modification date: Sat Mar 18 07:50:59 2017
+File code lines: 36
+File directive lines: 13
+File comment lines: 0
+File blank lines: 27
+File bytes: 2134
+
+File name: os_utilities.cpp
+File folder: D:\Jeez\cpprestsdk\Release\tests\common\utilities
+File creation date: Sat Mar 18 07:51:00 2017
+File modification date: Sat Mar 18 07:51:00 2017
+File code lines: 16
+File directive lines: 22
+File comment lines: 0
+File blank lines: 19
+File bytes: 1373
+
+File name: stdafx.cpp
+File folder: D:\Jeez\cpprestsdk\Release\tests\common\utilities
+File creation date: Sat Mar 18 07:51:00 2017
+File modification date: Sat Mar 18 07:51:00 2017
+File code lines: 7
+File directive lines: 1
+File comment lines: 3
+File blank lines: 7
+File bytes: 618
+
+File name: stdafx.h
+File folder: D:\Jeez\cpprestsdk\Release\tests\common\utilities
+File creation date: Sat Mar 18 07:51:00 2017
+File modification date: Sat Mar 18 07:51:00 2017
+File code lines: 7
+File directive lines: 7
+File comment lines: 0
+File blank lines: 10
+File bytes: 601
+
+File name: targetver.h
+File folder: D:\Jeez\cpprestsdk\Release\tests\common\utilities
+File creation date: Sat Mar 18 07:51:00 2017
+File modification date: Sat Mar 18 07:51:00 2017
+File code lines: 7
+File directive lines: 2
+File comment lines: 3
+File blank lines: 8
+File bytes: 739
+
+File name: common_utilities_public.h
+File folder: D:\Jeez\cpprestsdk\Release\tests\common\utilities\include
+File creation date: Sat Mar 18 07:51:00 2017
+File modification date: Sat Mar 18 07:51:00 2017
+File code lines: 6
+File directive lines: 11
+File comment lines: 0
+File blank lines: 7
+File bytes: 828
+
+File name: locale_guard.h
+File folder: D:\Jeez\cpprestsdk\Release\tests\common\utilities\include
+File creation date: Sat Mar 18 07:51:00 2017
+File modification date: Sat Mar 18 07:51:00 2017
+File code lines: 17
+File directive lines: 1
+File comment lines: 0
+File blank lines: 15
+File bytes: 777
+
+File name: os_utilities.h
+File folder: D:\Jeez\cpprestsdk\Release\tests\common\utilities\include
+File creation date: Sat Mar 18 07:51:00 2017
+File modification date: Sat Mar 18 07:51:00 2017
+File code lines: 16
+File directive lines: 3
+File comment lines: 1
+File blank lines: 16
+File bytes: 1100
+
+File name: authentication_tests.cpp
+File folder: D:\Jeez\cpprestsdk\Release\tests\functional\http\client
+File creation date: Sat Mar 18 07:51:00 2017
+File modification date: Sat Mar 18 07:51:00 2017
+File code lines: 368
+File directive lines: 41
+File comment lines: 37
+File blank lines: 249
+File bytes: 20999
+
+File name: building_request_tests.cpp
+File folder: D:\Jeez\cpprestsdk\Release\tests\functional\http\client
+File creation date: Sat Mar 18 07:51:00 2017
+File modification date: Sat Mar 18 07:51:00 2017
+File code lines: 184
+File directive lines: 14
+File comment lines: 16
+File blank lines: 104
+File bytes: 9667
+
+File name: client_construction.cpp
+File folder: D:\Jeez\cpprestsdk\Release\tests\functional\http\client
+File creation date: Sat Mar 18 07:51:00 2017
+File modification date: Sat Mar 18 07:51:00 2017
+File code lines: 113
+File directive lines: 4
+File comment lines: 21
+File blank lines: 100
+File bytes: 5829
+
+File name: connections_and_errors.cpp
+File folder: D:\Jeez\cpprestsdk\Release\tests\functional\http\client
+File creation date: Sat Mar 18 07:51:00 2017
+File modification date: Sat Mar 18 07:51:00 2017
+File code lines: 216
+File directive lines: 28
+File comment lines: 36
+File blank lines: 146
+File bytes: 11469
+
+File name: header_tests.cpp
+File folder: D:\Jeez\cpprestsdk\Release\tests\functional\http\client
+File creation date: Sat Mar 18 07:51:00 2017
+File modification date: Sat Mar 18 07:51:00 2017
+File code lines: 257
+File directive lines: 6
+File comment lines: 28
+File blank lines: 117
+File bytes: 12101
+
+File name: http_client_fuzz_tests.cpp
+File folder: D:\Jeez\cpprestsdk\Release\tests\functional\http\client
+File creation date: Sat Mar 18 07:51:00 2017
+File modification date: Sat Mar 18 07:51:00 2017
+File code lines: 53
+File directive lines: 3
+File comment lines: 6
+File blank lines: 33
+File bytes: 2668
+
+File name: http_client_tests.cpp
+File folder: D:\Jeez\cpprestsdk\Release\tests\functional\http\client
+File creation date: Sat Mar 18 07:51:00 2017
+File modification date: Sat Mar 18 07:51:00 2017
+File code lines: 21
+File directive lines: 1
+File comment lines: 2
+File blank lines: 21
+File bytes: 1674
+
+File name: http_client_tests.h
+File folder: D:\Jeez\cpprestsdk\Release\tests\functional\http\client
+File creation date: Sat Mar 18 07:51:00 2017
+File modification date: Sat Mar 18 07:51:00 2017
+File code lines: 14
+File directive lines: 4
+File comment lines: 4
+File blank lines: 15
+File bytes: 1351
+
+File name: http_methods_tests.cpp
+File folder: D:\Jeez\cpprestsdk\Release\tests\functional\http\client
+File creation date: Sat Mar 18 07:51:00 2017
+File modification date: Sat Mar 18 07:51:00 2017
+File code lines: 52
+File directive lines: 15
+File comment lines: 2
+File blank lines: 38
+File bytes: 2300
+
+File name: multiple_requests.cpp
+File folder: D:\Jeez\cpprestsdk\Release\tests\functional\http\client
+File creation date: Sat Mar 18 07:51:00 2017
+File modification date: Sat Mar 18 07:51:00 2017
+File code lines: 67
+File directive lines: 1
+File comment lines: 11
+File blank lines: 58
+File bytes: 3383
+
+File name: oauth1_tests.cpp
+File folder: D:\Jeez\cpprestsdk\Release\tests\functional\http\client
+File creation date: Sat Mar 18 07:51:00 2017
+File modification date: Sat Mar 18 07:51:00 2017
+File code lines: 182
+File directive lines: 4
+File comment lines: 12
+File blank lines: 105
+File bytes: 11237
+
+File name: oauth2_tests.cpp
+File folder: D:\Jeez\cpprestsdk\Release\tests\functional\http\client
+File creation date: Sat Mar 18 07:51:00 2017
+File modification date: Sat Mar 18 07:51:00 2017
+File code lines: 204
+File directive lines: 4
+File comment lines: 17
+File blank lines: 146
+File bytes: 12159
+
+File name: outside_tests.cpp
+File folder: D:\Jeez\cpprestsdk\Release\tests\functional\http\client
+File creation date: Sat Mar 18 07:51:00 2017
+File modification date: Sat Mar 18 07:51:00 2017
+File code lines: 134
+File directive lines: 15
+File comment lines: 14
+File blank lines: 105
+File bytes: 7318
+
+File name: pipeline_stage_tests.cpp
+File folder: D:\Jeez\cpprestsdk\Release\tests\functional\http\client
+File creation date: Sat Mar 18 07:51:00 2017
+File modification date: Sat Mar 18 07:51:00 2017
+File code lines: 159
+File directive lines: 5
+File comment lines: 10
+File blank lines: 104
+File bytes: 6699
+
+File name: progress_handler_tests.cpp
+File folder: D:\Jeez\cpprestsdk\Release\tests\functional\http\client
+File creation date: Sat Mar 18 07:51:00 2017
+File modification date: Sat Mar 18 07:51:00 2017
+File code lines: 229
+File directive lines: 11
+File comment lines: 18
+File blank lines: 161
+File bytes: 10606
+
+File name: proxy_tests.cpp
+File folder: D:\Jeez\cpprestsdk\Release\tests\functional\http\client
+File creation date: Sat Mar 18 07:51:00 2017
+File modification date: Sat Mar 18 07:51:00 2017
+File code lines: 81
+File directive lines: 7
+File comment lines: 10
+File blank lines: 63
+File bytes: 4696
+
+File name: request_helper_tests.cpp
+File folder: D:\Jeez\cpprestsdk\Release\tests\functional\http\client
+File creation date: Sat Mar 18 07:51:00 2017
+File modification date: Sat Mar 18 07:51:00 2017
+File code lines: 132
+File directive lines: 4
+File comment lines: 9
+File blank lines: 89
+File bytes: 8007
+
+File name: request_stream_tests.cpp
+File folder: D:\Jeez\cpprestsdk\Release\tests\functional\http\client
+File creation date: Sat Mar 18 07:51:00 2017
+File modification date: Sat Mar 18 07:51:00 2017
+File code lines: 231
+File directive lines: 36
+File comment lines: 32
+File blank lines: 155
+File bytes: 13425
+
+File name: request_uri_tests.cpp
+File folder: D:\Jeez\cpprestsdk\Release\tests\functional\http\client
+File creation date: Sat Mar 18 07:51:00 2017
+File modification date: Sat Mar 18 07:51:00 2017
+File code lines: 79
+File directive lines: 7
+File comment lines: 18
+File blank lines: 65
+File bytes: 5368
+
+File name: response_extract_tests.cpp
+File folder: D:\Jeez\cpprestsdk\Release\tests\functional\http\client
+File creation date: Sat Mar 18 07:51:00 2017
+File modification date: Sat Mar 18 07:51:00 2017
+File code lines: 320
+File directive lines: 8
+File comment lines: 61
+File blank lines: 150
+File bytes: 20374
+
+File name: response_stream_tests.cpp
+File folder: D:\Jeez\cpprestsdk\Release\tests\functional\http\client
+File creation date: Sat Mar 18 07:51:00 2017
+File modification date: Sat Mar 18 07:51:00 2017
+File code lines: 280
+File directive lines: 16
+File comment lines: 17
+File blank lines: 176
+File bytes: 15338
+
+File name: status_code_reason_phrase_tests.cpp
+File folder: D:\Jeez\cpprestsdk\Release\tests\functional\http\client
+File creation date: Sat Mar 18 07:51:00 2017
+File modification date: Sat Mar 18 07:51:01 2017
+File code lines: 20
+File directive lines: 1
+File comment lines: 2
+File blank lines: 22
+File bytes: 1244
+
+File name: stdafx.cpp
+File folder: D:\Jeez\cpprestsdk\Release\tests\functional\http\client
+File creation date: Sat Mar 18 07:51:01 2017
+File modification date: Sat Mar 18 07:51:01 2017
+File code lines: 4
+File directive lines: 3
+File comment lines: 2
+File blank lines: 5
+File bytes: 448
+
+File name: stdafx.h
+File folder: D:\Jeez\cpprestsdk\Release\tests\functional\http\client
+File creation date: Sat Mar 18 07:51:01 2017
+File modification date: Sat Mar 18 07:51:01 2017
+File code lines: 6
+File directive lines: 12
+File comment lines: 0
+File blank lines: 7
+File bytes: 772
+
+File name: timeout_handler.h
+File folder: D:\Jeez\cpprestsdk\Release\tests\functional\http\client
+File creation date: Sat Mar 18 07:51:01 2017
+File modification date: Sat Mar 18 07:51:01 2017
+File code lines: 18
+File directive lines: 2
+File comment lines: 3
+File blank lines: 25
+File bytes: 1162
+
+File name: to_string_tests.cpp
+File folder: D:\Jeez\cpprestsdk\Release\tests\functional\http\client
+File creation date: Sat Mar 18 07:51:01 2017
+File modification date: Sat Mar 18 07:51:01 2017
+File code lines: 95
+File directive lines: 3
+File comment lines: 6
+File blank lines: 43
+File bytes: 4182
+
+File name: building_response_tests.cpp
+File folder: D:\Jeez\cpprestsdk\Release\tests\functional\http\listener
+File creation date: Sat Mar 18 07:51:01 2017
+File modification date: Sat Mar 18 07:51:01 2017
+File code lines: 87
+File directive lines: 4
+File comment lines: 0
+File blank lines: 51
+File bytes: 4078
+
+File name: connections_and_errors.cpp
+File folder: D:\Jeez\cpprestsdk\Release\tests\functional\http\listener
+File creation date: Sat Mar 18 07:51:01 2017
+File modification date: Sat Mar 18 07:51:01 2017
+File code lines: 223
+File directive lines: 7
+File comment lines: 17
+File blank lines: 163
+File bytes: 10778
+
+File name: header_tests.cpp
+File folder: D:\Jeez\cpprestsdk\Release\tests\functional\http\listener
+File creation date: Sat Mar 18 07:51:01 2017
+File modification date: Sat Mar 18 07:51:01 2017
+File code lines: 128
+File directive lines: 1
+File comment lines: 9
+File blank lines: 57
+File bytes: 6108
+
+File name: http_listener_tests.h
+File folder: D:\Jeez\cpprestsdk\Release\tests\functional\http\listener
+File creation date: Sat Mar 18 07:51:01 2017
+File modification date: Sat Mar 18 07:51:01 2017
+File code lines: 19
+File directive lines: 2
+File comment lines: 2
+File blank lines: 18
+File bytes: 1045
+
+File name: listener_construction_tests.cpp
+File folder: D:\Jeez\cpprestsdk\Release\tests\functional\http\listener
+File creation date: Sat Mar 18 07:51:01 2017
+File modification date: Sat Mar 18 07:51:01 2017
+File code lines: 371
+File directive lines: 3
+File comment lines: 18
+File blank lines: 189
+File bytes: 18880
+
+File name: reply_helper_tests.cpp
+File folder: D:\Jeez\cpprestsdk\Release\tests\functional\http\listener
+File creation date: Sat Mar 18 07:51:01 2017
+File modification date: Sat Mar 18 07:51:01 2017
+File code lines: 67
+File directive lines: 1
+File comment lines: 3
+File blank lines: 49
+File bytes: 3297
+
+File name: requests_tests.cpp
+File folder: D:\Jeez\cpprestsdk\Release\tests\functional\http\listener
+File creation date: Sat Mar 18 07:51:01 2017
+File modification date: Sat Mar 18 07:51:01 2017
+File code lines: 163
+File directive lines: 2
+File comment lines: 18
+File blank lines: 101
+File bytes: 7957
+
+File name: request_extract_tests.cpp
+File folder: D:\Jeez\cpprestsdk\Release\tests\functional\http\listener
+File creation date: Sat Mar 18 07:51:01 2017
+File modification date: Sat Mar 18 07:51:01 2017
+File code lines: 120
+File directive lines: 1
+File comment lines: 0
+File blank lines: 64
+File bytes: 5378
+
+File name: request_handler_tests.cpp
+File folder: D:\Jeez\cpprestsdk\Release\tests\functional\http\listener
+File creation date: Sat Mar 18 07:51:01 2017
+File modification date: Sat Mar 18 07:51:01 2017
+File code lines: 282
+File directive lines: 4
+File comment lines: 14
+File blank lines: 153
+File bytes: 14305
+
+File name: request_relative_uri_tests.cpp
+File folder: D:\Jeez\cpprestsdk\Release\tests\functional\http\listener
+File creation date: Sat Mar 18 07:51:01 2017
+File modification date: Sat Mar 18 07:51:01 2017
+File code lines: 71
+File directive lines: 1
+File comment lines: 3
+File blank lines: 45
+File bytes: 3527
+
+File name: request_stream_tests.cpp
+File folder: D:\Jeez\cpprestsdk\Release\tests\functional\http\listener
+File creation date: Sat Mar 18 07:51:01 2017
+File modification date: Sat Mar 18 07:51:01 2017
+File code lines: 58
+File directive lines: 1
+File comment lines: 1
+File blank lines: 38
+File bytes: 2490
+
+File name: response_stream_tests.cpp
+File folder: D:\Jeez\cpprestsdk\Release\tests\functional\http\listener
+File creation date: Sat Mar 18 07:51:01 2017
+File modification date: Sat Mar 18 07:51:01 2017
+File code lines: 170
+File directive lines: 2
+File comment lines: 20
+File blank lines: 117
+File bytes: 8505
+
+File name: status_code_reason_phrase_tests.cpp
+File folder: D:\Jeez\cpprestsdk\Release\tests\functional\http\listener
+File creation date: Sat Mar 18 07:51:01 2017
+File modification date: Sat Mar 18 07:51:01 2017
+File code lines: 60
+File directive lines: 1
+File comment lines: 5
+File blank lines: 44
+File bytes: 2980
+
+File name: stdafx.cpp
+File folder: D:\Jeez\cpprestsdk\Release\tests\functional\http\listener
+File creation date: Sat Mar 18 07:51:01 2017
+File modification date: Sat Mar 18 07:51:01 2017
+File code lines: 1
+File directive lines: 3
+File comment lines: 2
+File blank lines: 2
+File bytes: 177
+
+File name: stdafx.h
+File folder: D:\Jeez\cpprestsdk\Release\tests\functional\http\listener
+File creation date: Sat Mar 18 07:51:01 2017
+File modification date: Sat Mar 18 07:51:01 2017
+File code lines: 8
+File directive lines: 11
+File comment lines: 0
+File blank lines: 10
+File bytes: 666
+
+File name: to_string_tests.cpp
+File folder: D:\Jeez\cpprestsdk\Release\tests\functional\http\listener
+File creation date: Sat Mar 18 07:51:01 2017
+File modification date: Sat Mar 18 07:51:01 2017
+File code lines: 47
+File directive lines: 1
+File comment lines: 4
+File blank lines: 30
+File bytes: 2128
+
+File name: http_asserts.cpp
+File folder: D:\Jeez\cpprestsdk\Release\tests\functional\http\utilities
+File creation date: Sat Mar 18 07:51:01 2017
+File modification date: Sat Mar 18 07:51:01 2017
+File code lines: 195
+File directive lines: 1
+File comment lines: 14
+File blank lines: 113
+File bytes: 9185
+
+File name: stdafx.cpp
+File folder: D:\Jeez\cpprestsdk\Release\tests\functional\http\utilities
+File creation date: Sat Mar 18 07:51:01 2017
+File modification date: Sat Mar 18 07:51:01 2017
+File code lines: 3
+File directive lines: 1
+File comment lines: 2
+File blank lines: 4
+File bytes: 374
+
+File name: stdafx.h
+File folder: D:\Jeez\cpprestsdk\Release\tests\functional\http\utilities
+File creation date: Sat Mar 18 07:51:01 2017
+File modification date: Sat Mar 18 07:51:01 2017
+File code lines: 6
+File directive lines: 13
+File comment lines: 0
+File blank lines: 9
+File bytes: 703
+
+File name: test_http_client.cpp
+File folder: D:\Jeez\cpprestsdk\Release\tests\functional\http\utilities
+File creation date: Sat Mar 18 07:51:01 2017
+File modification date: Sat Mar 18 07:51:01 2017
+File code lines: 326
+File directive lines: 14
+File comment lines: 23
+File blank lines: 213
+File bytes: 14233
+
+File name: test_http_server.cpp
+File folder: D:\Jeez\cpprestsdk\Release\tests\functional\http\utilities
+File creation date: Sat Mar 18 07:51:01 2017
+File modification date: Sat Mar 18 07:51:01 2017
+File code lines: 456
+File directive lines: 26
+File comment lines: 39
+File blank lines: 241
+File bytes: 19474
+
+File name: test_server_utilities.cpp
+File folder: D:\Jeez\cpprestsdk\Release\tests\functional\http\utilities
+File creation date: Sat Mar 18 07:51:01 2017
+File modification date: Sat Mar 18 07:51:01 2017
+File code lines: 53
+File directive lines: 3
+File comment lines: 0
+File blank lines: 30
+File bytes: 2865
+
+File name: http_asserts.h
+File folder: D:\Jeez\cpprestsdk\Release\tests\functional\http\utilities\include
+File creation date: Sat Mar 18 07:51:01 2017
+File modification date: Sat Mar 18 07:51:01 2017
+File code lines: 119
+File directive lines: 19
+File comment lines: 50
+File blank lines: 40
+File bytes: 8522
+
+File name: http_test_utilities.h
+File folder: D:\Jeez\cpprestsdk\Release\tests\functional\http\utilities\include
+File creation date: Sat Mar 18 07:51:01 2017
+File modification date: Sat Mar 18 07:51:01 2017
+File code lines: 6
+File directive lines: 6
+File comment lines: 0
+File blank lines: 6
+File bytes: 658
+
+File name: http_test_utilities_public.h
+File folder: D:\Jeez\cpprestsdk\Release\tests\functional\http\utilities\include
+File creation date: Sat Mar 18 07:51:01 2017
+File modification date: Sat Mar 18 07:51:01 2017
+File code lines: 6
+File directive lines: 11
+File comment lines: 0
+File blank lines: 7
+File bytes: 847
+
+File name: test_http_client.h
+File folder: D:\Jeez\cpprestsdk\Release\tests\functional\http\utilities\include
+File creation date: Sat Mar 18 07:51:01 2017
+File modification date: Sat Mar 18 07:51:01 2017
+File code lines: 79
+File directive lines: 5
+File comment lines: 13
+File blank lines: 48
+File bytes: 3847
+
+File name: test_http_server.h
+File folder: D:\Jeez\cpprestsdk\Release\tests\functional\http\utilities\include
+File creation date: Sat Mar 18 07:51:01 2017
+File modification date: Sat Mar 18 07:51:01 2017
+File code lines: 73
+File directive lines: 6
+File comment lines: 20
+File blank lines: 42
+File bytes: 3903
+
+File name: test_server_utilities.h
+File folder: D:\Jeez\cpprestsdk\Release\tests\functional\http\utilities\include
+File creation date: Sat Mar 18 07:51:01 2017
+File modification date: Sat Mar 18 07:51:01 2017
+File code lines: 38
+File directive lines: 4
+File comment lines: 4
+File blank lines: 17
+File bytes: 1925
+
+File name: construction_tests.cpp
+File folder: D:\Jeez\cpprestsdk\Release\tests\functional\json
+File creation date: Sat Mar 18 07:51:02 2017
+File modification date: Sat Mar 18 07:51:02 2017
+File code lines: 333
+File directive lines: 3
+File comment lines: 18
+File blank lines: 138
+File bytes: 13937
+
+File name: fuzz_tests.cpp
+File folder: D:\Jeez\cpprestsdk\Release\tests\functional\json
+File creation date: Sat Mar 18 07:51:02 2017
+File modification date: Sat Mar 18 07:51:02 2017
+File code lines: 35
+File directive lines: 5
+File comment lines: 2
+File blank lines: 35
+File bytes: 1860
+
+File name: iterator_tests.cpp
+File folder: D:\Jeez\cpprestsdk\Release\tests\functional\json
+File creation date: Sat Mar 18 07:51:02 2017
+File modification date: Sat Mar 18 07:51:02 2017
+File code lines: 202
+File directive lines: 2
+File comment lines: 4
+File blank lines: 104
+File bytes: 6425
+
+File name: json_numbers_tests.cpp
+File folder: D:\Jeez\cpprestsdk\Release\tests\functional\json
+File creation date: Sat Mar 18 07:51:02 2017
+File modification date: Sat Mar 18 07:51:02 2017
+File code lines: 184
+File directive lines: 6
+File comment lines: 24
+File blank lines: 94
+File bytes: 9330
+
+File name: json_tests.h
+File folder: D:\Jeez\cpprestsdk\Release\tests\functional\json
+File creation date: Sat Mar 18 07:51:02 2017
+File modification date: Sat Mar 18 07:51:02 2017
+File code lines: 8
+File directive lines: 2
+File comment lines: 0
+File blank lines: 10
+File bytes: 575
+
+File name: negative_parsing_tests.cpp
+File folder: D:\Jeez\cpprestsdk\Release\tests\functional\json
+File creation date: Sat Mar 18 07:51:02 2017
+File modification date: Sat Mar 18 07:51:02 2017
+File code lines: 117
+File directive lines: 3
+File comment lines: 4
+File blank lines: 65
+File bytes: 3822
+
+File name: parsing_tests.cpp
+File folder: D:\Jeez\cpprestsdk\Release\tests\functional\json
+File creation date: Sat Mar 18 07:51:02 2017
+File modification date: Sat Mar 18 07:51:02 2017
+File code lines: 0
+File directive lines: 0
+File comment lines: 0
+File blank lines: 0
+File bytes: 0
+
+File name: stdafx.cpp
+File folder: D:\Jeez\cpprestsdk\Release\tests\functional\json
+File creation date: Sat Mar 18 07:51:02 2017
+File modification date: Sat Mar 18 07:51:02 2017
+File code lines: 4
+File directive lines: 3
+File comment lines: 2
+File blank lines: 5
+File bytes: 442
+
+File name: stdafx.h
+File folder: D:\Jeez\cpprestsdk\Release\tests\functional\json
+File creation date: Sat Mar 18 07:51:02 2017
+File modification date: Sat Mar 18 07:51:02 2017
+File code lines: 7
+File directive lines: 5
+File comment lines: 0
+File blank lines: 9
+File bytes: 515
+
+File name: to_as_and_operators_tests.cpp
+File folder: D:\Jeez\cpprestsdk\Release\tests\functional\json
+File creation date: Sat Mar 18 07:51:02 2017
+File modification date: Sat Mar 18 07:51:02 2017
+File code lines: 310
+File directive lines: 3
+File comment lines: 17
+File blank lines: 127
+File bytes: 12257
+
+File name: header_test1.cpp
+File folder: D:\Jeez\cpprestsdk\Release\tests\functional\misc\atl_headers
+File creation date: Sat Mar 18 07:51:02 2017
+File modification date: Sat Mar 18 07:51:02 2017
+File code lines: 10
+File directive lines: 25
+File comment lines: 4
+File blank lines: 23
+File bytes: 1745
+
+File name: header_test2.cpp
+File folder: D:\Jeez\cpprestsdk\Release\tests\functional\misc\atl_headers
+File creation date: Sat Mar 18 07:51:02 2017
+File modification date: Sat Mar 18 07:51:02 2017
+File code lines: 10
+File directive lines: 26
+File comment lines: 4
+File blank lines: 22
+File bytes: 1833
+
+File name: Resource.h
+File folder: D:\Jeez\cpprestsdk\Release\tests\functional\misc\atl_headers
+File creation date: Sat Mar 18 07:51:02 2017
+File modification date: Sat Mar 18 07:51:02 2017
+File code lines: 1
+File directive lines: 9
+File comment lines: 3
+File blank lines: 4
+File bytes: 401
+
+File name: version.cpp
+File folder: D:\Jeez\cpprestsdk\Release\tests\functional\misc\version
+File creation date: Sat Mar 18 07:51:02 2017
+File modification date: Sat Mar 18 07:51:02 2017
+File code lines: 12
+File directive lines: 2
+File comment lines: 2
+File blank lines: 15
+File bytes: 902
+
+File name: pplxtask_tests.cpp
+File folder: D:\Jeez\cpprestsdk\Release\tests\functional\pplx\pplx_test
+File creation date: Sat Mar 18 07:51:02 2017
+File modification date: Sat Mar 18 07:51:02 2017
+File code lines: 1010
+File directive lines: 13
+File comment lines: 60
+File blank lines: 878
+File bytes: 39463
+
+File name: pplx_op_test.cpp
+File folder: D:\Jeez\cpprestsdk\Release\tests\functional\pplx\pplx_test
+File creation date: Sat Mar 18 07:51:02 2017
+File modification date: Sat Mar 18 07:51:02 2017
+File code lines: 167
+File directive lines: 11
+File comment lines: 22
+File blank lines: 176
+File bytes: 6431
+
+File name: pplx_task_options.cpp
+File folder: D:\Jeez\cpprestsdk\Release\tests\functional\pplx\pplx_test
+File creation date: Sat Mar 18 07:51:02 2017
+File modification date: Sat Mar 18 07:51:02 2017
+File code lines: 235
+File directive lines: 11
+File comment lines: 12
+File blank lines: 193
+File bytes: 10392
+
+File name: stdafx.cpp
+File folder: D:\Jeez\cpprestsdk\Release\tests\functional\pplx\pplx_test
+File creation date: Sat Mar 18 07:51:02 2017
+File modification date: Sat Mar 18 07:51:02 2017
+File code lines: 4
+File directive lines: 3
+File comment lines: 2
+File blank lines: 5
+File bytes: 442
+
+File name: stdafx.h
+File folder: D:\Jeez\cpprestsdk\Release\tests\functional\pplx\pplx_test
+File creation date: Sat Mar 18 07:51:02 2017
+File modification date: Sat Mar 18 07:51:02 2017
+File code lines: 6
+File directive lines: 19
+File comment lines: 0
+File blank lines: 10
+File bytes: 760
+
+File name: CppSparseFile.cpp
+File folder: D:\Jeez\cpprestsdk\Release\tests\functional\streams
+File creation date: Sat Mar 18 07:51:02 2017
+File modification date: Sat Mar 18 07:51:02 2017
+File code lines: 133
+File directive lines: 4
+File comment lines: 22
+File blank lines: 82
+File bytes: 6567
+
+File name: CppSparseFile.h
+File folder: D:\Jeez\cpprestsdk\Release\tests\functional\streams
+File creation date: Sat Mar 18 07:51:02 2017
+File modification date: Sat Mar 18 07:51:02 2017
+File code lines: 42
+File directive lines: 6
+File comment lines: 0
+File blank lines: 36
+File bytes: 1996
+
+File name: fstreambuf_tests.cpp
+File folder: D:\Jeez\cpprestsdk\Release\tests\functional\streams
+File creation date: Sat Mar 18 07:51:03 2017
+File modification date: Sat Mar 18 07:51:03 2017
+File code lines: 556
+File directive lines: 42
+File comment lines: 42
+File blank lines: 450
+File bytes: 23829
+
+File name: fuzz_tests.cpp
+File folder: D:\Jeez\cpprestsdk\Release\tests\functional\streams
+File creation date: Sat Mar 18 07:51:03 2017
+File modification date: Sat Mar 18 07:51:03 2017
+File code lines: 61
+File directive lines: 1
+File comment lines: 2
+File blank lines: 49
+File bytes: 2559
+
+File name: istream_tests.cpp
+File folder: D:\Jeez\cpprestsdk\Release\tests\functional\streams
+File creation date: Sat Mar 18 07:51:03 2017
+File modification date: Sat Mar 18 07:51:03 2017
+File code lines: 900
+File directive lines: 55
+File comment lines: 48
+File blank lines: 574
+File bytes: 40844
+
+File name: memstream_tests.cpp
+File folder: D:\Jeez\cpprestsdk\Release\tests\functional\streams
+File creation date: Sat Mar 18 07:51:03 2017
+File modification date: Sat Mar 18 07:51:03 2017
+File code lines: 1493
+File directive lines: 12
+File comment lines: 100
+File blank lines: 975
+File bytes: 63098
+
+File name: ostream_tests.cpp
+File folder: D:\Jeez\cpprestsdk\Release\tests\functional\streams
+File creation date: Sat Mar 18 07:51:03 2017
+File modification date: Sat Mar 18 07:51:03 2017
+File code lines: 220
+File directive lines: 16
+File comment lines: 10
+File blank lines: 148
+File bytes: 9639
+
+File name: prefix.h
+File folder: D:\Jeez\cpprestsdk\Release\tests\functional\streams
+File creation date: Sat Mar 18 07:51:03 2017
+File modification date: Sat Mar 18 07:51:03 2017
+File code lines: 24
+File directive lines: 22
+File comment lines: 0
+File blank lines: 18
+File bytes: 2033
+
+File name: stdafx.cpp
+File folder: D:\Jeez\cpprestsdk\Release\tests\functional\streams
+File creation date: Sat Mar 18 07:51:03 2017
+File modification date: Sat Mar 18 07:51:03 2017
+File code lines: 4
+File directive lines: 3
+File comment lines: 2
+File blank lines: 6
+File bytes: 445
+
+File name: stdafx.h
+File folder: D:\Jeez\cpprestsdk\Release\tests\functional\streams
+File creation date: Sat Mar 18 07:51:03 2017
+File modification date: Sat Mar 18 07:51:03 2017
+File code lines: 8
+File directive lines: 21
+File comment lines: 0
+File blank lines: 13
+File bytes: 967
+
+File name: stdstream_tests.cpp
+File folder: D:\Jeez\cpprestsdk\Release\tests\functional\streams
+File creation date: Sat Mar 18 07:51:03 2017
+File modification date: Sat Mar 18 07:51:03 2017
+File code lines: 417
+File directive lines: 19
+File comment lines: 17
+File blank lines: 351
+File bytes: 18135
+
+File name: streams_tests.h
+File folder: D:\Jeez\cpprestsdk\Release\tests\functional\streams
+File creation date: Sat Mar 18 07:51:03 2017
+File modification date: Sat Mar 18 07:51:03 2017
+File code lines: 47
+File directive lines: 3
+File comment lines: 1
+File blank lines: 26
+File bytes: 3358
+
+File name: winrt_interop_tests.cpp
+File folder: D:\Jeez\cpprestsdk\Release\tests\functional\streams
+File creation date: Sat Mar 18 07:51:03 2017
+File modification date: Sat Mar 18 07:51:03 2017
+File code lines: 158
+File directive lines: 3
+File comment lines: 1
+File blank lines: 90
+File bytes: 6879
+
+File name: accessor_tests.cpp
+File folder: D:\Jeez\cpprestsdk\Release\tests\functional\uri
+File creation date: Sat Mar 18 07:51:03 2017
+File modification date: Sat Mar 18 07:51:03 2017
+File code lines: 27
+File directive lines: 1
+File comment lines: 1
+File blank lines: 21
+File bytes: 1240
+
+File name: combining_tests.cpp
+File folder: D:\Jeez\cpprestsdk\Release\tests\functional\uri
+File creation date: Sat Mar 18 07:51:03 2017
+File modification date: Sat Mar 18 07:51:03 2017
+File code lines: 45
+File directive lines: 1
+File comment lines: 1
+File blank lines: 37
+File bytes: 2127
+
+File name: constructor_tests.cpp
+File folder: D:\Jeez\cpprestsdk\Release\tests\functional\uri
+File creation date: Sat Mar 18 07:51:03 2017
+File modification date: Sat Mar 18 07:51:03 2017
+File code lines: 166
+File directive lines: 1
+File comment lines: 17
+File blank lines: 76
+File bytes: 8178
+
+File name: conversions_tests.cpp
+File folder: D:\Jeez\cpprestsdk\Release\tests\functional\uri
+File creation date: Sat Mar 18 07:51:03 2017
+File modification date: Sat Mar 18 07:51:03 2017
+File code lines: 22
+File directive lines: 1
+File comment lines: 1
+File blank lines: 24
+File bytes: 1160
+
+File name: diagnostic_tests.cpp
+File folder: D:\Jeez\cpprestsdk\Release\tests\functional\uri
+File creation date: Sat Mar 18 07:51:03 2017
+File modification date: Sat Mar 18 07:51:03 2017
+File code lines: 60
+File directive lines: 1
+File comment lines: 1
+File blank lines: 50
+File bytes: 3506
+
+File name: encoding_tests.cpp
+File folder: D:\Jeez\cpprestsdk\Release\tests\functional\uri
+File creation date: Sat Mar 18 07:51:03 2017
+File modification date: Sat Mar 18 07:51:03 2017
+File code lines: 63
+File directive lines: 6
+File comment lines: 13
+File blank lines: 47
+File bytes: 3550
+
+File name: operator_tests.cpp
+File folder: D:\Jeez\cpprestsdk\Release\tests\functional\uri
+File creation date: Sat Mar 18 07:51:03 2017
+File modification date: Sat Mar 18 07:51:03 2017
+File code lines: 41
+File directive lines: 1
+File comment lines: 1
+File blank lines: 30
+File bytes: 2171
+
+File name: splitting_tests.cpp
+File folder: D:\Jeez\cpprestsdk\Release\tests\functional\uri
+File creation date: Sat Mar 18 07:51:03 2017
+File modification date: Sat Mar 18 07:51:03 2017
+File code lines: 109
+File directive lines: 1
+File comment lines: 7
+File blank lines: 55
+File bytes: 4993
+
+File name: stdafx.cpp
+File folder: D:\Jeez\cpprestsdk\Release\tests\functional\uri
+File creation date: Sat Mar 18 07:51:03 2017
+File modification date: Sat Mar 18 07:51:03 2017
+File code lines: 4
+File directive lines: 3
+File comment lines: 2
+File blank lines: 6
+File bytes: 442
+
+File name: stdafx.h
+File folder: D:\Jeez\cpprestsdk\Release\tests\functional\uri
+File creation date: Sat Mar 18 07:51:03 2017
+File modification date: Sat Mar 18 07:51:03 2017
+File code lines: 7
+File directive lines: 5
+File comment lines: 0
+File blank lines: 8
+File bytes: 539
+
+File name: uri_builder_tests.cpp
+File folder: D:\Jeez\cpprestsdk\Release\tests\functional\uri
+File creation date: Sat Mar 18 07:51:03 2017
+File modification date: Sat Mar 18 07:51:03 2017
+File code lines: 306
+File directive lines: 5
+File comment lines: 38
+File blank lines: 137
+File bytes: 13223
+
+File name: uri_tests.h
+File folder: D:\Jeez\cpprestsdk\Release\tests\functional\uri
+File creation date: Sat Mar 18 07:51:03 2017
+File modification date: Sat Mar 18 07:51:03 2017
+File code lines: 8
+File directive lines: 2
+File comment lines: 0
+File blank lines: 10
+File bytes: 571
+
+File name: base64.cpp
+File folder: D:\Jeez\cpprestsdk\Release\tests\functional\utils
+File creation date: Sat Mar 18 07:51:03 2017
+File modification date: Sat Mar 18 07:51:03 2017
+File code lines: 138
+File directive lines: 1
+File comment lines: 26
+File blank lines: 87
+File bytes: 7601
+
+File name: datetime.cpp
+File folder: D:\Jeez\cpprestsdk\Release\tests\functional\utils
+File creation date: Sat Mar 18 07:51:03 2017
+File modification date: Sat Mar 18 07:51:03 2017
+File code lines: 69
+File directive lines: 1
+File comment lines: 21
+File blank lines: 84
+File bytes: 4898
+
+File name: macro_test.cpp
+File folder: D:\Jeez\cpprestsdk\Release\tests\functional\utils
+File creation date: Sat Mar 18 07:51:03 2017
+File modification date: Sat Mar 18 07:51:03 2017
+File code lines: 14
+File directive lines: 5
+File comment lines: 0
+File blank lines: 15
+File bytes: 755
+
+File name: nonce_generator_tests.cpp
+File folder: D:\Jeez\cpprestsdk\Release\tests\functional\utils
+File creation date: Sat Mar 18 07:51:03 2017
+File modification date: Sat Mar 18 07:51:03 2017
+File code lines: 26
+File directive lines: 1
+File comment lines: 2
+File blank lines: 26
+File bytes: 1255
+
+File name: stdafx.cpp
+File folder: D:\Jeez\cpprestsdk\Release\tests\functional\utils
+File creation date: Sat Mar 18 07:51:03 2017
+File modification date: Sat Mar 18 07:51:03 2017
+File code lines: 4
+File directive lines: 3
+File comment lines: 2
+File blank lines: 6
+File bytes: 442
+
+File name: stdafx.h
+File folder: D:\Jeez\cpprestsdk\Release\tests\functional\utils
+File creation date: Sat Mar 18 07:51:03 2017
+File modification date: Sat Mar 18 07:51:03 2017
+File code lines: 7
+File directive lines: 6
+File comment lines: 0
+File blank lines: 8
+File bytes: 574
+
+File name: strings.cpp
+File folder: D:\Jeez\cpprestsdk\Release\tests\functional\utils
+File creation date: Sat Mar 18 07:51:03 2017
+File modification date: Sat Mar 18 07:51:03 2017
+File code lines: 195
+File directive lines: 48
+File comment lines: 27
+File blank lines: 83
+File bytes: 10619
+
+File name: utils_tests.h
+File folder: D:\Jeez\cpprestsdk\Release\tests\functional\utils
+File creation date: Sat Mar 18 07:51:03 2017
+File modification date: Sat Mar 18 07:51:03 2017
+File code lines: 8
+File directive lines: 1
+File comment lines: 0
+File blank lines: 9
+File bytes: 554
+
+File name: authentication_tests.cpp
+File folder: D:\Jeez\cpprestsdk\Release\tests\functional\websockets\client
+File creation date: Sat Mar 18 07:51:04 2017
+File modification date: Sat Mar 18 07:51:04 2017
+File code lines: 103
+File directive lines: 7
+File comment lines: 20
+File blank lines: 111
+File bytes: 5550
+
+File name: client_construction.cpp
+File folder: D:\Jeez\cpprestsdk\Release\tests\functional\websockets\client
+File creation date: Sat Mar 18 07:51:04 2017
+File modification date: Sat Mar 18 07:51:04 2017
+File code lines: 135
+File directive lines: 3
+File comment lines: 11
+File blank lines: 94
+File bytes: 7137
+
+File name: close_tests.cpp
+File folder: D:\Jeez\cpprestsdk\Release\tests\functional\websockets\client
+File creation date: Sat Mar 18 07:51:04 2017
+File modification date: Sat Mar 18 07:51:04 2017
+File code lines: 73
+File directive lines: 3
+File comment lines: 11
+File blank lines: 69
+File bytes: 4113
+
+File name: error_tests.cpp
+File folder: D:\Jeez\cpprestsdk\Release\tests\functional\websockets\client
+File creation date: Sat Mar 18 07:51:04 2017
+File modification date: Sat Mar 18 07:51:04 2017
+File code lines: 81
+File directive lines: 5
+File comment lines: 15
+File blank lines: 63
+File bytes: 4103
+
+File name: proxy_tests.cpp
+File folder: D:\Jeez\cpprestsdk\Release\tests\functional\websockets\client
+File creation date: Sat Mar 18 07:51:04 2017
+File modification date: Sat Mar 18 07:51:04 2017
+File code lines: 38
+File directive lines: 7
+File comment lines: 6
+File blank lines: 33
+File bytes: 2191
+
+File name: receive_msg_tests.cpp
+File folder: D:\Jeez\cpprestsdk\Release\tests\functional\websockets\client
+File creation date: Sat Mar 18 07:51:04 2017
+File modification date: Sat Mar 18 07:51:04 2017
+File code lines: 169
+File directive lines: 3
+File comment lines: 18
+File blank lines: 111
+File bytes: 8091
+
+File name: send_msg_tests.cpp
+File folder: D:\Jeez\cpprestsdk\Release\tests\functional\websockets\client
+File creation date: Sat Mar 18 07:51:04 2017
+File modification date: Sat Mar 18 07:51:04 2017
+File code lines: 271
+File directive lines: 13
+File comment lines: 30
+File blank lines: 172
+File bytes: 14765
+
+File name: stdafx.cpp
+File folder: D:\Jeez\cpprestsdk\Release\tests\functional\websockets\client
+File creation date: Sat Mar 18 07:51:04 2017
+File modification date: Sat Mar 18 07:51:04 2017
+File code lines: 4
+File directive lines: 3
+File comment lines: 2
+File blank lines: 5
+File bytes: 454
+
+File name: stdafx.h
+File folder: D:\Jeez\cpprestsdk\Release\tests\functional\websockets\client
+File creation date: Sat Mar 18 07:51:04 2017
+File modification date: Sat Mar 18 07:51:04 2017
+File code lines: 6
+File directive lines: 17
+File comment lines: 0
+File blank lines: 10
+File bytes: 850
+
+File name: websocket_client_tests.h
+File folder: D:\Jeez\cpprestsdk\Release\tests\functional\websockets\client
+File creation date: Sat Mar 18 07:51:04 2017
+File modification date: Sat Mar 18 07:51:04 2017
+File code lines: 12
+File directive lines: 3
+File comment lines: 0
+File blank lines: 13
+File bytes: 727
+
+File name: stdafx.cpp
+File folder: D:\Jeez\cpprestsdk\Release\tests\functional\websockets\utilities
+File creation date: Sat Mar 18 07:51:04 2017
+File modification date: Sat Mar 18 07:51:04 2017
+File code lines: 3
+File directive lines: 1
+File comment lines: 2
+File blank lines: 4
+File bytes: 374
+
+File name: stdafx.h
+File folder: D:\Jeez\cpprestsdk\Release\tests\functional\websockets\utilities
+File creation date: Sat Mar 18 07:51:04 2017
+File modification date: Sat Mar 18 07:51:04 2017
+File code lines: 6
+File directive lines: 17
+File comment lines: 3
+File blank lines: 10
+File bytes: 957
+
+File name: test_websocket_server.cpp
+File folder: D:\Jeez\cpprestsdk\Release\tests\functional\websockets\utilities
+File creation date: Sat Mar 18 07:51:04 2017
+File modification date: Sat Mar 18 07:51:04 2017
+File code lines: 142
+File directive lines: 27
+File comment lines: 14
+File blank lines: 112
+File bytes: 7131
+
+File name: test_websocket_server.h
+File folder: D:\Jeez\cpprestsdk\Release\tests\functional\websockets\utilities
+File creation date: Sat Mar 18 07:51:04 2017
+File modification date: Sat Mar 18 07:51:04 2017
+File code lines: 72
+File directive lines: 17
+File comment lines: 16
+File blank lines: 44
+File bytes: 5133
+
+
+----------------------------- Total Files: 481
+----------------------------- Total Lines: 125724
+
+Comments: 11205
+Code: 64158
+Compiler directives: 5546
+Blanks: 44815
+Total bytes: 3748849
+
+----------------------------- Stats: 
+
+Average lines per file: 261.38045738045736
+Average lines of comments per file: 23.295218295218294
+Average lines of code per file: 133.3846153846154
+Average lines of compiler directives per file: 11.53014553014553
+Average blank lines per file: 93.17047817047818
+
+Comments: 8.912379497947887%
+Code: 51.03082943590723%
+Compiler directives: 4.411250039769654%
+Blanks: 35.645541026375234%

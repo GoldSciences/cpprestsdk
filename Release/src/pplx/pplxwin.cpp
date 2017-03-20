@@ -1,16 +1,8 @@
-/***
-* Copyright (C) Microsoft. All rights reserved.
-* Licensed under the MIT license. See LICENSE.txt file in the project root for full license information.
-*
-* =+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+
-*
-* Windows specific implementation of PPL constructs
-*
-* For the latest on this and related APIs, please see: https://github.com/Microsoft/cpprestsdk
-*
-* =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
-****/
-
+// Windows specific implementation of PPL constructs
+// For the latest on this and related APIs, please see: https://github.com/Microsoft/cpprestsdk
+//
+// Copyright (C) Microsoft. All rights reserved.
+// Licensed under the MIT license. See LICENSE.txt file in the project root for full license information.
 #include "stdafx.h"
 
 #if !defined(_WIN32) || _MSC_VER < 1800 || CPPREST_FORCE_PPLX
@@ -25,27 +17,18 @@ namespace details
 {
     namespace platform
     {
-        _PPLXIMP long __cdecl GetCurrentThreadId()
-        {
-            return (long)(::GetCurrentThreadId());
-        }
-
-        _PPLXIMP void __cdecl YieldExecution()
-        {
-            YieldProcessor();
-        }
-
-        _PPLXIMP size_t __cdecl CaptureCallstack(void **stackData, size_t skipFrames, size_t captureFrames)
-        {
+        _PPLXIMP long				__cdecl	GetCurrentThreadId			()																{ return (long)(::GetCurrentThreadId()); }
+        _PPLXIMP void				__cdecl	YieldExecution				()																{ YieldProcessor(); }
+        _PPLXIMP size_t				__cdecl	CaptureCallstack			(void **stackData, size_t skipFrames, size_t captureFrames)		{
             (stackData);
             (skipFrames);
             (captureFrames);
 
-            size_t capturedFrames = 0;
+            size_t									capturedFrames				= 0;
             // RtlCaptureSTackBackTrace is not available in MSDK, so we only call it under Desktop or _DEBUG MSDK.
             //  For MSDK unsupported version, we will return zero frame number.
 #if !defined(__cplusplus_winrt)
-            capturedFrames = RtlCaptureStackBackTrace(static_cast<DWORD>(skipFrames + 1), static_cast<DWORD>(captureFrames), stackData, nullptr);
+            capturedFrames						= RtlCaptureStackBackTrace(static_cast<DWORD>(skipFrames + 1), static_cast<DWORD>(captureFrames), stackData, nullptr);
 #endif
             return capturedFrames;
         }

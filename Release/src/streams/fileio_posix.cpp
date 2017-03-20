@@ -1,20 +1,14 @@
-/***
-* Copyright (C) Microsoft. All rights reserved.
-* Licensed under the MIT license. See LICENSE.txt file in the project root for full license information.
-*
-* =+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+
-*
-* Asynchronous I/O: stream buffer implementation details
-*
-* We're going to some lengths to avoid exporting C++ class member functions and implementation details across
-* module boundaries, and the factoring requires that we keep the implementation details away from the main header
-* files. The supporting functions, which are in this file, use C-like signatures to avoid as many issues as
-* possible.
-*
-* For the latest on this and related APIs, please see: https://github.com/Microsoft/cpprestsdk
-*
-* =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
-****/
+// Asynchronous I/O: stream buffer implementation details
+//
+// We're going to some lengths to avoid exporting C++ class member functions and implementation details across
+// module boundaries, and the factoring requires that we keep the implementation details away from the main header
+// files. The supporting functions, which are in this file, use C-like signatures to avoid as many issues as
+// possible.
+//
+// For the latest on this and related APIs, please see: https://github.com/Microsoft/cpprestsdk
+//
+// Copyright (C) Microsoft. All rights reserved.
+// Licensed under the MIT license. See LICENSE.txt file in the project root for full license information.
 #include "stdafx.h"
 #include "cpprest/details/fileio.h"
 
@@ -23,17 +17,13 @@ using namespace Concurrency::streams::details;
 
 namespace Concurrency { namespace streams { namespace details {
 
-/***
-* ==++==
-*
-* Implementation details of the file stream buffer
-*
-* =-=-=-
-****/
+// ==++==
+// Implementation details of the file stream buffer
+// =-=-=-
 
-/// The public parts of the file information record contain only what is implementation-
-/// independent. The actual allocated record is larger and has details that the implementation
-/// require in order to function.
+// The public parts of the file information record contain only what is implementation-
+// independent. The actual allocated record is larger and has details that the implementation
+// require in order to function.
 struct _file_info_impl : _file_info
 {
     _file_info_impl(int handle, std::ios_base::openmode mode, bool buffer_reads) :
@@ -56,15 +46,14 @@ struct _file_info_impl : _file_info
 
 }}}
 
-/// Perform post-CreateFile processing.
-/// <param name="fh">The Win32 file handle
-/// <param name="callback">The callback interface pointer
-/// <param name="mode">The C++ file open mode
-/// Returns the error code if there was an error in file creation.
+// Perform post-CreateFile processing.
+// <param name="fh">The Win32 file handle
+// <param name="callback">The callback interface pointer
+// <param name="mode">The C++ file open mode
+// Returns the error code if there was an error in file creation.
 bool _finish_create(int fh, _filestream_callback *callback, std::ios_base::openmode mode, int /* prot */)
 {
-    if (fh != -1)
-    {
+    if (fh != -1) {
         // Buffer reads internally if and only if we're just reading (not also writing) and
         // if the file is opened exclusively. If either is false, we're better off just
         // letting the OS do its buffering, even if it means that prompt reads won't
@@ -73,55 +62,38 @@ bool _finish_create(int fh, _filestream_callback *callback, std::ios_base::openm
 
         // seek to end if requested
         if (mode & std::ios_base::ate)
-        {
             lseek(fh, 0, SEEK_END);
-        }
 
         auto info = new _file_info_impl(fh, mode, buffer);
 
         if (mode & std::ios_base::app || mode & std::ios_base::ate)
-        {
             info->m_wrpos = static_cast<size_t>(-1); // Start at the end of the file.
-        }
 
         callback->on_opened(info);
         return true;
     }
-    else
-    {
+    else {
         callback->on_error(std::make_exception_ptr(utility::details::create_system_error(errno)));
         return false;
     }
 }
 
-int get_open_flags(std::ios_base::openmode mode)
-{
+int get_open_flags(std::ios_base::openmode mode){
     int result = 0;
-    if (mode & std::ios_base::in)
-    {
+    if (mode & std::ios_base::in) {
         if (mode & std::ios_base::out)
-        {
             result = O_RDWR;
-        }
         else
-        {
             result = O_RDONLY;
-        }
     }
     else if (mode & std::ios_base::out)
-    {
         result = O_WRONLY|O_CREAT;
-    }
 
     if (mode & std::ios_base::app)
-    {
         result |= O_APPEND;
-    }
 
     if (mode & std::ios_base::trunc)
-    {
         result |= O_TRUNC|O_CREAT;
-    }
 
     return result;
 }
@@ -135,7 +107,8 @@ int get_open_flags(std::ios_base::openmode mode)
 /// True does not signal that the file will eventually be successfully opened, just that the process was started.
 bool _open_fsb_str(_filestream_callback *callback, const char *filename, std::ios_base::openmode mode, int prot)
 {
-    if ( callback == nullptr || filename == nullptr) return false;
+    if ( callback == nullptr || filename == nullptr) 
+		return false;
 
     std::string name(filename);
 
@@ -143,9 +116,7 @@ bool _open_fsb_str(_filestream_callback *callback, const char *filename, std::io
     {
         int cmode = get_open_flags(mode);
         if(cmode==O_RDWR)
-        {
             cmode |= O_CREAT;
-        }
 
         int f = open(name.c_str(), cmode, 0600);
 
@@ -180,25 +151,17 @@ bool _close_fsb_nolock(_file_info **info, Concurrency::streams::details::_filest
                 pplx::extensibility::scoped_recursive_lock_t lock(fInfo->m_lock);
 
                 if ( fInfo->m_handle != -1 )
-                {
                     result = close(fInfo->m_handle) != -1;
-                }
 
                 if ( fInfo->m_buffer != nullptr )
-                {
                     delete[] fInfo->m_buffer;
-                }
             }
 
             delete fInfo;
             if (result)
-            {
                 callback->on_closed();
-            }
             else
-            {
                 callback->on_error(std::make_exception_ptr(utility::details::create_system_error(errno)));
-            }
         });
 
     *info = nullptr;
@@ -221,7 +184,7 @@ bool _close_fsb(_file_info **info, Concurrency::streams::details::_filestream_ca
 /// <param name="callback">A pointer to the callback interface to invoke when the write request is completed.
 /// <param name="ptr">A pointer to the data to write
 /// <param name="count">The size (in bytes) of the data
-/// <returns>0 if the write request is still outstanding, -1 if the request failed, otherwise the size of the data written
+/// Returns 0 if the write request is still outstanding, -1 if the request failed, otherwise the size of the data written
 size_t _write_file_async(Concurrency::streams::details::_file_info_impl *fInfo, Concurrency::streams::details::_filestream_callback *callback, const void *ptr, size_t count, size_t position)
 {
     ++fInfo->m_outstanding_writes;
@@ -231,14 +194,12 @@ size_t _write_file_async(Concurrency::streams::details::_file_info_impl *fInfo, 
         off_t abs_position;
         bool must_restore_pos;
         off_t orig_pos;
-        if( position == static_cast<size_t>(-1) )
-        {
+        if( position == static_cast<size_t>(-1) ) {
             orig_pos = lseek(fInfo->m_handle, 0, SEEK_CUR);
             abs_position = lseek(fInfo->m_handle, 0, SEEK_END);
             must_restore_pos = true;
         }
-        else
-        {
+        else {
             abs_position = position;
             orig_pos = 0;
             must_restore_pos = false;
@@ -246,29 +207,20 @@ size_t _write_file_async(Concurrency::streams::details::_file_info_impl *fInfo, 
 
         auto bytes_written = pwrite(fInfo->m_handle, ptr, count, abs_position);
         if (bytes_written == -1)
-        {
             callback->on_error(std::make_exception_ptr(utility::details::create_system_error(errno)));
-        }
 
         if(must_restore_pos)
-        {
             lseek(fInfo->m_handle, orig_pos, SEEK_SET);
-        }
 
         callback->on_completed(bytes_written);
-
         {
             pplx::extensibility::scoped_recursive_lock_t lock(fInfo->m_lock);
 
-            // Decrement the counter of outstanding write events.
-            if ( --fInfo->m_outstanding_writes == 0 )
-            {
+			// Decrement the counter of outstanding write events.
+            if ( --fInfo->m_outstanding_writes == 0 ) {
                 // If this was the last one, signal all objects waiting for it to complete.
-
                 for (auto iter = fInfo->m_sync_waiters.begin(); iter != fInfo->m_sync_waiters.end(); iter++)
-                {
                     (*iter)->on_completed(0);
-                }
                 fInfo->m_sync_waiters.clear();
             }
         }
@@ -283,20 +235,16 @@ size_t _write_file_async(Concurrency::streams::details::_file_info_impl *fInfo, 
 /// <param name="ptr">A pointer to a buffer where the data should be placed
 /// <param name="count">The size (in bytes) of the buffer
 /// <param name="offset">The offset in the file to read from
-/// <returns>0 if the read request is still outstanding, -1 if the request failed, otherwise the size of the data read into the buffer
+/// Returns 0 if the read request is still outstanding, -1 if the request failed, otherwise the size of the data read into the buffer
 size_t _read_file_async(Concurrency::streams::details::_file_info_impl *fInfo, Concurrency::streams::details::_filestream_callback *callback, void *ptr, size_t count, size_t offset)
 {
     pplx::create_task([=]() -> void
     {
         auto bytes_read = pread(fInfo->m_handle, ptr, count, offset);
         if (bytes_read < 0)
-        {
             callback->on_error(std::make_exception_ptr(utility::details::create_system_error(errno)));
-        }
         else
-        {
             callback->on_completed(bytes_read);
-        }
     });
 
     return 0;
@@ -308,21 +256,19 @@ class _filestream_callback_fill_buffer : public _filestream_callback
 public:
     _filestream_callback_fill_buffer(_file_info *info, _filestream_callback *callback, const Func &func) : m_info(info), m_func(func), m_callback(callback) { }
 
-    virtual void on_completed(size_t result) override
-    {
+    virtual void on_completed(size_t result) override {
         m_func(result);
         delete this;
     }
-    virtual void on_error(const std::exception_ptr &e) override
-    {
+    virtual void on_error(const std::exception_ptr &e) override {
         auto exptr = std::make_exception_ptr(e);
         m_callback->on_error(exptr);
         delete this;
     }
 private:
-    _file_info *m_info;
-    Func        m_func;
-    _filestream_callback *m_callback;
+    _file_info				* m_info;
+    Func					m_func;
+    _filestream_callback	* m_callback;
 };
 
 template<typename Func>
@@ -333,18 +279,15 @@ _filestream_callback_fill_buffer<Func> *create_callback(_file_info *info, _files
 
 static const size_t PageSize = 512;
 
-size_t _fill_buffer_fsb(_file_info_impl *fInfo, _filestream_callback *callback, size_t count, size_t charSize)
-{
+size_t _fill_buffer_fsb(_file_info_impl *fInfo, _filestream_callback *callback, size_t count, size_t charSize) {
     size_t byteCount = count * charSize;
-    if ( fInfo->m_buffer == nullptr )
-    {
+    if ( fInfo->m_buffer == nullptr ) {
         fInfo->m_bufsize = std::max(PageSize, byteCount);
         fInfo->m_buffer = new char[static_cast<size_t>(fInfo->m_bufsize)];
         fInfo->m_bufoff = fInfo->m_rdpos;
 
         auto cb = create_callback(fInfo, callback,
-            [=] (size_t result)
-            {
+            [=] (size_t result) {
                 pplx::extensibility::scoped_recursive_lock_t lock(fInfo->m_lock);
                 fInfo->m_buffill = result / charSize;
                 callback->on_completed(result);
@@ -359,16 +302,13 @@ size_t _fill_buffer_fsb(_file_info_impl *fInfo, _filestream_callback *callback, 
     size_t bufpos = fInfo->m_rdpos - fInfo->m_bufoff;
     size_t bufrem = fInfo->m_buffill - bufpos;
 
-    if ( bufrem < count )
-    {
+    if ( bufrem < count ) {
         fInfo->m_bufsize = std::max(PageSize, byteCount);
 
         // Then, we allocate a new buffer.
-
         char *newbuf = new char[static_cast<size_t>(fInfo->m_bufsize)];
 
         // Then, we copy the unread part to the new buffer and delete the old buffer
-
         if ( bufrem > 0 )
             memcpy(newbuf, fInfo->m_buffer + bufpos * charSize, bufrem * charSize);
 
@@ -379,8 +319,7 @@ size_t _fill_buffer_fsb(_file_info_impl *fInfo, _filestream_callback *callback, 
         fInfo->m_bufoff = fInfo->m_rdpos;
 
         auto cb = create_callback(fInfo, callback,
-            [=] (size_t result)
-            {
+            [=] (size_t result) {
                 pplx::extensibility::scoped_recursive_lock_t lock(fInfo->m_lock);
                 fInfo->m_buffill = result / charSize;
                 callback->on_completed(result + bufrem * charSize);
@@ -398,16 +337,18 @@ size_t _fill_buffer_fsb(_file_info_impl *fInfo, _filestream_callback *callback, 
 /// <param name="callback">A pointer to the callback interface to invoke when the write request is completed.
 /// <param name="ptr">A pointer to a buffer where the data should be placed
 /// <param name="count">The size (in bytes) of the buffer
-/// <returns>0 if the read request is still outstanding, -1 if the request failed, otherwise the size of the data read into the buffer
+/// Returns 0 if the read request is still outstanding, -1 if the request failed, otherwise the size of the data read into the buffer
 size_t _getn_fsb(Concurrency::streams::details::_file_info *info, Concurrency::streams::details::_filestream_callback *callback, void *ptr, size_t count, size_t charSize)
 {
-    if ( callback == nullptr || info == nullptr ) return static_cast<size_t>(-1);
+    if ( callback == nullptr || info == nullptr ) 
+		return static_cast<size_t>(-1);
 
     _file_info_impl *fInfo = (_file_info_impl *)info;
 
     pplx::extensibility::scoped_recursive_lock_t lock(info->m_lock);
 
-    if ( fInfo->m_handle == -1 ) return static_cast<size_t>(-1);
+    if ( fInfo->m_handle == -1 ) 
+		return static_cast<size_t>(-1);
 
     size_t byteCount = count * charSize;
 
@@ -424,9 +365,7 @@ size_t _getn_fsb(Concurrency::streams::details::_file_info *info, Concurrency::s
             });
 
         size_t read = _fill_buffer_fsb(fInfo, cb, count, charSize);
-
-        if ( static_cast<int>(read) > 0 )
-        {
+        if ( static_cast<int>(read) > 0 ) {
             auto copy = std::min(read, byteCount);
             auto bufoff = fInfo->m_rdpos - fInfo->m_bufoff;
             memcpy(ptr, fInfo->m_buffer + bufoff * charSize, copy);
@@ -437,9 +376,7 @@ size_t _getn_fsb(Concurrency::streams::details::_file_info *info, Concurrency::s
         return read;
     }
     else
-    {
         return _read_file_async(fInfo, callback, ptr, count, fInfo->m_rdpos * charSize);
-    }
 }
 
 /// Write data from a buffer into the file stream.
@@ -447,23 +384,22 @@ size_t _getn_fsb(Concurrency::streams::details::_file_info *info, Concurrency::s
 /// <param name="callback">A pointer to the callback interface to invoke when the write request is completed.
 /// <param name="ptr">A pointer to a buffer where the data should be placed
 /// <param name="count">The size (in bytes) of the buffer
-/// <returns>0 if the read request is still outstanding, -1 if the request failed, otherwise the size of the data read into the buffer
+/// Returns 0 if the read request is still outstanding, -1 if the request failed, otherwise the size of the data read into the buffer
 size_t _putn_fsb(Concurrency::streams::details::_file_info *info, Concurrency::streams::details::_filestream_callback *callback, const void *ptr, size_t count, size_t charSize)
 {
-    if (callback == nullptr || info == nullptr) return static_cast<size_t>(-1);
+    if (callback == nullptr || info == nullptr) 
+		return static_cast<size_t>(-1);
 
-    _file_info_impl *fInfo = static_cast<_file_info_impl *>(info);
+    _file_info_impl									* fInfo			= static_cast<_file_info_impl *>(info);
+    pplx::extensibility::scoped_recursive_lock_t	lock			(fInfo->m_lock);
+    if ( fInfo->m_handle == -1 ) 
+		return static_cast<size_t>(-1);
 
-    pplx::extensibility::scoped_recursive_lock_t lock(fInfo->m_lock);
-
-    if ( fInfo->m_handle == -1 ) return static_cast<size_t>(-1);
-
-    size_t byteSize = count * charSize;
+    size_t											byteSize		= count * charSize;
 
     // To preserve the async write order, we have to move the write head before read.
-    auto lastPos = fInfo->m_wrpos;
-    if (fInfo->m_wrpos != static_cast<size_t>(-1))
-    {
+    auto											lastPos			= fInfo->m_wrpos;
+    if (fInfo->m_wrpos != static_cast<size_t>(-1)) {
         fInfo->m_wrpos += count;
         lastPos *= charSize;
     }
@@ -477,14 +413,17 @@ size_t _putn_fsb(Concurrency::streams::details::_file_info *info, Concurrency::s
 /// Returns true if the request was initiated
 bool _sync_fsb(Concurrency::streams::details::_file_info *info, Concurrency::streams::details::_filestream_callback *callback)
 {
-    if ( callback == nullptr ) return false;
-    if ( info == nullptr ) return false;
+    if ( callback == nullptr ) 
+		return false;
+    if ( info == nullptr ) 
+		return false;
 
     _file_info_impl *fInfo = static_cast<_file_info_impl *>(info);
 
     pplx::extensibility::scoped_recursive_lock_t lock(fInfo->m_lock);
 
-    if ( fInfo->m_handle == -1 ) return false;
+    if ( fInfo->m_handle == -1 ) 
+		return false;
 
     if ( fInfo->m_outstanding_writes > 0 )
         fInfo->m_sync_waiters.push_back(callback);
@@ -500,16 +439,17 @@ bool _sync_fsb(Concurrency::streams::details::_file_info *info, Concurrency::str
 /// <returns>New file position or -1 if error
 size_t _seekrdtoend_fsb(Concurrency::streams::details::_file_info *info, int64_t offset, size_t char_size)
 {
-    if ( info == nullptr ) return static_cast<size_t>(-1);
+    if ( info == nullptr ) 
+		return static_cast<size_t>(-1);
 
     _file_info_impl *fInfo = static_cast<_file_info_impl *>(info);
 
     pplx::extensibility::scoped_recursive_lock_t lock(info->m_lock);
 
-    if ( fInfo->m_handle == -1 ) return static_cast<size_t>(-1);
+    if ( fInfo->m_handle == -1 ) 
+		return static_cast<size_t>(-1);
 
-    if ( fInfo->m_buffer != nullptr )
-    {
+    if ( fInfo->m_buffer != nullptr ){
         delete[] fInfo->m_buffer;
         fInfo->m_buffer = nullptr;
         fInfo->m_bufoff = fInfo->m_buffill = fInfo->m_bufsize = 0;
@@ -517,7 +457,8 @@ size_t _seekrdtoend_fsb(Concurrency::streams::details::_file_info *info, int64_t
 
     auto newpos = lseek(fInfo->m_handle, static_cast<off_t>(offset * char_size), SEEK_END);
 
-    if ( newpos == -1 ) return static_cast<size_t>(-1);
+    if ( newpos == -1 ) 
+		return static_cast<size_t>(-1);
 
     fInfo->m_rdpos = static_cast<size_t> (newpos) / char_size;
     return fInfo->m_rdpos;
@@ -525,28 +466,29 @@ size_t _seekrdtoend_fsb(Concurrency::streams::details::_file_info *info, int64_t
 
 utility::size64_t _get_size(_In_ concurrency::streams::details::_file_info *info, size_t char_size)
 {
-    if ( info == nullptr ) return static_cast<size_t>(-1);
+    if ( info == nullptr ) 
+		return static_cast<size_t>(-1);
 
     _file_info_impl *fInfo = static_cast<_file_info_impl *>(info);
 
     pplx::extensibility::scoped_recursive_lock_t lock(info->m_lock);
 
-    if ( fInfo->m_handle == -1 ) return static_cast<size_t>(-1);
+    if ( fInfo->m_handle == -1 ) 
+		return static_cast<size_t>(-1);
 
-    if ( fInfo->m_buffer != nullptr )
-    {
+    if ( fInfo->m_buffer != nullptr ) {
         delete[] fInfo->m_buffer;
         fInfo->m_buffer = nullptr;
         fInfo->m_bufoff = fInfo->m_buffill = fInfo->m_bufsize = 0;
     }
 
     auto oldpos = lseek(fInfo->m_handle, 0, SEEK_CUR);
-
-    if ( oldpos == -1 ) return utility::size64_t(-1);
+    if ( oldpos == -1 ) 
+		return utility::size64_t(-1);
 
     auto newpos = lseek(fInfo->m_handle, 0, SEEK_END);
-
-    if ( newpos == -1 ) return utility::size64_t(-1);
+    if ( newpos == -1 ) 
+		return utility::size64_t(-1);
 
     lseek(fInfo->m_handle, oldpos, SEEK_SET);
 
@@ -557,18 +499,18 @@ utility::size64_t _get_size(_In_ concurrency::streams::details::_file_info *info
 /// <param name="info">The file info record of the file
 /// <param name="pos">The new position (offset from the start) in the file stream
 /// <returns>New file position or -1 if error
-size_t _seekrdpos_fsb(Concurrency::streams::details::_file_info *info, size_t pos, size_t)
-{
-    if ( info == nullptr ) return static_cast<size_t>(-1);
+size_t _seekrdpos_fsb(Concurrency::streams::details::_file_info *info, size_t pos, size_t) {
+    if ( info == nullptr ) 
+		return static_cast<size_t>(-1);
 
     _file_info_impl *fInfo = static_cast<_file_info_impl *>(info);
 
     pplx::extensibility::scoped_recursive_lock_t lock(info->m_lock);
 
-    if ( fInfo->m_handle == -1 ) return static_cast<size_t>(-1);
+    if ( fInfo->m_handle == -1 ) 
+		return static_cast<size_t>(-1);
 
-    if ( pos < fInfo->m_bufoff || pos > (fInfo->m_bufoff+fInfo->m_buffill) )
-    {
+    if ( pos < fInfo->m_bufoff || pos > (fInfo->m_bufoff+fInfo->m_buffill) ) {
         delete[] fInfo->m_buffer;
         fInfo->m_buffer = nullptr;
         fInfo->m_bufoff = fInfo->m_buffill = fInfo->m_bufsize = 0;
@@ -582,15 +524,16 @@ size_t _seekrdpos_fsb(Concurrency::streams::details::_file_info *info, size_t po
 /// <param name="info">The file info record of the file
 /// <param name="pos">The new position (offset from the start) in the file stream
 /// <returns>New file position or -1 if error
-size_t _seekwrpos_fsb(Concurrency::streams::details::_file_info *info, size_t pos, size_t)
-{
-    if ( info == nullptr ) return static_cast<size_t>(-1);
+size_t _seekwrpos_fsb(Concurrency::streams::details::_file_info *info, size_t pos, size_t) {
+    if ( info == nullptr ) 
+		return static_cast<size_t>(-1);
 
     _file_info_impl *fInfo = static_cast<_file_info_impl *>(info);
 
     pplx::extensibility::scoped_recursive_lock_t lock(info->m_lock);
 
-    if ( fInfo->m_handle == -1 ) return static_cast<size_t>(-1);
+    if ( fInfo->m_handle == -1 ) 
+		return static_cast<size_t>(-1);
 
     fInfo->m_wrpos = pos;
     return fInfo->m_wrpos;

@@ -122,7 +122,7 @@ _ASYNCRTIMP bool __cdecl _close_fsb(_In_ concurrency::streams::details::_file_in
 /// <param name="callback">A pointer to the callback interface to invoke when the write request is completed.
 /// <param name="ptr">A pointer to a buffer where the data should be placed
 /// <param name="count">The size (in characters) of the buffer
-/// <returns>0 if the read request is still outstanding, -1 if the request failed, otherwise the size of the data read into the buffer
+/// Returns 0 if the read request is still outstanding, -1 if the request failed, otherwise the size of the data read into the buffer
 _ASYNCRTIMP size_t __cdecl _putn_fsb(_In_ concurrency::streams::details::_file_info *info, _In_ concurrency::streams::details::_filestream_callback *callback, const void *ptr, size_t count, size_t char_size);
 
 /// Read data from a file stream into a buffer
@@ -130,7 +130,7 @@ _ASYNCRTIMP size_t __cdecl _putn_fsb(_In_ concurrency::streams::details::_file_i
 /// <param name="callback">A pointer to the callback interface to invoke when the write request is completed.
 /// <param name="ptr">A pointer to a buffer where the data should be placed
 /// <param name="count">The size (in characters) of the buffer
-/// <returns>0 if the read request is still outstanding, -1 if the request failed, otherwise the size of the data read into the buffer
+/// Returns 0 if the read request is still outstanding, -1 if the request failed, otherwise the size of the data read into the buffer
 _ASYNCRTIMP size_t __cdecl _getn_fsb(_In_ concurrency::streams::details::_file_info *info, _In_ concurrency::streams::details::_filestream_callback *callback, _Out_writes_ (count) void *ptr, _In_ size_t count, size_t char_size);
 
 /// Flush all buffered data to the underlying file.

@@ -37,9 +37,7 @@ struct _file_info_impl : _file_info {
 
 using namespace streams::details;
 
-// Our extended OVERLAPPED record.
-//
-// The standard OVERLAPPED structure doesn't have any fields for application-specific data, so we must extend it.
+// Our extended OVERLAPPED record. The standard OVERLAPPED structure doesn't have any fields for application-specific data, so we must extend it.
 struct EXTENDED_OVERLAPPED : OVERLAPPED
 {
     EXTENDED_OVERLAPPED(LPOVERLAPPED_COMPLETION_ROUTINE func, streams::details::_filestream_callback *cb) : callback(cb), func(func) {
@@ -57,9 +55,7 @@ void CALLBACK IoCompletionCallback(
 {
     EXTENDED_OVERLAPPED *pExtOverlapped = static_cast<EXTENDED_OVERLAPPED *>(pOverlapped);
 
-    ////If dwErrorCode is 0xc0000011, it means STATUS_END_OF_FILE.
-    ////Map this error code to system error code:ERROR_HANDLE_EOF
-    if (dwErrorCode == 0xc0000011)
+    if (dwErrorCode == 0xc0000011)	// If dwErrorCode is 0xc0000011, it means STATUS_END_OF_FILE. Map this error code to system error code:ERROR_HANDLE_EOF
         dwErrorCode = ERROR_HANDLE_EOF;
     pExtOverlapped->func(dwErrorCode, dwNumberOfBytesTransfered, pOverlapped);
     delete pOverlapped;
@@ -116,8 +112,7 @@ void _get_create_flags(std::ios_base::openmode mode, int prot, DWORD &dwDesiredA
 }
 
 // Perform post-CreateFile processing.
-void _finish_create(HANDLE fileHandle, _In_ _filestream_callback *callback, std::ios_base::openmode mode, int prot)
-{
+void _finish_create(HANDLE fileHandle, _In_ _filestream_callback *callback, std::ios_base::openmode mode, int prot) {
     if (fileHandle == INVALID_HANDLE_VALUE) {
         callback->on_error(std::make_exception_ptr(utility::details::create_system_error(GetLastError())));
         return;
@@ -167,8 +162,7 @@ bool __cdecl _open_fsb_str(_In_ _filestream_callback *callback, const utility::c
 
     std::wstring name(filename);
 
-    pplx::create_task([=]()
-    {
+    pplx::create_task([=]() {
         DWORD dwDesiredAccess, dwCreationDisposition, dwShareMode;
         _get_create_flags(mode, prot, dwDesiredAccess, dwCreationDisposition, dwShareMode);
 
@@ -262,7 +256,7 @@ VOID CALLBACK _ReadFileCompletionRoutine(DWORD dwErrorCode, DWORD dwNumberOfByte
 /// <param name="callback">A pointer to the callback interface to invoke when the write request is completed.
 /// <param name="ptr">A pointer to the data to write
 /// <param name="count">The size (in bytes) of the data
-/// <returns>0 if the write request is still outstanding, -1 if the request failed, otherwise the size of the data written
+/// Returns 0 if the write request is still outstanding, -1 if the request failed, otherwise the size of the data written
 size_t _write_file_async(_In_ streams::details::_file_info_impl *fInfo, _In_ streams::details::_filestream_callback *callback, const void *ptr, size_t count, size_t position)
 {
     auto pOverlapped = std::unique_ptr<EXTENDED_OVERLAPPED>(new EXTENDED_OVERLAPPED(_WriteFileCompletionRoutine<streams::details::_file_info_impl>, callback));
@@ -342,7 +336,7 @@ size_t _write_file_async(_In_ streams::details::_file_info_impl *fInfo, _In_ str
 /// <param name="ptr">A pointer to a buffer where the data should be placed
 /// <param name="count">The size (in bytes) of the buffer
 /// <param name="offset">The offset in the file to read from
-/// <returns>0 if the read request is still outstanding, -1 if the request failed, otherwise the size of the data read into the buffer
+/// Returns 0 if the read request is still outstanding, -1 if the request failed, otherwise the size of the data read into the buffer
 size_t _read_file_async(_In_ streams::details::_file_info_impl *fInfo, _In_ streams::details::_filestream_callback *callback, _Out_writes_ (count) void *ptr, _In_ size_t count, size_t offset)
 {
     auto pOverlapped = std::unique_ptr<EXTENDED_OVERLAPPED>(new EXTENDED_OVERLAPPED(_ReadFileCompletionRoutine<streams::details::_file_info_impl>, callback));
@@ -594,7 +588,7 @@ size_t __cdecl _getn_fsb(_In_ streams::details::_file_info *info, _In_ streams::
 /// <param name="callback">A pointer to the callback interface to invoke when the write request is completed.
 /// <param name="ptr">A pointer to a buffer where the data should be placed
 /// <param name="count">The size (in characters) of the buffer
-/// <returns>0 if the read request is still outstanding, -1 if the request failed, otherwise the size of the data read into the buffer
+/// Returns 0 if the read request is still outstanding, -1 if the request failed, otherwise the size of the data read into the buffer
 size_t __cdecl _putn_fsb(_In_ streams::details::_file_info *info, _In_ streams::details::_filestream_callback *callback, const void *ptr, size_t count, size_t char_size)
 {
     _ASSERTE(info != nullptr);

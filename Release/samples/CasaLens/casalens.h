@@ -9,38 +9,36 @@
 
 // Credentials class to manage the service URLs, key name and api-keys.
 struct casalens_creds {
-    static			const utility::string_t								events_url;
-    static			const utility::string_t								movies_url;
-    static			const utility::string_t								images_url;
-    static			const utility::string_t								weather_url;
-    static			const utility::string_t								bmaps_url;
-    static			const utility::string_t								gmaps_url;
-
-    static			const utility::string_t								events_keyname;
-    static			const utility::string_t								events_key;
-    static			const utility::string_t								movies_keyname;
-    static			const utility::string_t								movies_key;
-    static			const utility::string_t								images_keyname;
-    static			const utility::string_t								images_key;
-    static			const utility::string_t								bmaps_keyname;
-    static			const utility::string_t								bmaps_key;
+    static			const utility::string_t								url_events			;
+    static			const utility::string_t								url_movies			;
+    static			const utility::string_t								url_images			;
+    static			const utility::string_t								url_weather			;
+    static			const utility::string_t								url_bmaps			;
+    static			const utility::string_t								url_gmaps			;
+																		
+    static			const utility::string_t								keyname_events		;
+    static			const utility::string_t								keyname_movies		;
+    static			const utility::string_t								keyname_images		;
+    static			const utility::string_t								keyname_bmaps		;
+    static			const utility::string_t								key_events			;
+    static			const utility::string_t								key_movies			;
+    static			const utility::string_t								key_images			;
+    static			const utility::string_t								key_bmaps			;
 };
 
-// This class implements the CasaLens server functionality.
-// It maintains a http_listener, registers to listen for requests.
-// Also implements the handlers to respond to requests and methods to fetch 
-// and aggregate data from different services.
+// This class implements the CasaLens server functionality. It maintains a http_listener, registers to listen for requests.
+// Also implements the handlers to respond to requests and methods to fetch and aggregate data from different services.
 class CasaLens {
    // Error handlers
     static			const int											num_events							= 5;
     static			const int											num_images							= 5;
     static			const int											num_movies							= 5;
 
-    static			const utility::string_t								events_json_key;
-    static			const utility::string_t								movies_json_key;
-    static			const utility::string_t								weather_json_key;
-    static			const utility::string_t								images_json_key;
-    static			const utility::string_t								error_json_key;
+    static			const utility::string_t								json_key_events		;
+    static			const utility::string_t								json_key_movies		;
+    static			const utility::string_t								json_key_weather	;
+    static			const utility::string_t								json_key_images		;
+    static			const utility::string_t								json_key_error		;
 
 					web::http::experimental::listener::http_listener	m_listener;			// HTTP listener 
  					concurrency::reader_writer_lock						m_rwlock;			// Lock to the in memory cache (m_data)

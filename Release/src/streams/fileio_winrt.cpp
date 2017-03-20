@@ -222,7 +222,7 @@ bool __cdecl _close_fsb(_In_ _file_info **info, _In_ Concurrency::streams::detai
 /// <param name="ptr">A pointer to a buffer where the data should be placed
 /// <param name="count">The size (in bytes) of the buffer
 /// <param name="offset">The offset in the file to read from
-/// <returns>0 if the read request is still outstanding, -1 if the request failed, otherwise the size of the data read into the buffer
+/// Returns 0 if the read request is still outstanding, -1 if the request failed, otherwise the size of the data read into the buffer
 size_t __cdecl _read_file_async(_In_ Concurrency::streams::details::_file_info_impl *fInfo, _In_ Concurrency::streams::details::_filestream_callback *callback, _Out_writes_ (count) void *ptr, _In_ size_t count, size_t offset)
 {
     if ( fInfo->m_stream == nullptr )
@@ -411,7 +411,7 @@ size_t _fill_buffer_fsb(_In_ _file_info_impl *fInfo, _In_ _filestream_callback *
 /// <param name="callback">A pointer to the callback interface to invoke when the write request is completed.
 /// <param name="ptr">A pointer to a buffer where the data should be placed
 /// <param name="count">The size (in characters) of the buffer
-/// <returns>0 if the read request is still outstanding, -1 if the request failed, otherwise the size of the data read into the buffer
+/// Returns 0 if the read request is still outstanding, -1 if the request failed, otherwise the size of the data read into the buffer
 size_t __cdecl _getn_fsb(_In_ Concurrency::streams::details::_file_info *info, _In_ Concurrency::streams::details::_filestream_callback *callback, _Out_writes_ (count) void *ptr, _In_ size_t count, size_t char_size)
 {
     _ASSERTE(callback != nullptr);
@@ -461,7 +461,7 @@ size_t __cdecl _getn_fsb(_In_ Concurrency::streams::details::_file_info *info, _
 /// <param name="callback">A pointer to the callback interface to invoke when the write request is completed.
 /// <param name="ptr">A pointer to a buffer where the data should be placed
 /// <param name="count">The size (in characters) of the buffer
-/// <returns>0 if the write request is still outstanding, -1 if the request failed, otherwise the size of the data read into the buffer
+/// Returns 0 if the write request is still outstanding, -1 if the request failed, otherwise the size of the data read into the buffer
 size_t __cdecl _putn_fsb(_In_ Concurrency::streams::details::_file_info *info, _In_ Concurrency::streams::details::_filestream_callback *callback, const void *ptr, size_t count, size_t char_size)
 {
     _ASSERTE(callback != nullptr);

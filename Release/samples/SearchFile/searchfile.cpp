@@ -29,10 +29,12 @@ pplx::task<void> do_while(std::function<pplx::task<bool>(void)> func) {
     return _do_while_impl(func).then([](bool){});
 }
 
-/// Structure used to store individual line results.
-typedef std::vector<std::string> matched_lines;
+
+typedef std::vector<std::string> matched_lines;	// Structure used to store individual line results.
+
 namespace Concurrency { namespace streams {
-/// Parser implementation for 'matched_lines' type.
+
+// Parser implementation for 'matched_lines' type.
 template <typename CharType>
 class type_parser<CharType, matched_lines>
 {
@@ -69,8 +71,7 @@ static pplx::task<void> find_matches_in_file(const string_t &fileName, const std
                 else if(inLine.collection().find(searchString) != std::string::npos) {
                     results.print("line ");
                     results.print((*lineNumber)++);
-                    return results.print(":").then([=](size_t)
-                    {
+                    return results.print(":").then([=](size_t) {
                         container_buffer<std::string> outLine(std::move(inLine.collection()));
                         return results.write(outLine, outLine.collection().size());
                     }).then([=](size_t) {
@@ -129,16 +130,13 @@ int main(int argc, char *args[])
 
 	basic_ostream<char> outLineResults(lineResultsBuffer);
     find_matches_in_file(inFileName, searchString, outLineResults)		// Find all matches in file.
-    
     .then([&]() {
         basic_istream<char> inLineResults(lineResultsBuffer);	
         return inLineResults.extract<matched_lines>();					// Write matches into custom data structure.
     })
-    
     .then([&](matched_lines lines) {	
         return write_matches_to_file(outFileName, std::move(lines));	// Write out stored match data to a new file.
     })
-
     .wait();	// Wait for everything to complete.
     return 0;
 }
