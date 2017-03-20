@@ -1,15 +1,7 @@
-/***
-* Copyright (C) Microsoft. All rights reserved.
-* Licensed under the MIT license. See LICENSE.txt file in the project root for full license information.
-*
-* =+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+
-*
-* HTTP Library: Oauth 1.0
-*
-* For the latest on this and related APIs, please see: https://github.com/Microsoft/cpprestsdk
-*
-* =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
-****/
+// HTTP Library: Oauth 1.0. For the latest on this and related APIs, please see: https://github.com/Microsoft/cpprestsdk
+//
+// Copyright (C) Microsoft. All rights reserved.
+// Licensed under the MIT license. See LICENSE.txt file in the project root for full license information.
 #pragma once
 
 #ifndef _CASA_OAUTH1_H
@@ -36,10 +28,8 @@ namespace details
 
 class oauth1_handler;
 
-// State currently used by oauth1_config to authenticate request.
-// The state varies for every request (due to timestamp and nonce).
-// The state also contains extra transmitted protocol parameters during
-// authorization flow (i.e. 'oauth_callback' or 'oauth_verifier').
+// State currently used by oauth1_config to authenticate request. The state varies for every request (due to timestamp and nonce).
+// The state also contains extra transmitted protocol parameters during authorization flow (i.e. 'oauth_callback' or 'oauth_verifier').
 class oauth1_state
 {
 public:

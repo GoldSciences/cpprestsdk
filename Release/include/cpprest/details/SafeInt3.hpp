@@ -1,56 +1,53 @@
-/*-----------------------------------------------------------------------------------------------------------
-SafeInt.hpp
-Version 3.0.18p
-
-This software is licensed under the Microsoft Public License (Ms-PL).
-For more information about Microsoft open source licenses, refer to
-http://www.microsoft.com/opensource/licenses.mspx
-
-This license governs use of the accompanying software. If you use the software, you accept this license.
-If you do not accept the license, do not use the software.
-
-Definitions
-The terms "reproduce," "reproduction," "derivative works," and "distribution" have the same meaning here
-as under U.S. copyright law. A "contribution" is the original software, or any additions or changes to
-the software. A "contributor" is any person that distributes its contribution under this license.
-"Licensed patents" are a contributor's patent claims that read directly on its contribution.
-
-Grant of Rights
-(A) Copyright Grant- Subject to the terms of this license, including the license conditions and limitations
-in section 3, each contributor grants you a non-exclusive, worldwide, royalty-free copyright license to
-reproduce its contribution, prepare derivative works of its contribution, and distribute its contribution
-or any derivative works that you create.
-
-(B) Patent Grant- Subject to the terms of this license, including the license conditions and limitations in
-section 3, each contributor grants you a non-exclusive, worldwide, royalty-free license under its licensed
-patents to make, have made, use, sell, offer for sale, import, and/or otherwise dispose of its contribution
-in the software or derivative works of the contribution in the software.
-
-Conditions and Limitations
-(A) No Trademark License- This license does not grant you rights to use any contributors' name, logo,
-    or trademarks.
-(B) If you bring a patent claim against any contributor over patents that you claim are infringed by the
-    software, your patent license from such contributor to the software ends automatically.
-(C) If you distribute any portion of the software, you must retain all copyright, patent, trademark, and
-    attribution notices that are present in the software.
-(D) If you distribute any portion of the software in source code form, you may do so only under this license
-    by including a complete copy of this license with your distribution. If you distribute any portion of the
-    software in compiled or object code form, you may only do so under a license that complies with this license.
-(E) The software is licensed "as-is." You bear the risk of using it. The contributors give no express warranties,
-    guarantees, or conditions. You may have additional consumer rights under your local laws which this license
-    cannot change. To the extent permitted under your local laws, the contributors exclude the implied warranties
-    of merchantability, fitness for a particular purpose and non-infringement.
-
-
-Copyright (c) Microsoft Corporation.  All rights reserved.
-
-This header implements an integer handling class designed to catch
-unsafe integer operations
-
-This header compiles properly at Wall on Visual Studio, -Wall on gcc, and -Weverything on clang.
-
-Please read the leading comments before using the class.
----------------------------------------------------------------*/
+// Version 3.0.18p
+// 
+// This software is licensed under the Microsoft Public License (Ms-PL).
+// For more information about Microsoft open source licenses, refer to
+// http://www.microsoft.com/opensource/licenses.mspx
+// 
+// This license governs use of the accompanying software. If you use the software, you accept this license.
+// If you do not accept the license, do not use the software.
+// 
+// Definitions
+// The terms "reproduce," "reproduction," "derivative works," and "distribution" have the same meaning here
+// as under U.S. copyright law. A "contribution" is the original software, or any additions or changes to
+// the software. A "contributor" is any person that distributes its contribution under this license.
+// "Licensed patents" are a contributor's patent claims that read directly on its contribution.
+// 
+// Grant of Rights
+// (A) Copyright Grant- Subject to the terms of this license, including the license conditions and limitations
+// in section 3, each contributor grants you a non-exclusive, worldwide, royalty-free copyright license to
+// reproduce its contribution, prepare derivative works of its contribution, and distribute its contribution
+// or any derivative works that you create.
+// 
+// (B) Patent Grant- Subject to the terms of this license, including the license conditions and limitations in
+// section 3, each contributor grants you a non-exclusive, worldwide, royalty-free license under its licensed
+// patents to make, have made, use, sell, offer for sale, import, and/or otherwise dispose of its contribution
+// in the software or derivative works of the contribution in the software.
+// 
+// Conditions and Limitations
+// (A) No Trademark License- This license does not grant you rights to use any contributors' name, logo,
+//     or trademarks.
+// (B) If you bring a patent claim against any contributor over patents that you claim are infringed by the
+//     software, your patent license from such contributor to the software ends automatically.
+// (C) If you distribute any portion of the software, you must retain all copyright, patent, trademark, and
+//     attribution notices that are present in the software.
+// (D) If you distribute any portion of the software in source code form, you may do so only under this license
+//     by including a complete copy of this license with your distribution. If you distribute any portion of the
+//     software in compiled or object code form, you may only do so under a license that complies with this license.
+// (E) The software is licensed "as-is." You bear the risk of using it. The contributors give no express warranties,
+//     guarantees, or conditions. You may have additional consumer rights under your local laws which this license
+//     cannot change. To the extent permitted under your local laws, the contributors exclude the implied warranties
+//     of merchantability, fitness for a particular purpose and non-infringement.
+// 
+// 
+// Copyright (c) Microsoft Corporation.  All rights reserved.
+// 
+// This header implements an integer handling class designed to catch
+// unsafe integer operations
+// 
+// This header compiles properly at Wall on Visual Studio, -Wall on gcc, and -Weverything on clang.
+// 
+// Please read the leading comments before using the class.
 #pragma once
 
 // It is a bit tricky to sort out what compiler we are actually using,
@@ -229,8 +226,7 @@ SAFEINT_DISABLE_SHIFT_ASSERT       - Set this option if you don't want to assert
 *
 *  Here's an example of when the class should ideally be used -
 *
-*  void* AllocateMemForStructs(int StructSize, int HowMany)
-*  {
+*  void* AllocateMemForStructs(int StructSize, int HowMany) {
 *     SafeInt<unsigned long> s(StructSize);
 *
 *     s *= HowMany;
@@ -241,10 +237,8 @@ SAFEINT_DISABLE_SHIFT_ASSERT       - Set this option if you don't want to assert
 *
 *  Here's when it should NOT be used:
 *
-*  void foo()
-*  {
+*  void foo() {
 *    int i;
-*
 *    for(i = 0; i < 0xffff; i++)
 *      ....
 *  }
@@ -255,36 +249,25 @@ SAFEINT_DISABLE_SHIFT_ASSERT       - Set this option if you don't want to assert
 *
 *  Typical usage might be:
 *
-*  bool foo()
-*  {
-*    SafeInt<unsigned long> s; //note that s == 0 unless set
+*  bool foo() {
+*		SafeInt<unsigned long> s; //note that s == 0 unless set
 *
-*    try{
-*      s *= 23;
-*      ....
-*    }
-*    catch(SafeIntException err)
-*    {
-*       //handle errors here
-*    }
-*  }
+*		try {
+*		  s *= 23;
+*		  ....
+*		}
+*		catch(SafeIntException err) { //handle errors here 
+*		}
+*	}
 *
 *  Update for 3.0 - the exception class is now a template parameter.
 *  You can replace the exception class with any exception class you like. This is accomplished by:
 *  1) Create a class that has the following interface:
 *
-    template <> class YourSafeIntExceptionHandler < YourException >
-    {
+    template <> class YourSafeIntExceptionHandler < YourException > {
     public:
-        static __declspec(noreturn) void __stdcall SafeIntOnOverflow()
-        {
-            throw YourException( YourSafeIntArithmeticOverflowError );
-        }
-
-        static __declspec(noreturn) void __stdcall SafeIntOnDivZero()
-        {
-            throw YourException( YourSafeIntDivideByZeroError );
-        }
+        static __declspec(noreturn) void __stdcall SafeIntOnOverflow() { throw YourException( YourSafeIntArithmeticOverflowError	); }
+        static __declspec(noreturn) void __stdcall SafeIntOnDivZero	() { throw YourException( YourSafeIntDivideByZeroError			); }
     };
 *
 *  Note that you don't have to throw C++ exceptions, you can throw Win32 exceptions, or do
@@ -572,17 +555,9 @@ enum SafeIntError
 * create a template specialization that implements SafeIntOnOverflow and SafeIntOnDivZero.
 * For example:
 *
-* template <> class SafeIntExceptionHandler < YourExceptionClass >
-* {
-*     static __declspec(noreturn) void __stdcall SafeIntOnOverflow()
-*     {
-*         throw YourExceptionClass( EXCEPTION_INT_OVERFLOW );
-*     }
-*
-*     static __declspec(noreturn) void __stdcall SafeIntOnDivZero()
-*     {
-*         throw YourExceptionClass( EXCEPTION_INT_DIVIDE_BY_ZERO );
-*     }
+* template <> class SafeIntExceptionHandler < YourExceptionClass > {
+*     static __declspec(noreturn) void __stdcall SafeIntOnOverflow	()	{ throw YourExceptionClass( EXCEPTION_INT_OVERFLOW			); }
+*     static __declspec(noreturn) void __stdcall SafeIntOnDivZero	()	{ throw YourExceptionClass( EXCEPTION_INT_DIVIDE_BY_ZERO	); }
 * };
 *
 * typedef SafeIntExceptionHandler < YourExceptionClass > YourSafeIntExceptionHandler
@@ -872,23 +847,23 @@ public:
 // Use this to avoid compile-time const truncation warnings
 template < int fSigned, int bits > class SafeIntMinMax;
 
-template <> class SafeIntMinMax< true,   8 > { public: const static signed __int8  min = (-0x7f - 1);
-                                                const static signed __int8  max = 0x7f; };
-template <> class SafeIntMinMax< true,  16 > { public: const static __int16 min = ( -0x7fff - 1 );
-                                                const static __int16 max = 0x7fff; };
-template <> class SafeIntMinMax< true,  32 > { public: const static __int32 min = ( -0x7fffffff -1 );
-                                                const static __int32 max = 0x7fffffff; };
-template <> class SafeIntMinMax< true,  64 > { public: const static __int64 min = static_cast<__int64>(0x8000000000000000LL);
-                                                const static __int64 max = 0x7fffffffffffffffLL; };
+template <> class SafeIntMinMax< true,   8 > { public: const static signed __int8		min = (-0x7f - 1);
+                                                const static signed __int8				max = 0x7f; };
+template <> class SafeIntMinMax< true,  16 > { public: const static __int16				min = ( -0x7fff - 1 );
+                                                const static __int16					max = 0x7fff; };
+template <> class SafeIntMinMax< true,  32 > { public: const static __int32				min = ( -0x7fffffff -1 );
+                                                const static __int32					max = 0x7fffffff; };
+template <> class SafeIntMinMax< true,  64 > { public: const static __int64				min = static_cast<__int64>(0x8000000000000000LL);
+                                                const static __int64					max = 0x7fffffffffffffffLL; };
 
-template <> class SafeIntMinMax< false,  8 > { public: const static unsigned __int8  min = 0;
-                                                const static unsigned __int8  max = 0xff; };
-template <> class SafeIntMinMax< false, 16 > { public: const static unsigned __int16 min = 0;
-                                                const static unsigned __int16 max = 0xffff; };
-template <> class SafeIntMinMax< false, 32 > { public: const static unsigned __int32 min = 0;
-                                                const static unsigned __int32 max = 0xffffffff; };
-template <> class SafeIntMinMax< false, 64 > { public: const static unsigned __int64 min = 0;
-                                                const static unsigned __int64 max = 0xffffffffffffffffULL; };
+template <> class SafeIntMinMax< false,  8 > { public: const static unsigned __int8		min = 0;
+                                                const static unsigned __int8			max = 0xff; };
+template <> class SafeIntMinMax< false, 16 > { public: const static unsigned __int16	min = 0;
+                                                const static unsigned __int16			max = 0xffff; };
+template <> class SafeIntMinMax< false, 32 > { public: const static unsigned __int32	min = 0;
+                                                const static unsigned __int32			max = 0xffffffff; };
+template <> class SafeIntMinMax< false, 64 > { public: const static unsigned __int64	min = 0;
+                                                const static unsigned __int64			max = 0xffffffffffffffffULL; };
 
 template < typename T > class IntTraits
 {
@@ -922,10 +897,8 @@ public:
     const static T minInt = static_cast<T>(SafeIntMinMax< isSigned, bitCount >::min);
 };
 
-template < typename T >
-const T IntTraits< T >::maxInt;
-template < typename T >
-const T IntTraits< T >::minInt;
+template < typename T >	const T IntTraits< T >::maxInt;
+template < typename T >	const T IntTraits< T >::minInt;
 
 template < typename T, typename U > class SafeIntCompare
 {

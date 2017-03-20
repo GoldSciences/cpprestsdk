@@ -1,5 +1,4 @@
-// HTTP Library: Client-side APIs.
-// This file contains a cross platform implementation based on Boost.ASIO.
+// HTTP Library: Client-side APIs. Contains a cross platform implementation based on Boost.ASIO.
 // For the latest on this and related APIs, please see: https://github.com/Microsoft/cpprestsdk
 //
 // Copyright (C) Microsoft. All rights reserved.

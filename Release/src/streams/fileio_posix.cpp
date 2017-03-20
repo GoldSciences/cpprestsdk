@@ -17,10 +17,8 @@ using namespace Concurrency::streams::details;
 
 namespace Concurrency { namespace streams { namespace details {
 
-// ==++==
-// Implementation details of the file stream buffer
-// =-=-=-
-
+// - Implementation details of the file stream buffer
+//
 // The public parts of the file information record contain only what is implementation-
 // independent. The actual allocated record is larger and has details that the implementation
 // require in order to function.
@@ -133,12 +131,14 @@ bool _open_fsb_str(_filestream_callback *callback, const char *filename, std::io
 /// True does not signal that the file will eventually be successfully closed, just that the process was started.
 bool _close_fsb_nolock(_file_info **info, Concurrency::streams::details::_filestream_callback *callback)
 {
-    if ( callback == nullptr ) return false;
+    if ( callback == nullptr ) 
+		return false;
     if ( info == nullptr || *info == nullptr ) return false;
 
     _file_info_impl *fInfo = static_cast<_file_info_impl *>(*info);
 
-    if ( fInfo->m_handle == -1 ) return false;
+    if ( fInfo->m_handle == -1 ) 
+		return false;
 
     // Since closing a file may involve waiting for outstanding writes which can take some time
     // if the file is on a network share, the close action is done in a separate task, as
@@ -171,8 +171,10 @@ bool _close_fsb_nolock(_file_info **info, Concurrency::streams::details::_filest
 
 bool _close_fsb(_file_info **info, Concurrency::streams::details::_filestream_callback *callback)
 {
-    if ( callback == nullptr ) return false;
-    if ( info == nullptr || *info == nullptr ) return false;
+    if ( callback == nullptr ) 
+		return false;
+    if ( info == nullptr || *info == nullptr ) 
+		return false;
 
     pplx::extensibility::scoped_recursive_lock_t lock((*info)->m_lock);
 
@@ -436,7 +438,7 @@ bool _sync_fsb(Concurrency::streams::details::_file_info *info, Concurrency::str
 /// Adjust the internal buffers and pointers when the application seeks to a new read location in the stream.
 /// <param name="info">The file info record of the file
 /// <param name="pos">The new position (offset from the start) in the file stream
-/// <returns>New file position or -1 if error
+/// Returns new file position or -1 if error
 size_t _seekrdtoend_fsb(Concurrency::streams::details::_file_info *info, int64_t offset, size_t char_size)
 {
     if ( info == nullptr ) 
@@ -498,7 +500,7 @@ utility::size64_t _get_size(_In_ concurrency::streams::details::_file_info *info
 /// Adjust the internal buffers and pointers when the application seeks to a new read location in the stream.
 /// <param name="info">The file info record of the file
 /// <param name="pos">The new position (offset from the start) in the file stream
-/// <returns>New file position or -1 if error
+/// Returns new file position or -1 if error
 size_t _seekrdpos_fsb(Concurrency::streams::details::_file_info *info, size_t pos, size_t) {
     if ( info == nullptr ) 
 		return static_cast<size_t>(-1);
@@ -523,7 +525,7 @@ size_t _seekrdpos_fsb(Concurrency::streams::details::_file_info *info, size_t po
 /// Adjust the internal buffers and pointers when the application seeks to a new write location in the stream.
 /// <param name="info">The file info record of the file
 /// <param name="pos">The new position (offset from the start) in the file stream
-/// <returns>New file position or -1 if error
+/// Returns new file position or -1 if error
 size_t _seekwrpos_fsb(Concurrency::streams::details::_file_info *info, size_t pos, size_t) {
     if ( info == nullptr ) 
 		return static_cast<size_t>(-1);

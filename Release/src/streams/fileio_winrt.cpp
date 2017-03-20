@@ -1,20 +1,13 @@
-/***
-* Copyright (C) Microsoft. All rights reserved.
-* Licensed under the MIT license. See LICENSE.txt file in the project root for full license information.
-*
-* =+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+
-*
-* Asynchronous I/O: stream buffer implementation details
-*
-* We're going to some lengths to avoid exporting C++ class member functions and implementation details across
-* module boundaries, and the factoring requires that we keep the implementation details away from the main header
-* files. The supporting functions, which are in this file, use C-like signatures to avoid as many issues as
-* possible.
-*
-* For the latest on this and related APIs, please see: https://github.com/Microsoft/cpprestsdk
-*
-* =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
-****/
+// Asynchronous I/O: stream buffer implementation details
+//
+// We're going to some lengths to avoid exporting C++ class member functions and implementation details across
+// module boundaries, and the factoring requires that we keep the implementation details away from the main header files. 
+// The supporting functions, which are in this file, use C-like signatures to avoid as many issues as possible.
+//
+// For the latest on this and related APIs, please see: https://github.com/Microsoft/cpprestsdk
+//
+// Copyright (C) Microsoft. All rights reserved.
+// Licensed under the MIT license. See LICENSE.txt file in the project root for full license information.
 #include "stdafx.h"
 #include "cpprest/details/fileio.h"
 #include "robuffer.h"
@@ -533,7 +526,7 @@ bool __cdecl _sync_fsb(_In_ Concurrency::streams::details::_file_info *info, _In
 /// Adjust the internal buffers and pointers when the application seeks to a new read location in the stream.
 /// <param name="info">The file info record of the file
 /// <param name="pos">The new position (offset from the start) in the file stream
-/// <returns>New file position or -1 if error
+/// Returns new file position or -1 if error
 size_t __cdecl _seekrdpos_fsb(_In_ Concurrency::streams::details::_file_info *info, size_t pos, size_t char_size)
 {
     _ASSERTE(info != nullptr);
@@ -560,7 +553,7 @@ size_t __cdecl _seekrdpos_fsb(_In_ Concurrency::streams::details::_file_info *in
 /// <param name="info">The file info record of the file
 /// <param name="offset">The new position (offset from the end of the stream) in the file stream
 /// <param name="char_size">The size of the character type used for this stream
-/// <returns>New file position or -1 if error
+/// Returns new file position or -1 if error
 _ASYNCRTIMP size_t __cdecl _seekrdtoend_fsb(_In_ Concurrency::streams::details::_file_info *info, int64_t offset, size_t char_size)
 {
     _ASSERTE(info != nullptr);
@@ -585,7 +578,7 @@ utility::size64_t __cdecl _get_size(_In_ concurrency::streams::details::_file_in
 /// Adjust the internal buffers and pointers when the application seeks to a new write location in the stream.
 /// <param name="info">The file info record of the file
 /// <param name="pos">The new position (offset from the start) in the file stream
-/// <returns>New file position or -1 if error
+/// Returns new file position or -1 if error
 size_t __cdecl _seekwrpos_fsb(_In_ Concurrency::streams::details::_file_info *info, size_t pos, size_t char_size)
 {
     _ASSERTE(info != nullptr);

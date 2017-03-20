@@ -1,22 +1,13 @@
-/***
-* Copyright (C) Microsoft. All rights reserved.
-* Licensed under the MIT license. See LICENSE.txt file in the project root for full license information.
-*
-* =+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+
-*
-* fileio.h
-*
-* Asynchronous I/O: stream buffer implementation details
-*
-* We're going to some lengths to avoid exporting C++ class member functions and implementation details across
-* module boundaries, and the factoring requires that we keep the implementation details away from the main header
-* files. The supporting functions, which are in this file, use C-like signatures to avoid as many issues as
-* possible.
-*
-* For the latest on this and related APIs, please see: https://github.com/Microsoft/cpprestsdk
-*
-* =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
-****/
+// Asynchronous I/O: stream buffer implementation details
+//
+// We're going to some lengths to avoid exporting C++ class member functions and implementation details across
+// module boundaries, and the factoring requires that we keep the implementation details away from the main header
+// files. The supporting functions, which are in this file, use C-like signatures to avoid as many issues as possible.
+//
+// For the latest on this and related APIs, please see: https://github.com/Microsoft/cpprestsdk
+//
+// Copyright (C) Microsoft. All rights reserved.
+// Licensed under the MIT license. See LICENSE.txt file in the project root for full license information.
 #pragma once
 
 #ifdef _WIN32

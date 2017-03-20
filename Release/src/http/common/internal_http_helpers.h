@@ -1,8 +1,5 @@
-/***
-* Copyright (C) Microsoft. All rights reserved.
-* Licensed under the MIT license. See LICENSE.txt file in the project root for full license information.
-****/
-
+// Copyright (C) Microsoft. All rights reserved.
+// Licensed under the MIT license. See LICENSE.txt file in the project root for full license information.
 #pragma once
 
 #include "cpprest/details/basic_types.h"
@@ -15,8 +12,7 @@ utility::string_t get_default_reason_phrase(status_code code);
 
 // simple helper functions to trim whitespace.
 template<class Char>
-void trim_whitespace(std::basic_string<Char> &str)
-{
+void trim_whitespace(std::basic_string<Char> &str) {
     size_t index;
     // trim left whitespace
     for (index = 0; index < str.size() && isspace(str[index]); ++index);

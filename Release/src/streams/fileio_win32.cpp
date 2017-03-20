@@ -611,7 +611,7 @@ bool __cdecl _sync_fsb(_In_ streams::details::_file_info *, _In_ streams::detail
 // Adjust the internal buffers and pointers when the application seeks to a new read location in the stream.
 // <param name="info">The file info record of the file
 // <param name="pos">The new position (offset from the start) in the file stream
-// <returns>New file position or -1 if error
+// Returns new file position or -1 if error
 size_t __cdecl _seekrdpos_fsb(_In_ streams::details::_file_info *info, size_t pos, size_t)
 {
     _ASSERTE(info != nullptr);
@@ -637,7 +637,7 @@ size_t __cdecl _seekrdpos_fsb(_In_ streams::details::_file_info *info, size_t po
 // <param name="info">The file info record of the file
 // <param name="offset">The new position (offset from the end of the stream) in the file stream
 // <param name="char_size">The size of the character type used for this stream
-// <returns>New file position or -1 if error
+// Returns new file position or -1 if error
 size_t __cdecl _seekrdtoend_fsb(_In_ streams::details::_file_info *info, int64_t offset, size_t char_size)
 {
     _ASSERTE(info != nullptr);
@@ -687,7 +687,7 @@ utility::size64_t __cdecl _get_size(_In_ concurrency::streams::details::_file_in
 //
 // <param name="info">The file info record of the file
 // <param name="pos">The new position (offset from the start) in the file stream
-// <returns>New file position or -1 if error
+// Returns new file position or -1 if error
 size_t __cdecl _seekwrpos_fsb(_In_ streams::details::_file_info *info, size_t pos, size_t) {
     _ASSERTE(info != nullptr);
 
