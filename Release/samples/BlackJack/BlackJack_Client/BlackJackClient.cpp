@@ -1,4 +1,4 @@
-//  Defines the entry point for the console application
+// Defines the entry point for the console application.
 //
 // Copyright (C) Microsoft. All rights reserved.
 #include <stdio.h>
@@ -24,17 +24,7 @@
 #include <iphlpapi.h>
 #endif
 
-//#include <map>
-//#include <vector>
-//#include <string>
-//#include <exception>
-
 #include "cpprest/http_client.h"
-
-//#include <iostream>
-//#include <streambuf>
-//#include <sstream>
-//#include <fstream>
 #include "../BlackJack_Server/messagetypes.h"
 
 #ifdef _WIN32

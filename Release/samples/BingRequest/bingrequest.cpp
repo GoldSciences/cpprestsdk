@@ -1,15 +1,7 @@
-/***
-* Copyright (C) Microsoft. All rights reserved.
-* Licensed under the MIT license. See LICENSE.txt file in the project root for full license information.
-*
-* =+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+
-*
-* bingrequest.cpp - Simple cmd line application that makes an HTTP GET request to bing searching and outputting
-*       the resulting HTML response body into a file.
-*
-* =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
-****/
-
+// bingrequest.cpp - Simple cmd line application that makes an HTTP GET request to bing searching and outputting the resulting HTML response body into a file.
+//
+// Copyright (C) Microsoft. All rights reserved.
+// Licensed under the MIT license. See LICENSE.txt file in the project root for full license information.
 #include <cpprest/http_client.h>
 #include <cpprest/filestream.h>
 
@@ -18,10 +10,10 @@ using namespace web::http;
 using namespace web::http::client;
 using namespace concurrency::streams;
 
-/* Can pass proxy information via environment variable http_proxy.
-   Example:
-   Linux:   export http_proxy=http://192.1.8.1:8080
- */
+// Can pass proxy information via environment variable http_proxy.
+// Example:
+// Linux:   export http_proxy=http://192.1.8.1:8080
+// 
 web::http::client::http_client_config client_config_for_proxy()
 {
     web::http::client::http_client_config client_config;
