@@ -182,7 +182,8 @@ bool __cdecl _close_fsb_nolock(_In_ _file_info **info, _In_ streams::details::_f
 
     _file_info_impl *fInfo = static_cast<_file_info_impl *>(*info);
 
-    if ( fInfo->m_handle == INVALID_HANDLE_VALUE ) return false;
+    if ( fInfo->m_handle == INVALID_HANDLE_VALUE ) 
+		return false;
 
     // Since closing a file may involve waiting for outstanding writes which can take some time
     // if the file is on a network share, the close action is done in a separate task, as

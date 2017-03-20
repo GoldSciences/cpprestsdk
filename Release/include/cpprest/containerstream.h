@@ -119,7 +119,8 @@ namespace Concurrency { namespace streams {
         /// Returns a pointer to a block to write to, null if the stream buffer implementation does not support alloc/commit.
         _CharType* _alloc(size_t count)
         {
-            if (!this->can_write()) return nullptr;
+            if (!this->can_write()) 
+				return nullptr;
 
             // Allocate space
             resize_for_write(m_current_position+count);
@@ -150,7 +151,8 @@ namespace Concurrency { namespace streams {
             ptr = nullptr;
             count = 0;
 
-            if (!this->can_read()) return false;
+            if (!this->can_read()) 
+				return false;
 
             count = in_avail();
 
@@ -396,7 +398,8 @@ namespace Concurrency { namespace streams {
             /// Write count characters from the ptr into the stream buffer
             size_t write(const _CharType *ptr, size_t count)
         {
-            if (!this->can_write() || (count == 0)) return 0;
+            if (!this->can_write() || (count == 0)) 
+				return 0;
 
             auto newSize = m_current_position + count;
 

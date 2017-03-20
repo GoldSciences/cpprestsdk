@@ -133,7 +133,8 @@ bool _close_fsb_nolock(_file_info **info, Concurrency::streams::details::_filest
 {
     if ( callback == nullptr ) 
 		return false;
-    if ( info == nullptr || *info == nullptr ) return false;
+    if ( info == nullptr || *info == nullptr ) 
+		return false;
 
     _file_info_impl *fInfo = static_cast<_file_info_impl *>(*info);
 

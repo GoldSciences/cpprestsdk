@@ -771,7 +771,8 @@ std::unique_ptr<web::json::details::_Value> JSON_Parser<CharType>::_ParseObject(
 
 done:
     GetNextToken(tkn);
-    if (tkn.m_error) return utility::details::make_unique<web::json::details::_Null>();
+    if (tkn.m_error) 
+		return utility::details::make_unique<web::json::details::_Null>();
 
     if (!g_keep_json_object_unsorted)
         ::std::sort(elems.begin(), elems.end(), json::object::compare_pairs);

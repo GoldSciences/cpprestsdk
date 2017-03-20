@@ -705,7 +705,8 @@ static utility::string_t convert_body_to_string_t(const utility::string_t &conte
     if(utility::details::str_icmp(charset, charset_types::latin1)) {
         std::string body;
         body.resize(streambuf.in_avail());
-        if(streambuf.scopy((unsigned char *)&body[0], body.size()) == 0) return string_t();
+        if(streambuf.scopy((unsigned char *)&body[0], body.size()) == 0) 
+			return string_t();
         return to_string_t(latin1_to_utf16(std::move(body)));
     }
 
@@ -714,7 +715,8 @@ static utility::string_t convert_body_to_string_t(const utility::string_t &conte
     {
         std::string body;
         body.resize(streambuf.in_avail());
-        if(streambuf.scopy((unsigned char *)&body[0], body.size()) == 0) return string_t();
+        if(streambuf.scopy((unsigned char *)&body[0], body.size()) == 0) 
+			return string_t();
         return to_string_t(std::move(body));
     }
 
@@ -723,7 +725,8 @@ static utility::string_t convert_body_to_string_t(const utility::string_t &conte
     {
         utf16string body;
         body.resize(streambuf.in_avail() / sizeof(utf16string::value_type));
-        if(streambuf.scopy((unsigned char *)&body[0], body.size() * sizeof(utf16string::value_type)) == 0) return string_t();
+        if(streambuf.scopy((unsigned char *)&body[0], body.size() * sizeof(utf16string::value_type)) == 0) 
+			return string_t();
         return convert_utf16_to_string_t(std::move(body));
     }
 
@@ -732,7 +735,8 @@ static utility::string_t convert_body_to_string_t(const utility::string_t &conte
     {
         utf16string body;
         body.resize(streambuf.in_avail() / sizeof(utf16string::value_type));
-        if(streambuf.scopy((unsigned char *)&body[0], body.size() * sizeof(utf16string::value_type)) == 0) return string_t();
+        if(streambuf.scopy((unsigned char *)&body[0], body.size() * sizeof(utf16string::value_type)) == 0) 
+			return string_t();
         return convert_utf16le_to_string_t(std::move(body), false);
     }
 
@@ -741,7 +745,8 @@ static utility::string_t convert_body_to_string_t(const utility::string_t &conte
     {
         utf16string body;
         body.resize(streambuf.in_avail() / sizeof(utf16string::value_type));
-        if(streambuf.scopy((unsigned char *)&body[0], body.size() * sizeof(utf16string::value_type)) == 0) return string_t();
+        if(streambuf.scopy((unsigned char *)&body[0], body.size() * sizeof(utf16string::value_type)) == 0) 
+			return string_t();
         return convert_utf16be_to_string_t(std::move(body), false);
     }
 
