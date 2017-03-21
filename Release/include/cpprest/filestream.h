@@ -29,46 +29,30 @@ namespace Concurrency { namespace streams
 
 namespace details {
     // This operation queue is NOT thread safe
-    class async_operation_queue
-    {
-        pplx::task<void> m_lastOperation;
+    class async_operation_queue {
+        pplx::task<void>			m_lastOperation				= pplx::task_from_result();
     public:
-        async_operation_queue()
-        {
-            m_lastOperation = pplx::task_from_result();
-        }
 
-        // It only accepts functors that take no argument and return pplx::task<T>
-        // This function may execute op inline, thus it could throw immediately
-        template <typename Func>
-        auto enqueue_operation(Func &&op) -> decltype(op())
-        {
-            decltype(op()) res; // res is task<T> , which always has default constructor
-            if (m_lastOperation.is_done())
-            {
-                res = op(); // Exceptions are expected to be thrown directly without catching
+        void						wait						()																										const	{ m_lastOperation.wait(); }
+
+        // It only accepts functors that take no argument and return pplx::task<T> This function may execute op inline, thus it could throw immediately.
+		template <typename Func>
+        auto						enqueue_operation			(Func &&op) -> decltype(op())																					{
+            decltype(op())					res; // res is task<T> , which always has default constructor
+            if (m_lastOperation.is_done()) {
+                res							= op(); // Exceptions are expected to be thrown directly without catching
                 if (res.is_done())
                     return res;
             }
-            else
-            {
-                res = m_lastOperation.then([=] {
+            else {
+                res							= m_lastOperation.then([=] {
                     return op(); // It will cause task unwrapping
                 });
             }
-            m_lastOperation = res.then([&] (decltype(op())) {
-                // This empty task is necessary for keeping the rest of the operations on the list running
-                // even when the previous operation gets error.
-                // Don't observe exception here.
-            });
+			m_lastOperation				= res.then([&] (decltype(op())) {});	// This empty task is necessary for keeping the rest of the operations on the list running even when the previous operation gets error. Don't observe exception here.
             return res;
         }
-
-        void wait() const
-        {
-            m_lastOperation.wait();
-        }
-    };
+	};
 
 
     /// Private stream buffer implementation for file streams.
@@ -76,69 +60,58 @@ namespace details {
     template<typename _CharType>
     class basic_file_buffer : public details::streambuf_state_manager<_CharType>
     {
-        _file_info												* m_info;
-        async_operation_queue									m_readOps;
+        _file_info												* m_info					= nullptr;
+        async_operation_queue									m_readOps					;
     public:
         typedef typename basic_streambuf<_CharType>::traits		traits;
         typedef typename basic_streambuf<_CharType>::int_type	int_type;
         typedef typename basic_streambuf<_CharType>::pos_type	pos_type;
         typedef typename basic_streambuf<_CharType>::off_type	off_type;
 
-        virtual ~basic_file_buffer() {
+        virtual													~basic_file_buffer			()																						{
             if( this->can_read() )
                 this->_close_read().wait();
-
             if (this->can_write())
                 this->_close_write().wait();
         }
 
     protected:
-		virtual bool can_seek() const { return this->is_open(); }	// Used to determine whether a stream buffer supports seeking.
-		virtual bool has_size() const { return this->is_open(); }	// Used to determine whether a stream buffer supports size().
-
-        virtual utility::size64_t size() const {
+		virtual bool											can_seek					()																				const	{ return this->is_open();	}	// Used to determine whether a stream buffer supports seeking.
+		virtual bool											has_size					()																				const	{ return this->is_open();	}	// Used to determine whether a stream buffer supports size().
+        virtual utility::size64_t								size						()																				const	{
             if (!this->is_open())
                 return 0;
             return _get_size(m_info, sizeof(_CharType));
         }
 
-
-            /// Gets the stream buffer size, if one has been set.
-            /// <param name="direction">The direction of buffering (in or out)
-        /// An implementation that does not support buffering will always return '0'.
-        virtual size_t buffer_size(std::ios_base::openmode direction = std::ios_base::in) const {
+		// Gets the stream buffer size, if one has been set. An implementation that does not support buffering will always return '0'.
+        virtual size_t											buffer_size					(std::ios_base::openmode bufferingDirection = std::ios_base::in)				const	{
             if ( direction == std::ios_base::in )
                 return m_info->m_buffer_size;
             else
                 return 0;
         }
 
-            /// Sets the stream buffer implementation to buffer or not buffer.
-            /// <param name="size">The size to use for internal buffering, 0 if no buffering should be done.
-        /// <param name="direction">The direction of buffering (in or out)
-        /// An implementation that does not support buffering will silently ignore calls to this function and it will not have
-        ///          any effect on what is returned by subsequent calls to buffer_size().
-        virtual void set_buffer_size(size_t size, std::ios_base::openmode direction = std::ios_base::in) {
+		// Sets the stream buffer implementation to buffer or not buffer. An implementation that does not support buffering will silently ignore calls to this function and it will not have any effect on what is returned by subsequent calls to buffer_size().
+        virtual void											set_buffer_size				(size_t sizeOfBuffering, std::ios_base::openmode bufferingDirection = std::ios_base::in)			{
             if ( direction == std::ios_base::out ) 
 				return;
 
-            m_info->m_buffer_size = size;
+            m_info->m_buffer_size									= size;
 
             if ( size == 0 && m_info->m_buffer != nullptr ) {
                delete m_info->m_buffer;
-               m_info->m_buffer = nullptr;
+               m_info->m_buffer											= nullptr;
             }
         }
 
-            /// For any input stream, <c>in_avail</c> returns the number of characters that are immediately available
-        /// to be consumed without blocking. May be used in conjunction with <cref="::sbumpc method"/> to read data without
-        /// incurring the overhead of using tasks.
-            virtual size_t in_avail() const {
-            pplx::extensibility::scoped_recursive_lock_t lck(m_info->m_lock);
+		// For any input stream, in_avail() returns the number of characters that are immediately available to be consumed without blocking. May be used in conjunction with sbumpc() to read data without incurring the overhead of using tasks.
+		virtual size_t											in_avail					()																				const	{
+            pplx::extensibility::scoped_recursive_lock_t				lck							(m_info->m_lock);
             return _in_avail_unprot();
         }
 
-        size_t _in_avail_unprot() const {
+        size_t													_in_avail_unprot			()																				const	{
             if ( !this->is_open() ) 
 				return 0;
 
@@ -147,22 +120,22 @@ namespace details {
             if ( m_info->m_bufoff > m_info->m_rdpos || (m_info->m_bufoff+m_info->m_buffill) < m_info->m_rdpos ) 
 				return 0;
 
-            msl::safeint3::SafeInt<size_t> rdpos(m_info->m_rdpos);
-            msl::safeint3::SafeInt<size_t> buffill(m_info->m_buffill);
-            msl::safeint3::SafeInt<size_t> bufpos = rdpos - m_info->m_bufoff;
+            msl::safeint3::SafeInt<size_t>								rdpos						(m_info->m_rdpos);
+            msl::safeint3::SafeInt<size_t>								buffill						(m_info->m_buffill);
+            msl::safeint3::SafeInt<size_t>								bufpos						= rdpos - m_info->m_bufoff;
 
             return buffill - bufpos;
         }
 
-        _file_info * _close_stream() {	// indicate that we are no longer open
-            auto fileInfo = m_info;	
-            m_info = nullptr;
+        _file_info *											_close_stream				()																						{	// indicate that we are no longer open
+            auto														fileInfo					= m_info;	
+            m_info													= nullptr;
             return fileInfo;
         }
 
-        static pplx::task<void> _close_file(_In_ _file_info * fileInfo) {
-            pplx::task_completion_event<void> result_tce;
-            auto callback = new _filestream_callback_close(result_tce);
+        static pplx::task<void>									_close_file					(_In_ _file_info * fileInfo)															{
+            pplx::task_completion_event<void>							result_tce;
+            auto														callback					= new _filestream_callback_close(result_tce);
 
             if ( !_close_fsb_nolock(&fileInfo, callback) ) {
                 delete callback;
@@ -172,11 +145,9 @@ namespace details {
         }
 
         // Workaround GCC compiler bug https://gcc.gnu.org/bugzilla/show_bug.cgi?id=58972
-        void _invoke_parent_close_read() { streambuf_state_manager<_CharType>::_close_read(); }
-        pplx::task<void> _close_read()
-        {
-            return m_readOps.enqueue_operation([this]
-            {
+        void													_invoke_parent_close_read	()																						{ streambuf_state_manager<_CharType>::_close_read(); }
+        pplx::task<void>										_close_read					()																						{
+            return m_readOps.enqueue_operation([this] {
                 _invoke_parent_close_read();
 
                 if (this->can_write())
@@ -188,68 +159,55 @@ namespace details {
             });
         }
 
-        pplx::task<void> _close_write()
-        {
+        pplx::task<void>										_close_write				()																						{
             streambuf_state_manager<_CharType>::_close_write();
             if (this->can_read())
                 return flush_internal();	// Read head is still open. Just flush the write data
             else {
-                // Neither heads are open. Close the underlying device
-                // We need to flush all writes if the file was opened for writing.
-                return flush_internal().then([=](pplx::task<void> flushTask) -> pplx::task<void>
-                {
+                // Neither heads are open, so close the underlying device. We need to flush all writes if the file was opened for writing.
+                return flush_internal().then([=](pplx::task<void> flushTask) -> pplx::task<void> {
                     // swallow exception from flush
                     try {
                         flushTask.wait();
                     }
                     catch(...) {}
 
-                    // indicate that we are no longer open
-                    auto fileInfo = this->_close_stream();
-
+                    
+                    auto														fileInfo					= this->_close_stream();	// indicate that we are no longer open
                     return this->_close_file(fileInfo);
                 });
             }
         }
 
-            /// Writes a single byte to an output stream.
-            /// <param name="ch">The byte to write
-            /// Returns a task that holds the value of the byte written. This is EOF if the write operation fails.
-        virtual pplx::task<int_type> _putc(_CharType ch)
-        {
-            auto result_tce = pplx::task_completion_event<size_t>();
-            auto callback = new _filestream_callback_write<size_t>(m_info, result_tce);
+		// Writes a single byte to an output stream. Returns a task that holds the value of the byte written. This is EOF if the write operation fails.
+        virtual pplx::task<int_type>							_putc						(_CharType ch)																			{
+            auto														result_tce					= pplx::task_completion_event<size_t>();
+            auto														callback					= new _filestream_callback_write<size_t>(m_info, result_tce);
 
             // Potentially we should consider deprecating this API, it is TERRIBLY inefficient.
-            std::shared_ptr<_CharType> sharedCh;
+            std::shared_ptr<_CharType>									sharedCh;
             try {
-                sharedCh = std::make_shared<_CharType>(ch);
+                sharedCh												= std::make_shared<_CharType>(ch);
             } 
 			catch (const std::bad_alloc &) {
                 delete callback;
                 throw;
             }
             
-            size_t written = _putn_fsb(m_info, callback, sharedCh.get(), 1, sizeof(_CharType));
+            size_t														written						= _putn_fsb(m_info, callback, sharedCh.get(), 1, sizeof(_CharType));
             if (written == sizeof(_CharType)) {
                 delete callback;
                 return pplx::task_from_result<int_type>(ch);
             }
             
-            return pplx::create_task(result_tce).then([sharedCh](size_t)
-            {
+            return pplx::create_task(result_tce).then([sharedCh](size_t) {
                 return static_cast<int_type>(*sharedCh);
             });
         }
 
-            /// Allocates a contiguous memory block and returns it.
-            /// <param name="count">The number of characters to allocate.
-        /// Returns a pointer to a block to write to, null if the stream buffer implementation does not support alloc/commit.
-        _CharType* _alloc(size_t) { return nullptr; }
-
-            /// Submits a block already allocated by the stream buffer.
-            /// <param name="ptr">Count of characters to be commited.
-        void _commit(size_t) {} 
+		// Allocates a contiguous memory block and returns it. Returns a pointer to a block to write to, null if the stream buffer implementation does not support alloc/commit.
+        _CharType*												_alloc						(size_t characterCount)																	{ return nullptr; }
+        void													_commit						(size_t characterCount)																	{}						// Submits a block already allocated by the stream buffer.
 
 		/// Gets a pointer to the next already allocated contiguous block of data.
 		/// <param name="ptr">A reference to a pointer variable that will hold the address of the block on success.
@@ -257,45 +215,38 @@ namespace details {
 		/// Returns true if the operation succeeded, false otherwise.
 		/// A return of false does not necessarily indicate that a subsequent read operation would fail, only that
 		/// there is no block to return immediately or that the stream buffer does not support the operation.
-		/// The stream buffer may not de-allocate the block until <see cref="::release method" /> is called.
+		/// The stream buffer may not de-allocate the block until release() is called.
 		/// If the end of the stream is reached, the function will return true, a null pointer, and a count of zero;
 		/// a subsequent read will not succeed.
-        virtual bool acquire(_Out_ _CharType*& ptr, _Out_ size_t& count) {
-            ptr = nullptr;
-            count = 0;
+        virtual bool											acquire						(_Out_ _CharType*& acquired, _Out_ size_t& countCharAvailable)							{
+            acquired												= nullptr;
+            count													= 0;
             return false;
         }
 
-		/// Releases a block of data acquired using <see cref="::acquire method"/>. This frees the stream buffer to de-allocate the
-		/// memory, if it so desires. Move the read position ahead by the count.
-		/// <param name="ptr">A pointer to the block of data to be released.
-		/// <param name="count">The number of characters that were read.
-        virtual void release(_Out_writes_ (count) _CharType *, _In_ size_t count)	{ (void)(count); }
+		// Releases a block of data acquired using acquire(). This frees the stream buffer to de-allocate the memory, if it so desires. Move the read position ahead by the count.
+        virtual void											release						(_Out_writes_ (count) _CharType *, _In_ size_t charactersRead)							{ (void)(count);	}
 
-		/// Writes a number of characters to the stream.
-		/// <param name="ptr">A pointer to the block of data to be written.
-		/// <param name="count">The number of characters to write.
-		/// Returns a task that holds the number of characters actually written, either 'count' or 0.
-        virtual pplx::task<size_t> _putn(const _CharType *ptr, size_t count) {
-            auto result_tce = pplx::task_completion_event<size_t>();
-            auto callback = new _filestream_callback_write<size_t>(m_info, result_tce);
+		// Writes a number of characters to the stream. Returns a task that holds the number of characters actually written, either 'count' or 0.
+        virtual pplx::task<size_t>								_putn						(const _CharType *sourceData, size_t countCharsToWrite)									{
+            auto														result_tce					= pplx::task_completion_event<size_t>();
+            auto														callback					= new _filestream_callback_write<size_t>(m_info, result_tce);
 
-            size_t written = _putn_fsb(m_info, callback, ptr, count, sizeof(_CharType));
+            size_t														written						= _putn_fsb(m_info, callback, ptr, count, sizeof(_CharType));
 
             if ( written != 0 && written != -1 ) {
                 delete callback;
-                written = written/sizeof(_CharType);
+                written												= written/sizeof(_CharType);
                 return pplx::task_from_result<size_t>(written);
             }
             return pplx::create_task(result_tce);
         }
 
         // Temporarily needed until the deprecated putn is removed.
-        virtual pplx::task<size_t> _putn(const _CharType *ptr, size_t count, bool copy) {
+        virtual pplx::task<size_t>								_putn						(const _CharType *ptr, size_t count, bool copy)											{
             if (copy) {
-                auto sharedData = std::make_shared<std::vector<_CharType>>(ptr, ptr + count);
-                return _putn(ptr, count).then([sharedData](size_t size)
-                {
+                auto														sharedData					= std::make_shared<std::vector<_CharType>>(ptr, ptr + count);
+                return _putn(ptr, count).then([sharedData](size_t size) {
                     return size;
                 });
             }
@@ -305,7 +256,7 @@ namespace details {
 
             /// Reads a single byte from the stream and advance the read position.
                 /// Returns a task that holds the value of the byte read. This is EOF if the read fails.
-        virtual pplx::task<int_type> _bumpc() {
+        virtual pplx::task<int_type>							_bumpc						()																						{
             return m_readOps.enqueue_operation([this]()-> pplx::task<int_type> {
                 if ( _in_avail_unprot() > 0 ) {
                     pplx::extensibility::scoped_recursive_lock_t lck(m_info->m_lock);
@@ -320,15 +271,13 @@ namespace details {
                     }
                 }
 
-                auto result_tce = pplx::task_completion_event<int_type>();
-                auto callback = new _filestream_callback_bumpc(m_info, result_tce);
-
-                size_t ch = _getn_fsb(m_info, callback, &callback->m_ch, 1, sizeof(_CharType));
-
+                auto														result_tce					= pplx::task_completion_event<int_type>();
+                auto														callback					= new _filestream_callback_bumpc(m_info, result_tce);
+                size_t														ch							= _getn_fsb(m_info, callback, &callback->m_ch, 1, sizeof(_CharType));
                 if ( ch == sizeof(_CharType) ) {
-                    pplx::extensibility::scoped_recursive_lock_t lck(m_info->m_lock);
-                    m_info->m_rdpos += 1;
-                    _CharType ch1 = (_CharType)callback->m_ch;
+                    pplx::extensibility::scoped_recursive_lock_t				lck							(m_info->m_lock);
+                    m_info->m_rdpos											+= 1;
+                    _CharType													ch1							= (_CharType)callback->m_ch;
                     delete callback;
                     return pplx::task_from_result<int_type>(ch1);
                 }
@@ -339,7 +288,7 @@ namespace details {
             /// Reads a single byte from the stream and advance the read position.
             /// Returns the value of the byte. EOF if the read fails. <see cref="::requires_async method" /> if an asynchronous read is required
         /// This is a synchronous operation, but is guaranteed to never block.
-        virtual int_type _sbumpc() {
+        virtual int_type										_sbumpc						()																						{
             m_readOps.wait();
             if ( m_info->m_atend ) 
 				return traits::eof();
@@ -347,40 +296,35 @@ namespace details {
             if ( _in_avail_unprot() == 0 ) 
 				return traits::requires_async();
 
-            pplx::extensibility::scoped_recursive_lock_t lck(m_info->m_lock);
+            pplx::extensibility::scoped_recursive_lock_t				lck							(m_info->m_lock);
 
             if ( _in_avail_unprot() == 0 ) 
 				return traits::requires_async();
 
-            auto bufoff = m_info->m_rdpos - m_info->m_bufoff;
-            _CharType ch = m_info->m_buffer[bufoff*sizeof(_CharType)];
-            m_info->m_rdpos += 1;
+            auto														bufoff						= m_info->m_rdpos - m_info->m_bufoff;
+            _CharType													ch							= m_info->m_buffer[bufoff*sizeof(_CharType)];
+            m_info->m_rdpos											+= 1;
             return (int_type)ch;
         }
 
-        pplx::task<int_type> _getcImpl()
-        {
-            if ( _in_avail_unprot() > 0 )
-            {
+        pplx::task<int_type>									_getcImpl					()																						{
+            if ( _in_avail_unprot() > 0 ) {
                 pplx::extensibility::scoped_recursive_lock_t lck(m_info->m_lock);
-
-                // Check again once the lock is held.
-
-                if ( _in_avail_unprot() > 0 ) {
-                    auto bufoff = m_info->m_rdpos - m_info->m_bufoff;
-                    _CharType ch = m_info->m_buffer[bufoff*sizeof(_CharType)];
+                
+                if ( _in_avail_unprot() > 0 ) {	// Check again once the lock is held.
+                    auto														bufoff						= m_info->m_rdpos - m_info->m_bufoff;
+                    _CharType													ch							= m_info->m_buffer[bufoff*sizeof(_CharType)];
                     return pplx::task_from_result<int_type>(ch);
                 }
             }
 
-            auto result_tce = pplx::task_completion_event<int_type>();
-            auto callback = new _filestream_callback_getc(m_info, result_tce);
-
-            size_t ch = _getn_fsb(m_info, callback, &callback->m_ch, 1, sizeof(_CharType));
+            auto														result_tce					= pplx::task_completion_event<int_type>();
+            auto														callback					= new _filestream_callback_getc(m_info, result_tce);
+            size_t														ch							= _getn_fsb(m_info, callback, &callback->m_ch, 1, sizeof(_CharType));
 
             if ( ch == sizeof(_CharType) ) {
-                pplx::extensibility::scoped_recursive_lock_t lck(m_info->m_lock);
-                _CharType ch1 = (_CharType)callback->m_ch;
+                pplx::extensibility::scoped_recursive_lock_t				lck							(m_info->m_lock);
+                _CharType													ch1							= (_CharType)callback->m_ch;
                 delete callback;
                 return pplx::task_from_result<int_type>(ch1);
             }
@@ -388,18 +332,16 @@ namespace details {
 
         }
 
-            /// Reads a single byte from the stream without advancing the read position.
-            /// Returns the value of the byte. EOF if the read fails.
-        pplx::task<int_type> _getc() {
+		// Reads a single byte from the stream without advancing the read position. Returns the value of the byte. EOF if the read fails.
+        pplx::task<int_type>									_getc						()																						{
             return m_readOps.enqueue_operation([this]()-> pplx::task<int_type> {
                 return _getcImpl();
             });
         }
 
-            /// Reads a single byte from the stream without advancing the read position.
-            /// Returns the value of the byte. EOF if the read fails. <see cref="::requires_async method" /> if an asynchronous read is required
-        /// This is a synchronous operation, but is guaranteed to never block.
-        int_type _sgetc() {
+		// Reads a single byte from the stream without advancing the read position.
+		// Returns the value of the byte. EOF if the read fails. requires_async() if an asynchronous read is required. This is a synchronous operation, but is guaranteed to never block.
+        int_type												_sgetc						()																						{
             m_readOps.wait();
             if ( m_info->m_atend ) 
 				return traits::eof();
@@ -407,19 +349,17 @@ namespace details {
             if ( _in_avail_unprot() == 0 ) 
 				return traits::requires_async();
 
-            pplx::extensibility::scoped_recursive_lock_t lck(m_info->m_lock);
+            pplx::extensibility::scoped_recursive_lock_t				lck							(m_info->m_lock);
 
             if ( _in_avail_unprot() == 0 ) 
 				return traits::requires_async();
 
-            auto bufoff = m_info->m_rdpos - m_info->m_bufoff;
-            _CharType ch = m_info->m_buffer[bufoff*sizeof(_CharType)];
+            auto														bufoff						= m_info->m_rdpos - m_info->m_bufoff;
+            _CharType													ch							= m_info->m_buffer[bufoff*sizeof(_CharType)];
             return (int_type)ch;
         }
-
-            /// Advances the read position, then return the next character without advancing again.
-                /// Returns a task that holds the value of the byte, which is EOF if the read fails.
-        virtual pplx::task<int_type> _nextc() {
+		// Advances the read position, then return the next character without advancing again. Returns a task that holds the value of the byte, which is EOF if the read fails.
+        virtual pplx::task<int_type>							_nextc						()																						{
             return m_readOps.enqueue_operation([this]()-> pplx::task<int_type> {
                 _seekrdpos_fsb(m_info, m_info->m_rdpos+1, sizeof(_CharType));
                 if ( m_info->m_atend )
@@ -427,10 +367,8 @@ namespace details {
                 return this->_getcImpl();
             });
         }
-
-            /// Retreats the read position, then return the current character without advancing.
-                /// Returns a task that holds the value of the byte. The value is EOF if the read fails, <c>requires_async</c> if an asynchronous read is required
-        virtual pplx::task<int_type> _ungetc() {
+		// Retreats the read position, then return the current character without advancing. Returns a task that holds the value of the byte. The value is EOF if the read fails, <c>requires_async</c> if an asynchronous read is required
+        virtual pplx::task<int_type>							_ungetc						()																						{
             return m_readOps.enqueue_operation([this]()-> pplx::task<int_type> {
                 if ( m_info->m_rdpos == 0 )
                     return pplx::task_from_result<int_type>(basic_file_buffer<_CharType>::traits::eof());
@@ -438,49 +376,43 @@ namespace details {
                 return this->_getcImpl();
             });
         }
-
-            /// Reads up to a given number of characters from the stream.
-            /// <param name="ptr">The address of the target memory area
-        /// <param name="count">The maximum number of characters to read
-            /// Returns a task that holds the number of characters read. This number is O if the end of the stream is reached, EOF if there is some error.
-        virtual pplx::task<size_t> _getn(_Out_writes_ (count) _CharType *ptr, _In_ size_t count) {
+		// Reads up to a given number of characters from the stream. Returns a task that holds the number of characters read. This number is O if the end of the stream is reached, EOF if there is some error.
+        virtual pplx::task<size_t>								_getn						(_Out_writes_ (count) _CharType *targetMemory, _In_ size_t countToRead)					{
             return m_readOps.enqueue_operation([=] ()-> pplx::task<size_t>{
                 if ( m_info->m_atend || count == 0 )
                     return pplx::task_from_result<size_t>(0);
 
                 if ( _in_avail_unprot() >= count ) {
-                    pplx::extensibility::scoped_recursive_lock_t lck(m_info->m_lock);
+                    pplx::extensibility::scoped_recursive_lock_t				lck							(m_info->m_lock);
 
                     // Check again once the lock is held.
                     if ( _in_avail_unprot() >= count ) {
-                        auto bufoff = m_info->m_rdpos - m_info->m_bufoff;
+                        auto														bufoff						= m_info->m_rdpos - m_info->m_bufoff;
                         std::memcpy((void *)ptr, this->m_info->m_buffer+bufoff*sizeof(_CharType), count*sizeof(_CharType));
 
-                        m_info->m_rdpos += count;
+                        m_info->m_rdpos									+= count;
                         return pplx::task_from_result<size_t>(count);
                     }
                 }
-
-                auto result_tce = pplx::task_completion_event<size_t>();
-                auto callback = new _filestream_callback_read(m_info, result_tce);
-
-                size_t read = _getn_fsb(m_info, callback, ptr, count, sizeof(_CharType));
+                auto														result_tce					= pplx::task_completion_event<size_t>();
+                auto														callback					= new _filestream_callback_read(m_info, result_tce);
+                size_t														read						= _getn_fsb(m_info, callback, ptr, count, sizeof(_CharType));
 
                 if ( read != 0 && read != -1) {
                     delete callback;
-                    pplx::extensibility::scoped_recursive_lock_t lck(m_info->m_lock);
-                    m_info->m_rdpos += read/sizeof(_CharType);
+                    pplx::extensibility::scoped_recursive_lock_t				lck							(m_info->m_lock);
+                    m_info->m_rdpos											+= read/sizeof(_CharType);
                     return pplx::task_from_result<size_t>(read/sizeof(_CharType));
                 }
                 return pplx::create_task(result_tce);
             });
         }
 
-            /// Reads up to a given number of characters from the stream.
-            /// <param name="ptr">The address of the target memory area
-        /// <param name="count">The maximum number of characters to read
-        /// Returns the number of characters read. O if the end of the stream is reached or an asynchronous read is required.
-        /// This is a synchronous operation, but is guaranteed to never block.
+		/// Reads up to a given number of characters from the stream.
+		/// <param name="ptr">The address of the target memory area
+		/// <param name="count">The maximum number of characters to read
+		/// Returns the number of characters read. O if the end of the stream is reached or an asynchronous read is required.
+		/// This is a synchronous operation, but is guaranteed to never block.
         size_t _sgetn(_Out_writes_ (count) _CharType *ptr, _In_ size_t count)
         {
             m_readOps.wait();
@@ -882,17 +814,3 @@ namespace details {
 }} // namespace concurrency::streams
 
 #endif
-
-
-
-
-
-
-
-
-
-
-
-
-
-
