@@ -1,6 +1,4 @@
-// Websocket library: Client-side APIs.
-//
-// This file contains the implementation for the Windows Runtime based on Windows::Networking::Sockets::MessageWebSocket.
+// Websocket library: Client-side APIs. Contains the implementation for the Windows Runtime based on Windows::Networking::Sockets::MessageWebSocket.
 //
 // Copyright (C) Microsoft. All rights reserved.
 // Licensed under the MIT license. See LICENSE.txt file in the project root for full license information.
@@ -64,8 +62,8 @@ private:
 
 class winrt_callback_client : public websocket_client_callback_impl, public std::enable_shared_from_this<winrt_callback_client>
 {
-    // WinRT MessageWebSocket object
-    Windows::Networking::Sockets::MessageWebSocket^ m_msg_websocket;
+    
+    Windows::Networking::Sockets::MessageWebSocket^ m_msg_websocket;	// WinRT MessageWebSocket object
     Windows::Storage::Streams::DataWriter^ m_messageWriter;
     // Context object that implements the WinRT handlers: receive handler and close handler
     ReceiveContext ^ m_context;
@@ -105,14 +103,12 @@ public:
             for (const auto & value : protocols)
                 m_msg_websocket->Control->SupportedProtocols->Append(Platform::StringReference(value.c_str()));
         }
-
         if (m_config.m_credentials.is_set()) {
             auto password = m_config.m_credentials._internal_decrypt();
             m_msg_websocket->Control->ServerCredential = ref new Windows::Security::Credentials::PasswordCredential("WebSocketClientCredentialResource",
                 Platform::StringReference(m_config.m_credentials.username().c_str()),
                 Platform::StringReference(password->c_str()));
         }
-
         m_context = ref new ReceiveContext([=](const websocket_incoming_message &msg) {
             if (m_external_message_handler)
                 m_external_message_handler(msg);
@@ -158,15 +154,13 @@ public:
         std::weak_ptr<winrt_callback_client> thisWeakPtr = shared_from_this();
         return pplx::create_task(m_msg_websocket->ConnectAsync(uri)).then([thisWeakPtr](pplx::task<void> result) -> pplx::task<void>
         {
-            // result.get() should happen before anything else, to make sure there is no unobserved exception 
-            // in the task chain.
+            // result.get() should happen before anything else, to make sure there is no unobserved exception in the task chain.
             try {
                 result.get();
             }
             catch (Platform::Exception ^e) {
                 throw websocket_exception(e->HResult, build_error_msg(e, "ConnectAsync"));
             }
-
             if (auto pThis = thisWeakPtr.lock()) {
                 try {
                     pThis->m_messageWriter = ref new DataWriter(pThis->m_msg_websocket->OutputStream);

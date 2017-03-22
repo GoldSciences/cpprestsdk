@@ -1,22 +1,15 @@
-/***
-* Copyright (C) Microsoft. All rights reserved.
-* Licensed under the MIT license. See LICENSE.txt file in the project root for full license information.
-*
-* =+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+
-*
-* Windows specific pplx implementations
-*
-* For the latest on this and related APIs, please see: https://github.com/Microsoft/cpprestsdk
-*
-* =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
-****/
-
+// Windows specific pplx implementations. For the latest on this and related APIs, please see: https://github.com/Microsoft/cpprestsdk
+//
+// Copyright (C) Microsoft. All rights reserved.
+// Licensed under the MIT license. See LICENSE.txt file in the project root for full license information.
 #pragma once
 
 #if !defined(_WIN32) || _MSC_VER < 1800 || CPPREST_FORCE_PPLX
-
 #include "cpprest/details/cpprest_compat.h"
 #include "pplx/pplxinterface.h"
+
+#ifndef PPLXWIN_H_99273490827349082734
+#define PPLXWIN_H_99273490827349082734
 
 namespace pplx
 {
@@ -260,4 +253,6 @@ namespace details
 
 } // namespace pplx
 
-#endif
+#endif	// PPLXWIN_H_99273490827349082734
+
+#endif 

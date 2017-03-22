@@ -1,9 +1,7 @@
-// Asynchronous I/O: stream buffer implementation details
+// Asynchronous I/O: stream buffer implementation details.
 //
-// We're going to some lengths to avoid exporting C++ class member functions and implementation details across
-// module boundaries, and the factoring requires that we keep the implementation details away from the main header files. 
+// We're going to some lengths to avoid exporting C++ class member functions and implementation details across module boundaries, and the factoring requires that we keep the implementation details away from the main header files. 
 // The supporting functions, which are in this file, use C-like signatures to avoid as many issues as possible.
-//
 // For the latest on this and related APIs, please see: https://github.com/Microsoft/cpprestsdk
 //
 // Copyright (C) Microsoft. All rights reserved.
@@ -20,9 +18,8 @@ using namespace ::Windows::Networking::Sockets;
 
 namespace Concurrency { namespace streams { namespace details {
 
-/// The public parts of the file information record contain only what is implementation-
-/// independent. The actual allocated record is larger and has details that the implementation
-/// require in order to function.
+	// The public parts of the file information record contain only what is implementation- independent. 
+	// The actual allocated record is larger and has details that the implementation require in order to function.
 struct _file_info_impl : _file_info {
     Streams::IRandomAccessStream	^ m_stream			;
     Streams::IDataWriter			^ m_writer			;

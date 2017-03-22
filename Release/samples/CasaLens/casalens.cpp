@@ -29,7 +29,9 @@ const utility::string_t		CasaLens::			json_key_weather		= U("weather"	);
 const utility::string_t		CasaLens::			json_key_images			= U("images"	);
 const utility::string_t		CasaLens::			json_key_error			= U("error"		);
 
-							CasaLens::			CasaLens				(utility::string_t url)	: m_listener(url) {
+							CasaLens::			CasaLens				(utility::string_t url)	
+	: m_listener(url)	
+{
     m_listener.support(web::http::methods::GET , std::bind(&CasaLens::handle_get , this, std::placeholders::_1));
     m_listener.support(web::http::methods::POST, std::bind(&CasaLens::handle_post, this, std::placeholders::_1));
 
@@ -44,7 +46,7 @@ const utility::string_t		CasaLens::			json_key_error			= U("error"		);
 
 // Handler to process HTTP::GET requests.
 // Replies to the request with data.
-void						CasaLens::			handle_get				(web::http::http_request message) {    
+void						CasaLens::			handle_get				(web::http::http_request message)			{    
     auto												path					= message.relative_uri().path();
     auto												content_data			= m_htmlcontentmap.find(path);
     if (content_data == m_htmlcontentmap.end()) {
@@ -55,7 +57,9 @@ void						CasaLens::			handle_get				(web::http::http_request message) {
     auto												file_name				= std::get<0>(content_data->second);
     auto												content_type			= std::get<1>(content_data->second);
     concurrency::streams::fstream::open_istream(file_name, std::ios::in).then([=](concurrency::streams::istream is) {
-        message.reply(web::http::status_codes::OK, is, content_type).then([](pplx::task<void> t) { handle_error(t); });
+        message.reply(web::http::status_codes::OK, is, content_type).then([](pplx::task<void> t) { 
+			handle_error(t); 
+		});
     }).then([=](pplx::task<void>& t) {
         try {
             t.get();
@@ -69,7 +73,7 @@ void						CasaLens::			handle_get				(web::http::http_request message) {
 // Respond to HTTP::POST messages
 // Post data will contain the postal code or location string.
 // Aggregate location data from different services and reply to the POST request.
-void						CasaLens::			handle_post				(web::http::http_request message) { 
+void						CasaLens::			handle_post				(web::http::http_request message)			{ 
     auto												path					= message.relative_uri().path();
     if (0 == path.compare(U("/"))) {
         message.extract_string().then([=](const utility::string_t& location) {
@@ -81,9 +85,9 @@ void						CasaLens::			handle_post				(web::http::http_request message) {
 }
 
 #ifdef _WIN32
-int												wmain					(int argc, wchar_t *args[])	{
+int												wmain					(int argc, wchar_t *args[])					{
 #else
-int												main					(int argc, char *args[])	{
+int												main					(int argc, char *args[])					{
 #endif
     if(argc != 2) {
         wprintf(U("Usage: casalens.exe port\n"));
