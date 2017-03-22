@@ -214,7 +214,7 @@ public:
 					(*progress)(message_direction::download, context->m_downloaded); 
 				}
 				catch(...) {
-					context->m_exceptionPtr = std::current_exception();
+					context->m_exceptionPtr									= std::current_exception();
 					return STG_E_CANTSAVE;
 				}
 			}
@@ -274,8 +274,7 @@ protected:
 			request->report_exception(http_exception(L"Only a default proxy server is supported"));
 			return;
 		}
-		// New scope to ensure plain text password is cleared as soon as possible.
-		{
+		{	// New scope to ensure plain text password is cleared as soon as possible.
 			utility::string_t												username
 				,															proxy_username
 				;
