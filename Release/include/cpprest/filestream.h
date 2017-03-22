@@ -86,7 +86,7 @@ namespace details {
 
 		// Gets the stream buffer size, if one has been set. An implementation that does not support buffering will always return '0'.
         virtual size_t											buffer_size					(std::ios_base::openmode bufferingDirection = std::ios_base::in)				const	{
-            if ( direction == std::ios_base::in )
+            if ( bufferingDirection == std::ios_base::in )
                 return m_info->m_buffer_size;
             else
                 return 0;
@@ -94,12 +94,12 @@ namespace details {
 
 		// Sets the stream buffer implementation to buffer or not buffer. An implementation that does not support buffering will silently ignore calls to this function and it will not have any effect on what is returned by subsequent calls to buffer_size().
         virtual void											set_buffer_size				(size_t sizeOfBuffering, std::ios_base::openmode bufferingDirection = std::ios_base::in)			{
-            if ( direction == std::ios_base::out ) 
+            if ( bufferingDirection == std::ios_base::out ) 
 				return;
 
-            m_info->m_buffer_size									= size;
+            m_info->m_buffer_size									= sizeOfBuffering;
 
-            if ( size == 0 && m_info->m_buffer != nullptr ) {
+            if ( sizeOfBuffering == 0 && m_info->m_buffer != nullptr ) {
                delete m_info->m_buffer;
                m_info->m_buffer											= nullptr;
             }
@@ -171,7 +171,6 @@ namespace details {
                         flushTask.wait();
                     }
                     catch(...) {}
-
                     
                     auto														fileInfo					= this->_close_stream();	// indicate that we are no longer open
                     return this->_close_file(fileInfo);
@@ -206,8 +205,8 @@ namespace details {
         }
 
 		// Allocates a contiguous memory block and returns it. Returns a pointer to a block to write to, null if the stream buffer implementation does not support alloc/commit.
-        _CharType*												_alloc						(size_t characterCount)																	{ return nullptr; }
-        void													_commit						(size_t characterCount)																	{}						// Submits a block already allocated by the stream buffer.
+        _CharType*												_alloc						(size_t /*characterCount*/)																	{ return nullptr; }
+        void													_commit						(size_t /*characterCount*/)																{}						// Submits a block already allocated by the stream buffer.
 
 		/// Gets a pointer to the next already allocated contiguous block of data.
 		/// <param name="ptr">A reference to a pointer variable that will hold the address of the block on success.
@@ -220,23 +219,23 @@ namespace details {
 		/// a subsequent read will not succeed.
         virtual bool											acquire						(_Out_ _CharType*& acquired, _Out_ size_t& countCharAvailable)							{
             acquired												= nullptr;
-            count													= 0;
+            countCharAvailable										= 0;
             return false;
         }
 
 		// Releases a block of data acquired using acquire(). This frees the stream buffer to de-allocate the memory, if it so desires. Move the read position ahead by the count.
-        virtual void											release						(_Out_writes_ (count) _CharType *, _In_ size_t charactersRead)							{ (void)(count);	}
+        virtual void											release						(_Out_writes_ (count) _CharType *, _In_ size_t charactersRead)							{ (void)(charactersRead);	}
 
 		// Writes a number of characters to the stream. Returns a task that holds the number of characters actually written, either 'count' or 0.
         virtual pplx::task<size_t>								_putn						(const _CharType *sourceData, size_t countCharsToWrite)									{
             auto														result_tce					= pplx::task_completion_event<size_t>();
             auto														callback					= new _filestream_callback_write<size_t>(m_info, result_tce);
 
-            size_t														written						= _putn_fsb(m_info, callback, ptr, count, sizeof(_CharType));
+            size_t														written						= _putn_fsb(m_info, callback, sourceData, countCharsToWrite, sizeof(_CharType));
 
             if ( written != 0 && written != -1 ) {
                 delete callback;
-                written												= written/sizeof(_CharType);
+                written													= written/sizeof(_CharType);
                 return pplx::task_from_result<size_t>(written);
             }
             return pplx::create_task(result_tce);
@@ -262,7 +261,6 @@ namespace details {
                     pplx::extensibility::scoped_recursive_lock_t lck(m_info->m_lock);
 
                     // Check again once the lock is held.
-
                     if ( _in_avail_unprot() > 0 ) {
                         auto bufoff = m_info->m_rdpos - m_info->m_bufoff;
                         _CharType ch = m_info->m_buffer[bufoff*sizeof(_CharType)];
@@ -285,9 +283,9 @@ namespace details {
             });
         }
 
-            /// Reads a single byte from the stream and advance the read position.
-            /// Returns the value of the byte. EOF if the read fails. <see cref="::requires_async method" /> if an asynchronous read is required
-        /// This is a synchronous operation, but is guaranteed to never block.
+		// Reads a single byte from the stream and advance the read position.
+		// Returns the value of the byte. EOF if the read fails. requires_async() if an asynchronous read is required
+		// This is a synchronous operation, but is guaranteed to never block.
         virtual int_type										_sbumpc						()																						{
             m_readOps.wait();
             if ( m_info->m_atend ) 
@@ -306,7 +304,6 @@ namespace details {
             m_info->m_rdpos											+= 1;
             return (int_type)ch;
         }
-
         pplx::task<int_type>									_getcImpl					()																						{
             if ( _in_avail_unprot() > 0 ) {
                 pplx::extensibility::scoped_recursive_lock_t lck(m_info->m_lock);
@@ -379,24 +376,24 @@ namespace details {
 		// Reads up to a given number of characters from the stream. Returns a task that holds the number of characters read. This number is O if the end of the stream is reached, EOF if there is some error.
         virtual pplx::task<size_t>								_getn						(_Out_writes_ (count) _CharType *targetMemory, _In_ size_t countToRead)					{
             return m_readOps.enqueue_operation([=] ()-> pplx::task<size_t>{
-                if ( m_info->m_atend || count == 0 )
+                if ( m_info->m_atend || countToRead == 0 )
                     return pplx::task_from_result<size_t>(0);
 
-                if ( _in_avail_unprot() >= count ) {
+                if ( _in_avail_unprot() >= countToRead ) {
                     pplx::extensibility::scoped_recursive_lock_t				lck							(m_info->m_lock);
 
                     // Check again once the lock is held.
-                    if ( _in_avail_unprot() >= count ) {
+                    if ( _in_avail_unprot() >= countToRead ) {
                         auto														bufoff						= m_info->m_rdpos - m_info->m_bufoff;
-                        std::memcpy((void *)ptr, this->m_info->m_buffer+bufoff*sizeof(_CharType), count*sizeof(_CharType));
+                        std::memcpy(targetMemory, this->m_info->m_buffer+bufoff*sizeof(_CharType), countToRead*sizeof(_CharType));
 
-                        m_info->m_rdpos									+= count;
-                        return pplx::task_from_result<size_t>(count);
+                        m_info->m_rdpos									+= countToRead;
+                        return pplx::task_from_result<size_t>(countToRead);
                     }
                 }
                 auto														result_tce					= pplx::task_completion_event<size_t>();
                 auto														callback					= new _filestream_callback_read(m_info, result_tce);
-                size_t														read						= _getn_fsb(m_info, callback, ptr, count, sizeof(_CharType));
+                size_t														read						= _getn_fsb(m_info, callback, targetMemory, countToRead, sizeof(_CharType));
 
                 if ( read != 0 && read != -1) {
                     delete callback;
@@ -413,7 +410,7 @@ namespace details {
 		/// <param name="count">The maximum number of characters to read
 		/// Returns the number of characters read. O if the end of the stream is reached or an asynchronous read is required.
 		/// This is a synchronous operation, but is guaranteed to never block.
-        size_t _sgetn(_Out_writes_ (count) _CharType *ptr, _In_ size_t count)
+        size_t _sgetn(_Out_writes_ (count) _CharType *targetMemoryArea, _In_ size_t count)
         {
             m_readOps.wait();
             if ( m_info->m_atend ) 
@@ -467,18 +464,17 @@ namespace details {
 			return (pos_type)Concurrency::streams::char_traits<_CharType>::eof();
         }
 
-		/// Seeks to a position given by a relative offset.
-		/// <param name="offset">The relative position to seek to
-		/// <param name="way">The starting point (beginning, end, current) for the seek.
-		/// <param name="mode">The I/O direction to seek (see remarks)
-		/// Returns the position. EOF if the operation fails.
-		/// Some streams may have separate write and read cursors.
-		///          For such streams, the mode parameter defines whether to move the read or the write cursor.
-        virtual pos_type seekoff(off_type offset, std::ios_base::seekdir way, std::ios_base::openmode mode)
+		// Seeks to a position given by a relative offset.
+		// <param name="offset">The relative position to seek to
+		// <param name="way">The starting point (beginning, end, current) for the seek.
+		// <param name="mode">The I/O direction to seek (see remarks)
+		// Returns the position. EOF if the operation fails.
+		// Some streams may have separate write and read cursors. For such streams, the mode parameter defines whether to move the read or the write cursor.
+        virtual pos_type seekoff(off_type offset, std::ios_base::seekdir seekStartingPoint, std::ios_base::openmode mode)
         {
             if ( mode == std::ios_base::in ) {
                 m_readOps.wait();
-                switch ( way ) {
+                switch ( seekStartingPoint ) {
                 case std::ios_base::beg: return (pos_type)_seekrdpos_fsb	(m_info, size_t(offset)					, sizeof(_CharType));
                 case std::ios_base::cur: return (pos_type)_seekrdpos_fsb	(m_info, size_t(m_info->m_rdpos+offset)	, sizeof(_CharType));
                 case std::ios_base::end: return (pos_type)_seekrdtoend_fsb	(m_info, int64_t(offset)				, sizeof(_CharType));
@@ -486,9 +482,8 @@ namespace details {
                     assert(false);
                 }
             }
-            else if ( (m_info->m_mode & std::ios::ios_base::app) == 0 )
-            {
-                switch ( way ) {
+            else if ( (m_info->m_mode & std::ios::ios_base::app) == 0 ) {
+                switch ( seekStartingPoint ) {
                 case std::ios_base::beg: return (pos_type)_seekwrpos_fsb(m_info, size_t(offset)						, sizeof(_CharType));
                 case std::ios_base::cur: return (pos_type)_seekwrpos_fsb(m_info, size_t(m_info->m_wrpos+offset)		, sizeof(_CharType));
                 case std::ios_base::end: return (pos_type)_seekwrpos_fsb(m_info, size_t(-1)							, sizeof(_CharType));
@@ -499,14 +494,13 @@ namespace details {
             return (pos_type)traits::eof();
         }
 
-            /// For output streams, flush any internally buffered data to the underlying medium.
+		// For output streams, flush any internally buffered data to the underlying medium.
 		virtual pplx::task<bool> _sync() { return flush_internal().then([](){return true;}); }
 
     private:
 		template<typename _CharType1> friend class ::concurrency::streams::file_buffer;
 		
-		pplx::task<void> flush_internal()
-		{
+		pplx::task<void> flush_internal() {
 		    pplx::task_completion_event<void> result_tce;
 		    auto callback = utility::details::make_unique<_filestream_callback_write_b>(m_info, result_tce);
 		
@@ -552,6 +546,7 @@ namespace details {
             pplx::task_completion_event<std::shared_ptr<basic_streambuf<_CharType>>> m_op;
         public:
             _filestream_callback_open(const pplx::task_completion_event<std::shared_ptr<basic_streambuf<_CharType>>> &op) : m_op(op) { }
+
             virtual void on_opened(_In_ _file_info *info) {
                 m_op.set(std::shared_ptr<basic_file_buffer<_CharType>>(new basic_file_buffer<_CharType>(info)));
                 delete this;
@@ -629,7 +624,6 @@ namespace details {
 
 				delete this;
             }
-
             virtual void on_error(const std::exception_ptr & e) {
                 m_op.set_exception(e);
                 delete this;
@@ -652,7 +646,6 @@ namespace details {
                     m_op.set(traits::eof());
                 delete this;
             }
-
             virtual void on_error(const std::exception_ptr & e) {
                 m_op.set_exception(e);
                 delete this;
@@ -664,9 +657,6 @@ namespace details {
     } // namespace details
 
     /// Stream buffer for file streams.
-    /// <typeparam name="_CharType">
-    /// The data type of the basic element of the <c>file_buffer</c>.
-    /// </typeparam>
     template<typename _CharType>
     class file_buffer
     {
@@ -714,25 +704,14 @@ namespace details {
     };
 
 
-    /// File stream class containing factory functions for file streams.
-    /// <typeparam name="_CharType">
-    /// The data type of the basic element of the <c>file_stream</c>.
-    /// </typeparam>
+	// File stream class containing factory functions for file streams.
     template<typename _CharType>
-    class file_stream
-    {
+    class file_stream {
     public:
 
 #if !defined(__cplusplus_winrt)
-            /// Open a new input stream representing the given file.
-        /// The file should already exist on disk, or an exception will be thrown.
-            /// <param name="file_name">The name of the file
-        /// <param name="mode">The opening mode of the file
-        /// <param name="prot">The file protection mode
-        /// Returns a task that returns an opened input stream on completion.
-        static pplx::task<streams::basic_istream<_CharType>> open_istream(
-            const utility::string_t &file_name,
-            std::ios_base::openmode mode = std::ios_base::in,
+		// Open a new input stream representing the given file. The file should already exist on disk, or an exception will be thrown. Returns a task that returns an opened input stream on completion.
+        static pplx::task<streams::basic_istream<_CharType>> open_istream(const utility::string_t &file_name, std::ios_base::openmode mode = std::ios_base::in,
 #ifdef _WIN32
             int prot = (int) std::ios_base::_Openprot
 #else
@@ -748,16 +727,8 @@ namespace details {
                 });
         }
 
-            /// Open a new ouput stream representing the given file.
-        /// If the file does not exist, it will be create unless the folder or directory
-        /// where it is to be found also does not exist.
-            /// <param name="file_name">The name of the file
-        /// <param name="mode">The opening mode of the file
-        /// <param name="prot">The file protection mode
-        /// Returns a task that returns an opened output stream on completion.
-        static pplx::task<streams::basic_ostream<_CharType>> open_ostream(
-            const utility::string_t &file_name,
-            std::ios_base::openmode mode = std::ios_base::out,
+		// Open a new ouput stream representing the given file. If the file does not exist, it will be create unless the folder or directory where it is to be found also does not exist. Returns a task that returns an opened output stream on completion.
+        static pplx::task<streams::basic_ostream<_CharType>> open_ostream(const utility::string_t &file_name, std::ios_base::openmode mode = std::ios_base::out,
 #ifdef _WIN32
             int prot = (int) std::ios_base::_Openprot
 #else
@@ -773,14 +744,8 @@ namespace details {
                 });
         }
 #else
-            /// Open a new input stream representing the given file.
-        /// The file should already exist on disk, or an exception will be thrown.
-            /// <param name="file">The StorageFile reference representing the file
-        /// <param name="mode">The opening mode of the file
-        /// Returns a task that returns an opened input stream on completion.
-        static pplx::task<streams::basic_istream<_CharType>> open_istream(
-            ::Windows::Storage::StorageFile^ file,
-            std::ios_base::openmode mode = std::ios_base::in)
+		// Open a new input stream representing the given file. The file should already exist on disk, or an exception will be thrown. Returns a task that returns an opened input stream on completion.
+        static pplx::task<streams::basic_istream<_CharType>> open_istream(::Windows::Storage::StorageFile^ file, std::ios_base::openmode mode = std::ios_base::in)
         {
             mode |= std::ios_base::in;
             return streams::file_buffer<_CharType>::open(file, mode)
@@ -790,12 +755,7 @@ namespace details {
                 });
         }
 
-            /// Open a new ouput stream representing the given file.
-        /// If the file does not exist, it will be create unless the folder or directory
-        /// where it is to be found also does not exist.
-            /// <param name="file">The StorageFile reference representing the file
-        /// <param name="mode">The opening mode of the file
-        /// Returns a task that returns an opened output stream on completion.
+		// Open a new ouput stream representing the given file. If the file does not exist, it will be create unless the folder or directory where it is to be found also does not exist. Returns a task that returns an opened output stream on completion.
         static pplx::task<streams::basic_ostream<_CharType>> open_ostream(
             ::Windows::Storage::StorageFile^ file,
             std::ios_base::openmode mode = std::ios_base::out)

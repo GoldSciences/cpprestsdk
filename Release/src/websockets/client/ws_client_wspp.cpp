@@ -156,7 +156,7 @@ public:
                 auto sslContext = websocketpp::lib::shared_ptr<boost::asio::ssl::context>(new boost::asio::ssl::context(boost::asio::ssl::context::sslv23));
                 sslContext->set_default_verify_paths();
                 sslContext->set_options(boost::asio::ssl::context::default_workarounds);
-                if (m_config.validate_certificates())
+                if (m_config.m_validate_certificates)
                     sslContext->set_verify_mode(boost::asio::ssl::context::verify_peer);
                 else
                     sslContext->set_verify_mode(boost::asio::ssl::context::verify_none);
@@ -198,7 +198,7 @@ public:
             client.set_socket_init_handler([this](websocketpp::connection_hdl, boost::asio::ssl::stream<boost::asio::ip::tcp::socket> &ssl_stream)
             {
                 // Support for SNI.
-                if (m_config.is_sni_enabled()) {
+                if (m_config.m_sni_enabled) {
                     // If user specified server name is empty default to use URI host name.
                     if (!m_config.server_name().empty()) {																			// OpenSSL runs the string parameter through a macro casting away const with a C style cast.
                         SSL_set_tlsext_host_name(ssl_stream.native_handle(), const_cast<char *>(m_config.server_name().c_str()));	// Do a C++ cast ourselves to avoid warnings.
@@ -293,7 +293,7 @@ public:
         }
 
         // Setup proxy options.
-        const auto &proxy = m_config.proxy();
+        const auto &proxy = m_config.m_proxy;
         if (proxy.is_specified())
         {
             con->set_proxy(utility::conversions::to_utf8string(proxy.address().to_string()), ec);

@@ -106,10 +106,10 @@ public:
                 m_msg_websocket->Control->SupportedProtocols->Append(Platform::StringReference(value.c_str()));
         }
 
-        if (m_config.credentials().is_set()) {
-            auto password = m_config.credentials()._internal_decrypt();
+        if (m_config.m_credentials.is_set()) {
+            auto password = m_config.m_credentials._internal_decrypt();
             m_msg_websocket->Control->ServerCredential = ref new Windows::Security::Credentials::PasswordCredential("WebSocketClientCredentialResource",
-                Platform::StringReference(m_config.credentials().username().c_str()),
+                Platform::StringReference(m_config.m_credentials.username().c_str()),
                 Platform::StringReference(password->c_str()));
         }
 
@@ -133,13 +133,12 @@ public:
     ~winrt_callback_client() {	// Only call close if successfully connected.
         if (m_connected)		// Users should have already called close and wait on the returned task before destroying the client. In case they didn't we call close and wait for it to complete. 
             close().wait();		// It is safe to call MessageWebSocket::Close multiple times and concurrently, it has safe guards in place to only execute once.
-								
     }
 
     pplx::task<void> connect()
     {
         _ASSERTE(!m_connected);
-        const auto &proxy = m_config.proxy();
+        const auto &proxy = m_config.m_proxy;
         if(!proxy.is_default())
             return pplx::task_from_exception<void>(websocket_exception("Only a default proxy server is supported."));
 
@@ -365,8 +364,7 @@ void ReceiveContext::OnReceive(MessageWebSocket^ sender, MessageWebSocketMessage
         break;
     }
 
-    try
-    {
+    try {
         DataReader^ reader = args->GetDataReader();
         const auto len = reader->UnconsumedBufferLength;
         if (len > 0) {
@@ -377,14 +375,12 @@ void ReceiveContext::OnReceive(MessageWebSocket^ sender, MessageWebSocketMessage
         }
         m_receive_handler(incoming_msg);
     }
-    catch (Platform::Exception ^e)
-    {
+    catch (Platform::Exception ^e) {
         m_close_handler(websocket_close_status::abnormal_close, _XPLATSTR("Abnormal close"), utility::details::create_error_code(e->HResult));
     }
 }
 
-void ReceiveContext::OnClosed(IWebSocket^ sender, WebSocketClosedEventArgs^ args)
-{
+void ReceiveContext::OnClosed(IWebSocket^ sender, WebSocketClosedEventArgs^ args) {
     m_close_handler(static_cast<websocket_close_status>(args->Code), args->Reason->Data(), utility::details::create_error_code(0));
 }
 

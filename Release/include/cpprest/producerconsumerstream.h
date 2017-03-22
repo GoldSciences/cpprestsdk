@@ -241,90 +241,81 @@ namespace Concurrency { namespace streams {
 			class _block {
 														_block				(const _block&);
 				_block& operator=	(const _block&);
-             public:
-                _block	(size_t size) : m_read(0), m_pos(0), m_size(size), m_data(new _CharType[size]) {}
-                ~_block	() { delete [] m_data; }
+				public:
+				_block	(size_t size) : m_read(0), m_pos(0), m_size(size), m_data(new _CharType[size]) {}
+				~_block	() { delete [] m_data; }
 
 				size_t		m_read;	// Read head
-                size_t		m_pos;	// Write head
-                size_t		m_size;	// Allocation size (of m_data)
-                _CharType	* m_data;	// The data store
+				size_t		m_pos;	// Write head
+				size_t		m_size;	// Allocation size (of m_data)
+				_CharType	* m_data;	// The data store
 
-                _CharType *	rbegin() { return m_data + m_read;	}	// Pointer to the read head
-                _CharType * wbegin() { return m_data + m_pos;	}	// Pointer to the write head
+				_CharType *	rbegin() { return m_data + m_read;	}	// Pointer to the read head
+				_CharType * wbegin() { return m_data + m_pos;	}	// Pointer to the write head
 
-                // Read up to count characters from the block
-                size_t read(_Out_writes_ (count) _CharType * dest, _In_ size_t count, bool advance = true) {
-                    msl::safeint3::SafeInt<size_t> avail(rd_chars_left());
-                    auto countRead = static_cast<size_t>(avail.Min(count));
+				// Read up to count characters from the block
+				size_t									read				(_Out_writes_ (count) _CharType * dest, _In_ size_t count, bool advance = true)					{
+					msl::safeint3::SafeInt<size_t> avail(rd_chars_left());
+					auto countRead = static_cast<size_t>(avail.Min(count));
 
-                    _CharType * beg = rbegin();
-                    _CharType * end = rbegin() + countRead;
-
-#ifdef _WIN32
-                    // Avoid warning C4996: Use checked iterators under SECURE_SCL
-                    std::copy(beg, end, stdext::checked_array_iterator<_CharType *>(dest, count));
-#else
-                    std::copy(beg, end, dest);
-#endif // _WIN32
-
-                    if (advance)
-                        m_read += countRead;
-
-                    return countRead;
-                }
-
-                // Write count characters into the block
-                size_t write(const _CharType * src, size_t count) {
-                    msl::safeint3::SafeInt<size_t> avail(wr_chars_left());
-                    auto countWritten = static_cast<size_t>(avail.Min(count));
-
-                    const _CharType * srcEnd = src + countWritten;
+					_CharType * beg = rbegin();
+					_CharType * end = rbegin() + countRead;
 
 #ifdef _WIN32
-                    // Avoid warning C4996: Use checked iterators under SECURE_SCL
-                    std::copy(src, srcEnd, stdext::checked_array_iterator<_CharType *>(wbegin(), static_cast<size_t>(avail)));
+					std::copy(beg, end, stdext::checked_array_iterator<_CharType *>(dest, count));	// Avoid warning C4996: Use checked iterators under SECURE_SCL
 #else
-                    std::copy(src, srcEnd, wbegin());
+					std::copy(beg, end, dest);
 #endif // _WIN32
 
-                    update_write_head(countWritten);
-                    return countWritten;
-                }
+					if (advance)
+						m_read += countRead;
 
-                void update_write_head(size_t count) { m_pos += count; }
+					return countRead;
+				}
 
-                size_t rd_chars_left() const { return m_pos-m_read; }
-                size_t wr_chars_left() const { return m_size-m_pos; }
-           };
+				// Write count characters into the block
+				size_t									write				(const _CharType * src, size_t count)																{
+					msl::safeint3::SafeInt<size_t> avail(wr_chars_left());
+					auto countWritten = static_cast<size_t>(avail.Min(count));
 
-			/// Represents a request on the stream buffer - typically reads
+					const _CharType * srcEnd = src + countWritten;
+
+#ifdef _WIN32		// Avoid warning C4996: Use checked iterators under SECURE_SCL
+					std::copy(src, srcEnd, stdext::checked_array_iterator<_CharType *>(wbegin(), static_cast<size_t>(avail)));
+#else
+					std::copy(src, srcEnd, wbegin());
+#endif // _WIN32
+
+					update_write_head(countWritten);
+					return countWritten;
+				}
+
+				void									update_write_head	(size_t count)																					{ m_pos += count; }
+				size_t									rd_chars_left		()																						const	{ return m_pos-m_read; }
+				size_t									wr_chars_left		()																						const	{ return m_size-m_pos; }
+			};
+
+			// Represents a request on the stream buffer - typically reads
 			class _request {
-                typedef std::function<void()>	func_type;
-                func_type						m_func;
-                size_t							m_count;
-            public:
-                _request(size_t count, const func_type& func)
-                    : m_func(func), m_count(count)
-                {}
-
-                void	complete	()			{ m_func(); }
-                size_t	size		() const	{ return m_count; }
+				typedef std::function<void()>			func_type;
+				func_type								m_func;
+				size_t									m_count;
+			public:
+														_request			(size_t count, const func_type& func)															: m_func(func), m_count(count) {}
+				void									complete			()																								{ m_func(); }
+				size_t									size				()																						const	{ return m_count; }
             };
 
-            void enqueue_request(_request req) {
+            void									enqueue_request		(_request req) {
                 pplx::extensibility::scoped_critical_section_t l(m_lock);
-
                 if (can_satisfy(req.size()))
                     req.complete();			// We can immediately fulfill the request.
                 else
                     m_requests.push(req);	// We must wait for data to arrive.
             }
 
-                    /// Determine if the request can be satisfied.
-			bool can_satisfy(size_t count) {
-                return (m_synced > 0) || (this->in_avail() >= count) || !this->can_write();
-            }
+			// Determine if the request can be satisfied.
+			bool can_satisfy(size_t count) { return (m_synced > 0) || (this->in_avail() >= count) || !this->can_write(); }
 
 			/// Reads a byte from the stream and returns it as int_type.
 			/// Note: This routine shall only be called if can_satisfy() returned true.
@@ -335,10 +326,8 @@ namespace Concurrency { namespace streams {
 				return read_size == 1 ? static_cast<int_type>(value) : traits::eof();
 			}
 
-                    /// Reads up to count characters into ptr and returns the count of characters copied.
-            /// The return value (actual characters copied) could be <= count.
-            /// Note: This routine shall only be called if can_satisfy() returned true.
-                    /// This should be called with the lock held
+			// Reads up to count characters into ptr and returns the count of characters copied. The return value (actual characters copied) could be <= count.
+			// Notes: This routine shall only be called if can_satisfy() returned true. This should be called with the lock held
             size_t read(_Out_writes_ (count) _CharType *ptr, _In_ size_t count, bool advance = true) {
                 _ASSERTE(can_satisfy(count));
 
@@ -359,17 +348,15 @@ namespace Concurrency { namespace streams {
                 return read;
             }
 
-                    /// Updates the read head by the specified offset
-                    /// This should be called with the lock held
-            void update_read_head(size_t count) {
+			// Updates the read head by the specified offset. This should be called with the lock held
+			void update_read_head(size_t count) {
                 m_total -= count;
                 m_total_read += count;
 
                 if ( m_synced > 0 )
                     m_synced = (m_synced > count) ? (m_synced-count) : 0;
 
-                // The block at the front is always the read head.
-                // Purge empty blocks so that the block at the front reflects the read head
+                // The block at the front is always the read head. Purge empty blocks so that the block at the front reflects the read head
                 while (!m_blocks.empty()) {
                     if (m_blocks.front()->rd_chars_left() > 0) 
 						break;	// If front block is not empty - we are done
@@ -396,20 +383,12 @@ namespace Concurrency { namespace streams {
 
     } // namespace details
 
-    /// The producer_consumer_buffer class serves as a memory-based steam buffer that supports both writing and reading
-    /// sequences of bytes. It can be used as a consumer/producer buffer.
-    /// <typeparam name="_CharType">
-    /// The data type of the basic element of the <c>producer_consumer_buffer</c>.
-    /// </typeparam>
-        /// This is a reference-counted version of basic_producer_consumer_buffer.
+    // The producer_consumer_buffer class serves as a memory-based steam buffer that supports both writing and reading sequences of bytes. It can be used as a consumer/producer buffer. This is a reference-counted version of basic_producer_consumer_buffer.
     template<typename _CharType>
-    class producer_consumer_buffer : public streambuf<_CharType>
-    {
+    class producer_consumer_buffer : public streambuf<_CharType> {
     public:
-        typedef _CharType char_type;
-
-		// Create a producer_consumer_buffer. 
-		producer_consumer_buffer(size_t alloc_size = 512)
+        typedef _CharType							char_type;
+													producer_consumer_buffer	(size_t alloc_size = 512)
 			: streambuf<_CharType>(std::make_shared<details::basic_producer_consumer_buffer<_CharType>>(alloc_size))
 		{}
     };

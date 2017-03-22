@@ -56,12 +56,12 @@ namespace Concurrency { namespace streams {
 		virtual size_t								in_avail								()																const	{
             _ASSERTE(m_current_position <= m_data.size());	// See the comment in seek around the restriction that we do not allow read head to seek beyond the current write_end.
 
-            msl::safeint3::SafeInt<size_t> readhead(m_current_position);
-            msl::safeint3::SafeInt<size_t> writeend(m_data.size());
+            msl::safeint3::SafeInt<size_t>					readhead								(m_current_position);
+            msl::safeint3::SafeInt<size_t>					writeend								(m_data.size());
             return (size_t)(writeend - readhead);
         }
         virtual pplx::task<int_type>				_putc									(_CharType ch)															{
-            int_type retVal = (this->write(&ch, 1) == 1) ? static_cast<int_type>(ch) : traits::eof();
+            int_type										retVal									= (this->write(&ch, 1) == 1) ? static_cast<int_type>(ch) : traits::eof();
             return pplx::task_from_result<int_type>(retVal);
         }
 		// Allocates a contiguous memory block and returns it.
@@ -74,7 +74,7 @@ namespace Concurrency { namespace streams {
             return (_CharType*)&m_data[m_current_position];		// Let the caller copy the data
         }
 		// Submits a block already allocated by the stream buffer.
-        void										_commit									(size_t characterCount)													{ update_current_position(m_current_position+actual); }	// Update the write position and satisfy any pending reads
+        void										_commit									(size_t characterCount)													{ update_current_position(m_current_position+characterCount); }	// Update the write position and satisfy any pending reads
 
 		// Gets a pointer to the next already allocated contiguous block of data.
 		// <param name="ptr">A reference to a pointer variable that will hold the address of the block on success.
@@ -122,8 +122,9 @@ namespace Concurrency { namespace streams {
         }
         // Gets the current read or write position in the stream. Returns the current position. EOF if the operation fails. Some streams may have separate write and read cursors. For such streams, the direction parameter defines whether to move the read or the write cursor.
         virtual pos_type							getpos									(std::ios_base::openmode mode)									const	{
-            if ( ((mode & std::ios_base::in) && !this->can_read()) ||
-                 ((mode & std::ios_base::out) && !this->can_write()))
+            if ( ((mode & std::ios_base::in ) && !this->can_read ()) 
+			 ||  ((mode & std::ios_base::out) && !this->can_write())
+			 )
                  return static_cast<pos_type>(traits::eof());
 
             return static_cast<pos_type>(m_current_position);
@@ -142,9 +143,8 @@ namespace Concurrency { namespace streams {
                 auto pos = static_cast<size_t>(position);
                 // Read head
                 if ((mode & std::ios_base::in) && this->can_read()) {
-                    if (position <= end) {
-                        // We do not allow reads to seek beyond the end or before the start position.
-                        update_current_position(pos);
+                    if (position <= end) {	// We do not allow reads to seek beyond the end or before the start position.
+                        update_current_position(pos);	
                         return static_cast<pos_type>(m_current_position);
                     }
                 }
@@ -163,12 +163,12 @@ namespace Concurrency { namespace streams {
 		// <param name="offset">The relative position to seek to
 		// <param name="way">The starting point (beginning, end, current) for the seek.
 		// <param name="mode">The I/O direction to seek (see remarks)
-        virtual pos_type seekoff(off_type offset, std::ios_base::seekdir way, std::ios_base::openmode mode) {
-            pos_type beg = 0;
-            pos_type cur = static_cast<pos_type>(m_current_position);
-            pos_type end = static_cast<pos_type>(m_data.size());
+        virtual	pos_type							seekoff									(off_type offset, std::ios_base::seekdir way, std::ios_base::openmode mode) {
+            pos_type										beg										= 0;
+            pos_type										cur										= static_cast<pos_type>(m_current_position);
+            pos_type										end										= static_cast<pos_type>(m_data.size());
 
-            switch ( way ){
+            switch ( way ) {
             case std::ios_base::beg: return seekpos(beg + offset, mode);
             case std::ios_base::cur: return seekpos(cur + offset, mode);
             case std::ios_base::end: return seekpos(end + offset, mode);
@@ -255,7 +255,8 @@ namespace Concurrency { namespace streams {
 
 	// This is a reference-counted version of basic_container_buffer. Note that it cannot be used as a consumer producer buffer.
 	template<typename _CollectionType>
-    struct container_buffer : public streambuf<typename _CollectionType::value_type> {
+    class container_buffer : public streambuf<typename _CollectionType::value_type> {
+	public:
         typedef										typename	_CollectionType::value_type					char_type;
 
 		// Creates a container_buffer given a collection, copying its data into the buffer. Takes a collection that is the starting point for the buffer.
@@ -287,8 +288,8 @@ namespace Concurrency { namespace streams {
     typedef													stringstream::buffer_type					stringstreambuf		;
     typedef													container_stream<utility::string_t>			wstringstream		;
     typedef													wstringstream::buffer_type					wstringstreambuf	;
-
-    // The <c>bytestream</c> is a static class that allows an input stream to be constructed from any STL container.
+    
+	// Static class that allows an input stream to be constructed from any STL container.
     struct bytestream {
         template<typename _CollectionType>	// Creates a single byte character input stream given an STL container. Returns an single byte character input stream.
         static	concurrency::streams::istream					open_istream							(_CollectionType data)										{ return concurrency::streams::istream(streams::container_buffer<_CollectionType>(std::move(data), std::ios_base::in)); }

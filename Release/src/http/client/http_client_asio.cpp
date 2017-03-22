@@ -240,7 +240,8 @@ private:
 ///   while(1)
 ///   {
 ///     auto conn = pool.acquire();
-///     if (!conn) conn = new_conn();
+///     if (!conn) 
+///			conn = new_conn();
 ///     pool.release(conn);
 ///   }
 /// </code>
